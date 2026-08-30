@@ -1,0 +1,16 @@
+{
+  "sweepId": "2026-08-16-steam-vent-slow-dial",
+  "familyId": "steam-vent-slow-dial",
+  "mazes": ["A", "B"],
+  "seeds": 1500,
+  "protocol": { "spendDown": true, "maxWaves": 10, "humanElement": "FIRE" },
+  "arms": [
+    { "armId": "control", "protocol": { "fuse": false, "partnerSpecial": "WATER" } },
+    {
+      "armId": "slow-off",
+      "protocol": { "fuse": true, "fuseWith": "WATER" },
+      "balanceOverrides": { "TOWER.STEAM_VENT.slow.ms": 0 }
+    },
+    { "armId": "slow-on", "protocol": { "fuse": true, "fuseWith": "WATER" } }
+  ]
+}

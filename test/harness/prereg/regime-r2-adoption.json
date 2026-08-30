@@ -1,0 +1,44 @@
+{
+  "familyId": "regime-r2-adoption",
+  "question": "Does R2 = {spendDown, maxWaves 10} qualify as a measurement regime on hallHpAuc — is it uncensored at both ends and demonstrably sensitive to a known defence-strength change on both mazes — so that fusion value at waves 9-10, which R1 structurally cannot see, becomes measurable?",
+  "primaryMetric": "hallHpAuc",
+  "secondaryMetrics": [
+    "score",
+    "wavesCleared"
+  ],
+  "mde": 0.1,
+  "alpha": 0.05,
+  "power": 0.8,
+  "sigmaSource": "hallHpAuc paired delta sd measured directly in the R2 regime by the unregistered 2026-08-15 regime-wave10-probe (2,304 runs, n=288/cell, same four arms as this family): 0.78-0.90 (maze A) / 1.26-1.38 (maze B) across the three ladder rungs. Maze B's worst rung, 1.38, is the binding constraint. This is LARGER than R1's 0.455/1.059 — extending to 10 waves buys reach into the elite waves at the cost of variance, and the sample size below pays that cost explicitly rather than hiding it.",
+  "nRequired": 2990,
+  "arms": [
+    "control",
+    "wt-x0.67",
+    "wt-x1.33",
+    "wt-x2"
+  ],
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "familySize": 18,
+  "regime": {
+    "label": "R2",
+    "protocol": {
+      "spendDown": true,
+      "maxWaves": 10,
+      "fuse": false
+    },
+    "justification": "R1 (maxWaves 8) was adopted because it was uncensored and sensitive, and it is — but it structurally cannot see waves 9-10, where the elites concentrate (2x eliteGoblin + 2x eliteOrc at wave 10, eliteOrc/eliteTroll at wave 9). That scope limit has been declared on every family since, and it is the standing reason no fusion verdict generalises to the shipped 10-wave game. R2 removes it. The probe additionally shows R2 fixes R1's worst known defect: R1's maze-A CEILING, where 19-46% of control runs sat at the observed maximum and the top ladder rung moved the mean by only +0.0011 — i.e. R1 was blind at exactly the strong-defence end where a structure that HELPS would register. In R2 that same dose moves maze A by +0.727. A regime that cannot see a defence getting better is the wrong regime for grading structures that are supposed to make the defence better.",
+      "scopeLimit": "R2 trades terminal survival for reach. Only 0-7% of runs end with the hall alive, so hallHpFrac, win rate, and any other TERMINAL outcome measure are floor-censored in R2 and MUST NOT be used as primary or secondary here. hallHpAuc is exempt because it is an integral over the waves actually played, not an end state, and the probe confirms it spans 5.76-9.50 (A) / 4.50-9.45 (B) with 0.3-6.9% at the observed maximum. `wavesCleared` is declared secondary despite being closer to a terminal measure, and any reading on it must be checked against its own ceiling share before it is believed. R2 also does NOT fix the empty cross-policy gate, and does not make the scripted policy competent at late waves — it only stops truncating the match before they happen."
+  },
+  "positiveControl": {
+    "armId": "wt-ladder",
+    "override": "TOWER.WATCHTOWER.damage",
+    "expectedDirection": "hallHpAuc must increase monotonically with Watchtower damage across all four rungs (2, 3=shipped, 4, 6) on BOTH mazes, with every adjacent pair resolvable at BH-adjusted q < 0.05. This is the same ladder that validated R1 in metric-selection-v2, so a regime that fails it fails against a standard already met."
+  },
+  "decisionRule": "ADOPT R2 as a measurement regime when ALL of the following hold:\n\n1. MONOTONE on hallHpAuc across the four rungs on BOTH mazes.\n2. Every ladder arm's paired delta against control is resolvable at BH-adjusted q < 0.05 across the declared family of 18, with the exact sign test agreeing in direction.\n3. UNCENSORED: control runs at the observed hallHpAuc maximum are under 10% on both mazes, and the metric is not piled at a floor.\n4. Verdicts survive hang-imputation at the cell minimum.\n\nSPLIT-HALF IS DECLARED UNINFORMATIVE AND IS NOT A GATE. splitForMetric ranks the ARMS, and with 4 arms it takes a coarse set of values; fusion-roster-v2 showed the gate is degenerate below ~4 arms. Reported for the record only.\n\nMONOTONICITY RULE (carried from metric-selection-v2): no arm may be disqualified on an ordering argument unless the offending adjacent pair is itself resolvable at BH-adjusted q < 0.05. An unresolvable inversion is reported as unresolved, never as a disqualification.\n\nADOPTION IS NOT A CLAIM THAT R2 REPLACES R1. If R2 qualifies, both regimes are valid and they answer different questions: R1 has lower variance and a clean terminal-survival band; R2 reaches the elite waves and is not ceiling-blind. Fusion measurement moves to R2 because the fusion question specifically concerns late-game value. Nothing already measured in R1 is retracted by this family.\n\nCROSS-POLICY GATE NOT MET: only scripted-v1 exists. Provisional, declared up front.",
+  "whatWouldRefute": "R2 is REJECTED as a regime if the ladder is non-monotone on either maze with the offending adjacent pair resolvable, or if any rung fails to resolve at q < 0.05 despite n = 3000 — either would mean R2 cannot recover a defence change of known size and sign, which is the whole job of a regime. It is also rejected if control runs pile at the hallHpAuc maximum above 10%, which would reproduce R1's ceiling defect at greater cost.\n\nA null or inverted result on the 0.67x rung specifically would be the most damning: weakening the Watchtower by a third must make the defence worse, and a regime that cannot see that is measuring something other than defence strength.\n\nThis family CANNOT establish that fusions have late-game value. It establishes only whether the window in which that could be measured is a valid window. Confusing the two would be the same error as reading fusion-roster-v2's spendDown design as an equal-gold contrast.",
+  "registeredAt": "2026-08-15T22:05:00.000Z",
+  "notes": "WHY THIS FAMILY EXISTS. An unregistered probe (regime-wave10-probe, 2,304 runs) already ran these exact arms and the results motivated this registration. That probe is EXPLORATORY and carries no verdict; this family re-runs the question at the sample size the fusion MDE demands, on the standing rule that a registration written after seeing results is post-hoc. The probe's numbers are used for ONE legitimate purpose — as the sigmaSource for nRequired, which is what a pilot is for.\n\nSAMPLE SIZE. nRequired 2990 comes from stats.js requiredN(1.38, 0.10) at alpha 0.05 / power 0.8 — maze B's worst ladder rung. 1500 seeds x 2 postGaps = 3000 cells per arm per maze. 4 arms x 2 mazes x 3000 = 24,000 runs. This is ~3.4x R1's per-cell n and that is the honest price of the wider window.\n\nfamilySize 18 = 3 ladder arms x 2 mazes x 3 metrics.\n\nFRESH SEEDS. Seeds are deterministic (20260801 + i), so a re-run at the same count reproduces the probe byte for byte and would be a determinism check rather than a measurement. This family runs 20280801 + i, disjoint from both the probe (20260801+) and the steam-vent replication (20270801+)."
+}

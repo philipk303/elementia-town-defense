@@ -1,0 +1,96 @@
+{
+  "target_source_height": 1000,
+  "frames": [
+    {
+      "output": "art\\source\\water-production\\idle_left_00.png",
+      "derived_from": "art\\source\\water-production-raw-scale-drift\\idle_left_00.png",
+      "transform": "source_subject_scale",
+      "target_height": 1000,
+      "scale": 1.037344398340249
+    },
+    {
+      "output": "art\\source\\water-production\\idle_left_01.png",
+      "derived_from": "art\\source\\water-production-raw-scale-drift\\idle_left_01.png",
+      "transform": "source_subject_scale",
+      "target_height": 1000,
+      "scale": 1.0416666666666667
+    },
+    {
+      "output": "art\\source\\water-production\\idle_right_00.png",
+      "derived_from": "art\\source\\water-production-raw-scale-drift\\idle_right_00.png",
+      "transform": "source_subject_scale",
+      "target_height": 1000,
+      "scale": 1.037344398340249
+    },
+    {
+      "output": "art\\source\\water-production\\idle_right_01.png",
+      "derived_from": "art\\source\\water-production-raw-scale-drift\\idle_right_01.png",
+      "transform": "source_subject_scale",
+      "target_height": 1000,
+      "scale": 1.0416666666666667
+    },
+    {
+      "output": "art\\source\\water-production\\run_left_00.png",
+      "derived_from": "art\\source\\water-production-raw-scale-drift\\run_left_00.png",
+      "transform": "source_subject_scale",
+      "target_height": 1000,
+      "scale": 1.1641443538998837
+    },
+    {
+      "output": "art\\source\\water-production\\run_left_01.png",
+      "derived_from": "art\\source\\water-production-raw-scale-drift\\run_left_01.png",
+      "transform": "source_subject_scale",
+      "target_height": 1000,
+      "scale": 1.122334455667789
+    },
+    {
+      "output": "art\\source\\water-production\\run_left_02.png",
+      "derived_from": "art\\source\\water-production-raw-scale-drift\\run_left_02.png",
+      "transform": "source_subject_scale",
+      "target_height": 1000,
+      "scale": 1.0695187165775402
+    },
+    {
+      "output": "art\\source\\water-production\\run_left_03.png",
+      "derived_from": "art\\source\\water-production-raw-scale-drift\\run_left_03.png",
+      "transform": "source_subject_scale",
+      "target_height": 1000,
+      "scale": 1.0775862068965518
+    },
+    {
+      "output": "art\\source\\water-production\\run_right_00.png",
+      "derived_from": "art\\source\\water-production-raw-scale-drift\\run_right_00.png",
+      "transform": "source_subject_scale",
+      "target_height": 1000,
+      "scale": 1.1641443538998837
+    },
+    {
+      "output": "art\\source\\water-production\\run_right_01.png",
+      "derived_from": "art\\source\\water-production-raw-scale-drift\\run_right_01.png",
+      "transform": "source_subject_scale",
+      "target_height": 1000,
+      "scale": 1.122334455667789
+    },
+    {
+      "output": "art\\source\\water-production\\run_right_02.png",
+      "derived_from": "art\\source\\water-production-raw-scale-drift\\run_right_02.png",
+      "transform": "source_subject_scale",
+      "target_height": 1000,
+      "scale": 1.0695187165775402
+    },
+    {
+      "output": "art\\source\\water-production\\run_right_03.png",
+      "derived_from": "art\\source\\water-production-raw-scale-drift\\run_right_03.png",
+      "transform": "source_subject_scale",
+      "target_height": 1000,
+      "scale": 1.0775862068965518
+    },
+    {
+      "output": "art\\source\\water-production\\run_up_01.png",
+      "derived_from": "art\\source\\water-production-raw-scale-drift\\run_up_01.png",
+      "transform": "source_subject_scale",
+      "target_height": 1000,
+      "scale": 1.0330578512396693
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "sweepId": "2026-08-27-volcano-cooldown-ladder",
+  "familyId": "volcano-cooldown-ladder",
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "seeds": 750,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "humanElement": "EARTH",
+    "defenceCap": null,
+    "defence": "WATCHTOWER",
+    "legacySiting": false,
+    "specialSiting": "funnel",
+    "freeSpecial": true
+  },
+  "arms": [
+    {
+      "armId": "control",
+      "balanceOverrides": {
+        "TOWER.MAGMA_TRAP.aoe": false, "TOWER.MAGMA_TRAP.dps": 0,
+        "TOWER.MAGMA_TRAP.chargeThreshold": 3,
+        "TOWER.MAGMA_TRAP.eruption.cooldownMs": 6000
+      },
+      "protocol": { "fuse": true, "fuseWith": "FIRE", "fuseWave": 4 }
+    },
+    {
+      "armId": "wt-partner",
+      "protocol": { "fuse": false, "partnerSpecial": "FIRE" }
+    },
+    {
+      "armId": "cd750",
+      "balanceOverrides": {
+        "TOWER.MAGMA_TRAP.aoe": false, "TOWER.MAGMA_TRAP.dps": 0,
+        "TOWER.MAGMA_TRAP.chargeThreshold": 1,
+        "TOWER.MAGMA_TRAP.eruption.cooldownMs": 750
+      },
+      "protocol": { "fuse": true, "fuseWith": "FIRE", "fuseWave": 4 }
+    },
+    {
+      "armId": "cd1500",
+      "balanceOverrides": {
+        "TOWER.MAGMA_TRAP.aoe": false, "TOWER.MAGMA_TRAP.dps": 0,
+        "TOWER.MAGMA_TRAP.chargeThreshold": 1,
+        "TOWER.MAGMA_TRAP.eruption.cooldownMs": 1500
+      },
+      "protocol": { "fuse": true, "fuseWith": "FIRE", "fuseWave": 4 }
+    },
+    {
+      "armId": "cd2250",
+      "balanceOverrides": {
+        "TOWER.MAGMA_TRAP.aoe": false, "TOWER.MAGMA_TRAP.dps": 0,
+        "TOWER.MAGMA_TRAP.chargeThreshold": 1,
+        "TOWER.MAGMA_TRAP.eruption.cooldownMs": 2250
+      },
+      "protocol": { "fuse": true, "fuseWith": "FIRE", "fuseWave": 4 }
+    },
+    {
+      "armId": "cd3000",
+      "balanceOverrides": {
+        "TOWER.MAGMA_TRAP.aoe": false, "TOWER.MAGMA_TRAP.dps": 0,
+        "TOWER.MAGMA_TRAP.chargeThreshold": 1,
+        "TOWER.MAGMA_TRAP.eruption.cooldownMs": 3000
+      },
+      "protocol": { "fuse": true, "fuseWith": "FIRE", "fuseWave": 4 }
+    },
+    {
+      "armId": "cd750-thresh3",
+      "balanceOverrides": {
+        "TOWER.MAGMA_TRAP.aoe": false, "TOWER.MAGMA_TRAP.dps": 0,
+        "TOWER.MAGMA_TRAP.chargeThreshold": 3,
+        "TOWER.MAGMA_TRAP.eruption.cooldownMs": 750
+      },
+      "protocol": { "fuse": true, "fuseWith": "FIRE", "fuseWave": 4 }
+    }
+  ]
+}

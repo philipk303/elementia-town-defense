@@ -1,0 +1,122 @@
+{
+  "sweepId": "2026-08-27-fusion-roster-baseline",
+  "familyId": "fusion-roster-baseline",
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "seeds": 750,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "defenceCap": null,
+    "defence": "WATCHTOWER",
+    "legacySiting": false,
+    "specialSiting": "funnel",
+    "freeSpecial": true
+  },
+  "arms": [
+    {
+      "armId": "magma-fused",
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "FIRE",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "magma-unfused",
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": false,
+        "partnerSpecial": "FIRE"
+      }
+    },
+    {
+      "armId": "bog-fused",
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "bog-unfused",
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": false,
+        "partnerSpecial": "WATER"
+      }
+    },
+    {
+      "armId": "grinder-fused",
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "grinder-unfused",
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": false,
+        "partnerSpecial": "WIND"
+      }
+    },
+    {
+      "armId": "firestorm-fused",
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "firestorm-unfused",
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": false,
+        "partnerSpecial": "WIND"
+      }
+    },
+    {
+      "armId": "blizzard-fused",
+      "protocol": {
+        "humanElement": "WATER",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "blizzard-unfused",
+      "protocol": {
+        "humanElement": "WATER",
+        "fuse": false,
+        "partnerSpecial": "WIND"
+      }
+    },
+    {
+      "armId": "vent-fused",
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "vent-unfused",
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": false,
+        "partnerSpecial": "WATER"
+      }
+    }
+  ]
+}

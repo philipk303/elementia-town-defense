@@ -1,0 +1,37 @@
+{
+  "familyId": "fusion-roster-water-v2",
+  "question": "Measured on the adopted hallHpAuc metric in the R1 regime, does any WATER-line fusion (Blizzard) clear the Amendment A1.4(a) niche floor — is it worth at least as much as the Watchtowers the same gold would otherwise have bought?",
+  "primaryMetric": "hallHpAuc",
+  "secondaryMetrics": [
+    "score",
+    "wavesCleared"
+  ],
+  "mde": 0.1,
+  "alpha": 0.05,
+  "power": 0.8,
+  "sigmaSource": "hallHpAuc paired delta sd, measured on the R1 regime in the 2026-08-15 metric-selection-v2 corpus (2880 runs, n=288/cell): 0.455 (maze A) / 1.059 (maze B), averaged across the four Watchtower-ladder arms. Maze B is the binding constraint. This SUPERSEDES every score-based sigma used before 2026-08-15 — those were measured in the floor-censored v1 regime where score was identically wavesCleared.",
+  "nRequired": 880,
+  "arms": [
+    "control",
+    "blizzard"
+  ],
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "familySize": 36,
+  "regime": {
+    "label": "R1",
+    "protocol": {
+      "spendDown": true,
+      "maxWaves": 8,
+      "humanElement": "WATER"
+    },
+    "justification": "R1 is the regime validated in metric-selection-v2: control survival 46.9/44.8, uncensored at both ends, and demonstrated sensitive to defence strength (it resolves a +/-33% Watchtower damage change on both mazes through all four gates). spendDown:true is not incidental here — it is what MAKES this an equal-gold comparison. The control arm does not buy the fusion partner, so under spendDown its surplus gold is automatically converted into Watchtowers. The measured delta is therefore exactly 'the fusion versus the Watchtowers that same gold would have bought', which is the A1.4(a) bar itself rather than the 'fuse vs don't fuse holding both specials' trade delta that earlier roster sweeps measured and that A1.4(a) does not ask about.",
+    "scopeLimit": "TWO limits, both declared up front. (1) maxWaves 8 means WAVES 9 AND 10 ARE NEVER MEASURED, and that is where the elites concentrate (2x eliteGoblin + 2x eliteOrc at wave 10, eliteOrc/eliteTroll at wave 9). Any fusion whose value shows only against late elites is INVISIBLE to this family, so no verdict here generalises to the full 10-wave game. (2) hallHpAuc is bounded above at 8.0 in R1 and maze A is already near it — 46% of runs sat at the observed maximum in the 2x Watchtower arm of metric-selection-v2, where the top ladder rung moved the mean by only +0.0011. A large positive maze-A effect must be checked against the ceiling share before it is believed."
+  },
+  "decisionRule": "For each fusion arm, on each maze, the paired delta against the same-element control on hallHpAuc.\n\nPASS (clears A1.4(a)): delta > 0 AND BH-adjusted q < 0.05 across the declared family of 36 AND the exact sign test agrees in direction AND split-half rho > 0.5 AND the verdict survives hang-imputation at the cell minimum. Per Philip's 2026-08-04 ruling, PASSING ON EITHER MAZE IS SUFFICIENT — maze A is substantially easier than maze B and requiring both would force overtuning.\n\nFAIL (retune target): delta < 0 under those same four gates on either maze, and no PASS on the other. This is the actionable outcome — a fusion that is resolvably WORSE than the gold spent on Watchtowers is a balance defect to fix before playtesting.\n\nUNRESOLVED: anything else. An unresolved cell is NOT a pass and is NOT a fail; it is reported as unresolved and no balance change is made on it. Given the declared MDE of 0.10 sits ABOVE the estimated value of the ~1.3 Watchtowers a fusion trades away, this family can certify a PASS or a FAIL but CANNOT certify 'exactly at the bar'. Stated in advance so a null result is not later read as a fail.\n\nMONOTONICITY RULE (carried from metric-selection-v2): no arm may be disqualified on an ordering argument unless the offending adjacent pair is itself resolvable at BH-adjusted q < 0.05. An unresolvable inversion is reported as unresolved, never as a disqualification.\n\nCROSS-POLICY GATE NOT MET: the spec's decisionRule also requires agreement under both build policies. Only scripted-v1 exists — the competent-v1 attempt was reverted on 2026-08-15 because a siting-only policy provably cannot diverge in the 12-site pool (docs/reviews/2026-08-15-wp5-competent-v1-review.md). Every verdict from this family is therefore PROVISIONAL on that gate, and that is declared here rather than discovered later.",
+  "whatWouldRefute": "A fusion delta whose BH-adjusted q exceeds 0.05 on both mazes refutes a PASS claim for that fusion. A resolvably negative delta refutes the design premise that the fusion is worth its gold. If EVERY arm including the controls comes back unresolvable, the family refutes the claim that hallHpAuc at n=900 can resolve a single-structure trade at all, and the response is to raise n rather than to declare the roster balanced.",
+  "registeredAt": "2026-08-15T18:56:00.000Z",
+  "notes": "WHY THREE FAMILIES INSTEAD OF ONE. The fusion a run can form is determined by humanElement plus fuseWith, and humanElement also sets the human's free special and basic attack. Comparing Magma Trap (EARTH human) against a FIRE-human control would therefore confound the fusion with the player's class. Each fusion is compared against a control carrying THE SAME humanElement, which forces the roster into three families: earth (Magma Trap, Muddy Bog, Grinder), fire (Firestorm, Steam Vent), water (Blizzard). analyze.mjs keys the control arm on the literal armId 'control', so these cannot share one store.\n\nEach of the three preregs declares familySize 36 = 6 fusions x 2 mazes x 3 metrics, i.e. the FULL roster width, even though each family runs fewer tests than that. Under the adopted BH padding rule the input is padded with p=1 up to the declared familySize, so every family is corrected as if the whole roster ran. That is deliberately conservative: it prevents the roster question from silently narrowing its own correction by being split across three stores.\n\nSAMPLE SIZE. 450 seeds x 2 postGaps = 900 cells per arm per maze, against nRequired 880 for MDE 0.10 on maze B. Achieved MDE is roughly 0.042 (A) / 0.099 (B). 4 arms x 2 mazes x 900 = 7200 runs, ~2.5 min.\n\nNo balance change ships directly from this family. It identifies which fusions are resolvably below their gold cost; the retune itself is a separate, separately-registered decision."
+}

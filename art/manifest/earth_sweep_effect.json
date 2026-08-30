@@ -1,0 +1,47 @@
+{
+  "id": "earth_sweep_effect",
+  "category": "hero_attack_effect",
+  "runtime_id": "earth_basic_fx",
+  "display_alias": "Earth sweep",
+  "footprint_tiles": null,
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "status": "production_validated"
+  },
+  "orientation": "actor_facing",
+  "directions": [],
+  "states": [
+    "flight",
+    "impact",
+    "dissipation"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "source_directory": "art/source/earth-basic-fx",
+    "prompt_edit_lineage": [
+      "art/source/earth-basic-fx/prompt-recipe.md",
+      "art/source/earth-basic-fx"
+    ],
+    "frame_count": 10
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/earth_basic_fx.png + client/public/art/earth_basic_fx.json",
+    "frame_count": 10,
+    "contract": "10 centered, untrimmed 64x64 RGBA frames with 2px atlas gutters, same flight/impact/dissipation states as water_basic_fx/wind_basic_fx"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "atlas_key": "earth_basic_fx",
+    "gameplay_integrated": true,
+    "trigger": "GameScene._playAtk on EARTH_CONE atk events, flight->impact->dissipation one-shot at the reach point (same _spawnAttackFx path as Water)"
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": null,
+    "gate": "no dedicated QA doc was recovered for this asset (unlike earth-production-qa.md for the hero body); manual Phaser playtest confirmation of in-combat readability still open"
+  }
+}

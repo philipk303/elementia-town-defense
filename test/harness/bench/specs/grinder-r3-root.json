@@ -1,0 +1,22 @@
+{
+  "sweepId": "2026-08-30-grinder-r3-root",
+  "familyId": "grinder-r3-root",
+  "mazes": ["A", "B"],
+  "seeds": 1600,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "humanElement": "EARTH"
+  },
+  "arms": [
+    {
+      "armId": "control",
+      "protocol": { "fuse": true, "fuseWith": "WIND" },
+      "balanceOverrides": { "TOWER.GRINDER.grind.rootMs": 0 }
+    },
+    {
+      "armId": "grinder-rooted",
+      "protocol": { "fuse": true, "fuseWith": "WIND" }
+    }
+  ]
+}

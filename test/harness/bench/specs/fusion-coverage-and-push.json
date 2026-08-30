@@ -1,0 +1,184 @@
+{
+  "sweepId": "2026-08-28-fusion-coverage-and-push",
+  "familyId": "fusion-coverage-and-push",
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "seeds": 750,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "defenceCap": null,
+    "defence": "WATCHTOWER",
+    "legacySiting": false,
+    "specialSiting": "funnel",
+    "freeSpecial": true
+  },
+  "arms": [
+    {
+      "armId": "bog-unfused",
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": false,
+        "partnerSpecial": "WATER"
+      }
+    },
+    {
+      "armId": "bog-dmg12",
+      "balanceOverrides": {
+        "TOWER.MUDDY_BOG.pulse.damage": 12
+      },
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "bog-dmg18",
+      "balanceOverrides": {
+        "TOWER.MUDDY_BOG.pulse.damage": 18
+      },
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "firestorm-unfused",
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": false,
+        "partnerSpecial": "WIND"
+      }
+    },
+    {
+      "armId": "firestorm-cd225",
+      "balanceOverrides": {
+        "TOWER.FIRESTORM.cooldownMs": 225
+      },
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "firestorm-cd450dmg26",
+      "balanceOverrides": {
+        "TOWER.FIRESTORM.cooldownMs": 450,
+        "TOWER.FIRESTORM.damage": 26
+      },
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "vent-unfused",
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": false,
+        "partnerSpecial": "WATER"
+      }
+    },
+    {
+      "armId": "vent-dmg24",
+      "balanceOverrides": {
+        "TOWER.STEAM_VENT.pulse.damage": 24
+      },
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "vent-cd250dmg16",
+      "balanceOverrides": {
+        "TOWER.STEAM_VENT.pulse.ms": 250,
+        "TOWER.STEAM_VENT.pulse.damage": 16
+      },
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "grinder-unfused",
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": false,
+        "partnerSpecial": "WIND"
+      }
+    },
+    {
+      "armId": "grinder-r220",
+      "balanceOverrides": {
+        "TOWER.GRINDER.outerRadiusPx": 220
+      },
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "grinder-r220dmg90",
+      "balanceOverrides": {
+        "TOWER.GRINDER.outerRadiusPx": 220,
+        "TOWER.GRINDER.damage": 90
+      },
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "blizzard-unfused",
+      "protocol": {
+        "humanElement": "WATER",
+        "fuse": false,
+        "partnerSpecial": "WIND"
+      }
+    },
+    {
+      "armId": "blizzard-rng250",
+      "balanceOverrides": {
+        "TOWER.BLIZZARD.rangePx": 250
+      },
+      "protocol": {
+        "humanElement": "WATER",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "blizzard-rng250clu110",
+      "balanceOverrides": {
+        "TOWER.BLIZZARD.rangePx": 250,
+        "TOWER.BLIZZARD.clusterRadiusPx": 110
+      },
+      "protocol": {
+        "humanElement": "WATER",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    }
+  ]
+}

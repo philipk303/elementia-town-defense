@@ -1,0 +1,39 @@
+{
+  "familyId": "metric-selection-v1",
+  "question": "Which outcome metric gives this harness the smallest minimum detectable effect while still ordering arms the same way score does, and what is the smallest injected balance change any metric can actually recover?",
+
+  "primaryMetric": "score",
+  "secondaryMetrics": [
+    "wavesCleared",
+    "hallHpFrac",
+    "enemySeconds",
+    "structuresLostTotal",
+    "closestApproachPxMin",
+    "hallHpAuc",
+    "clearMargin"
+  ],
+
+  "mde": 0.5,
+  "alpha": 0.05,
+  "power": 0.8,
+  "sigmaSource": "score sigma = 1.439, measured at n=80 during the 2026-07-25 Phase 8A Task 7 re-sizing (test/harness/scenarios.js header). This is the ONLY sigma this project has ever measured on a full matrix, and it is the incumbent metric's. Every candidate metric's sigma is unknown, which is the whole reason for this corpus.",
+  "nRequired": 131,
+
+  "arms": ["control", "dose-13", "dose-15", "dose-20", "dose-30"],
+  "mazes": ["A", "B"],
+  "familySize": 64,
+
+  "decisionRule": "This family produces TWO outputs, both gated.\n\n(1) INSTRUMENT VALIDATION (spec success criterion 3 - never yet met). For each candidate metric, find the smallest injected dose whose paired delta against control is significant at BH-adjusted q<0.05 across the family of 64, agrees in the exact sign test, survives hang-imputation at the cell minimum, and has split-half rho > 0.5. That dose is the metric's demonstrated resolution. A metric that recovers NO dose is disqualified regardless of its sigma - a low-variance metric that cannot see a real change is worse than a noisy one that can.\n\n(2) METRIC ADOPTION. Among metrics that pass (1), adopt the one with the smallest paired-sigma MDE at n=144, PROVIDED it ranks the five arms in the same monotone order as score (Spearman rho = 1.0 over the dose ladder; the doses are monotone in difficulty by construction, so any metric that does not order them monotonically is measuring something other than defence strength). If no candidate beats score on MDE while preserving that ordering, the finding is 'score stands' and the response is to raise n, not to change metric.",
+
+  "whatWouldRefute": "Either output can come back negative and both are publishable as such. (1) fails if no metric recovers even dose-30 (a 2.5x goblin HP increase) at the corrected q - that would mean the harness cannot detect a change nobody would dispute is large, and every verdict in project history is void. (2) fails if score already has the lowest MDE among ordering-preserving candidates, or if the lowest-MDE candidate scrambles the dose ordering.",
+
+  "positiveControl": {
+    "armId": "dose-ladder",
+    "override": "ENEMY.BASE.0.hp",
+    "expectedEffect": -0.5
+  },
+
+  "registeredAt": "2026-08-14T00:00:00.000Z",
+
+  "notes": "THE DOSE LADDER. Each non-control arm overrides ENEMY.BASE.0.hp (goblin HP, baseline 12) to 13, 15, 20 and 30 respectively. Goblins are the type-0 bulk of every wave, so this is a monotone, unambiguous, one-directional increase in difficulty: score must fall, and it must fall further at each rung. Direction and monotonicity are asserted; magnitude is NOT predicted, because the response curve is unknown - the 2026-07-25 calibration measured a ~4x HP change as only 0.585 score points, which is itself a warning that this instrument compresses large mechanical changes into small score differences.\n\nSAMPLE SIZE. 144 seeds x 2 postGaps = 288 cells per arm per maze, deliberately over-powered against the nRequired of 131. The incumbent sigma is the only one known; every candidate metric's is not, and a corpus that turns out to be under-powered for the new metrics cannot be topped up without breaking the paired seed structure. 5 arms x 2 mazes x 288 = 2880 runs, roughly 15 minutes single-threaded at the measured ~0.3 s/run.\n\nWHY THE SECONDARY METRICS ARE WHAT THEY ARE. score, wavesCleared and hallHpFrac already exist on the run record. enemySeconds, structuresLostTotal and closestApproachPxMin are the per-wave leading indicators matchRunner.js:445 already records and names in measured order of sensitivity - the header there states hall HP is the WORST early signal and is currently the only thing scored on, which has never been acted upon. hallHpAuc (hall HP integrated over waves rather than sampled at the end) and clearMargin (a censoring-corrected clear distance) must be DERIVED in analyze.mjs from the stored per-wave records; they are not fields runMatch emits. Deriving rather than re-measuring is the entire point of the run store.\n\nCENSORING. score = wavesCleared + hallHpFrac is bounded above by a comfortable win. If the control arm is largely censored at the ceiling, its variance comes from the losing tail only and every effect estimate is attenuated. analyze.mjs must report the share of control-arm runs at the ceiling alongside the sigma - if that share is high, the correct fix is a harder baseline, not a different statistic, and this family should be re-registered.\n\nNo balance change ships from this family. It measures the instrument, not the game."
+}

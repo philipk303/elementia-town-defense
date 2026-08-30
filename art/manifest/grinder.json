@@ -1,0 +1,54 @@
+{
+  "id": "grinder",
+  "category": "fusion_structure",
+  "runtime_id": "GRINDER",
+  "display_alias": "Grinder",
+  "footprint_tiles": {
+    "w": 2,
+    "h": 2,
+    "walkable": true
+  },
+  "origin": {
+    "value": null,
+    "status": "calibration_pending"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "idle",
+    "telegraph",
+    "charged",
+    "active",
+    "recovery"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/grinder/grinder-concept-v1.png",
+    "source_directory": "art/source/grinder/frames",
+    "prompt_edit_lineage": [
+      "art/source/calibration/town-hall-source-v1.png",
+      "art/source/calibration/barricade-source-v2.png",
+      "art/source/calibration/watchtower-source-v1.png",
+      "art/source/calibration/farm-source-v1.png",
+      "art/source/grinder/grinder-concept-v1.png"
+    ],
+    "frame_count": 4
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/grinder.png + client/public/art/grinder.json",
+    "frame_count": 4,
+    "contract": "5 untrimmed 128x128 RGBA frames (charged duplicates telegraph) with 2px atlas gutters, frame names renamed from the delivered idle/intake/crush/release to the generic idle/telegraph/charged/active/recovery vocabulary StructureAnimator expects"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "image_key": "grinder",
+    "gameplay_integrated": true,
+    "trigger": "StructureAnimator (cycle family, spec.grind): telegraph/charged while INTAKE charge ramps, active for the cycleSeq-bump pulse window on CRUSH entry, recovery for the rest of the CRUSH phase tail"
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/grinder-production-qa.md",
+    "gate": "manual Phaser playtest confirmation of the telegraph/active/recovery readability still open; frame vocabulary was renamed post-delivery to match the generic structure-state contract, not re-reviewed by the original art QA pass"
+  }
+}

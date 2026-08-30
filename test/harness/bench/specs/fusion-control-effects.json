@@ -1,0 +1,121 @@
+{
+  "sweepId": "2026-08-28-fusion-control-effects",
+  "familyId": "fusion-control-effects",
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "seeds": 750,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "defenceCap": null,
+    "defence": "WATCHTOWER",
+    "legacySiting": false,
+    "specialSiting": "funnel",
+    "freeSpecial": true
+  },
+  "arms": [
+    {
+      "armId": "blizzard-unfused",
+      "protocol": {
+        "humanElement": "WATER",
+        "fuse": false,
+        "partnerSpecial": "WIND"
+      }
+    },
+    {
+      "armId": "blizzard-freeze0",
+      "balanceOverrides": {
+        "TOWER.BLIZZARD.freeze.ms": 0
+      },
+      "protocol": {
+        "humanElement": "WATER",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "blizzard-rng250freeze0",
+      "balanceOverrides": {
+        "TOWER.BLIZZARD.rangePx": 250,
+        "TOWER.BLIZZARD.freeze.ms": 0
+      },
+      "protocol": {
+        "humanElement": "WATER",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "blizzard-freeze400",
+      "balanceOverrides": {
+        "TOWER.BLIZZARD.freeze.ms": 400
+      },
+      "protocol": {
+        "humanElement": "WATER",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "bog-unfused",
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": false,
+        "partnerSpecial": "WATER"
+      }
+    },
+    {
+      "armId": "bog-root0",
+      "balanceOverrides": {
+        "TOWER.MUDDY_BOG.root.msByWeight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "bog-dmg12root0",
+      "balanceOverrides": {
+        "TOWER.MUDDY_BOG.pulse.damage": 12,
+        "TOWER.MUDDY_BOG.root.msByWeight": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "bog-dmg12noslow",
+      "balanceOverrides": {
+        "TOWER.MUDDY_BOG.pulse.damage": 12,
+        "TOWER.MUDDY_BOG.lingerSlow.ms": 0
+      },
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    }
+  ]
+}

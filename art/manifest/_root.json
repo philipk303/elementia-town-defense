@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "authority": "production graphics ledger",
+  "status": "in_progress",
+  "source_policy": {
+    "primary_generator": "GPT Image",
+    "optional_concept_generator": "Nano Banana",
+    "provenance_status": "not_started"
+  },
+  "pipeline": {
+    "conversion_tool": "Pillow",
+    "hero_canvas_px": [
+      64,
+      64
+    ],
+    "filter": "nearest_neighbor",
+    "atlas_frame_pattern": "<state>_<direction>_<idx>.png",
+    "runtime_root": "client/public/art/"
+  },
+  "categories": {
+    "terrain": 1,
+    "hero_atlas": 4,
+    "hero_attack_effect": 4,
+    "hero_special_effect": 1,
+    "enemy": 3,
+    "generic_or_economy_structure": 6,
+    "elemental_structure": 4,
+    "fusion_structure": 6,
+    "projectile": 2,
+    "shared_presentation": 10
+  }
+}

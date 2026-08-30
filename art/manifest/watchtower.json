@@ -1,0 +1,50 @@
+{
+  "id": "watchtower",
+  "category": "generic_or_economy_structure",
+  "runtime_id": "WATCHTOWER",
+  "display_alias": "Watchtower",
+  "footprint_tiles": {
+    "w": 1,
+    "h": 1,
+    "walkable": false
+  },
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "baseline_y": 60
+    },
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "idle",
+    "active"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/calibration/watchtower-source-v1.png",
+    "source_directory": "art/source/watchtower",
+    "prompt_edit_lineage": [
+      "recovered from c10c210"
+    ],
+    "frame_count": 2
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/watchtower.png + client/public/art/watchtower.json",
+    "frame_count": 2,
+    "contract": "2 untrimmed 48x64 RGBA frames with 2px atlas gutter, frame names renamed from the delivered idle/recoil to the generic idle/active vocabulary StructureAnimator expects"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "image_key": "watchtower",
+    "gameplay_integrated": true,
+    "trigger": "StructureAnimator cycleSeq-bump ACTIVE window (static family, no phase machine): server/game/towers.js default tower-fire branch (Watchtower is its only occupant) now bumps cycleSeq on every shot, which also (newly) fires the existing watchtower_fire activation SFX"
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/generic-structures-production-qa.md",
+    "gate": "manual Phaser playtest confirmation still open; the cycleSeq bump is a small gameplay-code change made alongside the art wiring, not separately balance-reviewed"
+  }
+}

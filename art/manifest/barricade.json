@@ -1,0 +1,46 @@
+{
+  "id": "barricade",
+  "category": "generic_or_economy_structure",
+  "runtime_id": "BARRICADE",
+  "display_alias": "Barricade",
+  "footprint_tiles": {
+    "w": 1,
+    "h": 1,
+    "walkable": false
+  },
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "baseline_y": 30
+    },
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "static"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/calibration/barricade-source-v2.png",
+    "prompt_edit_lineage": [
+      "recovered from c10c210"
+    ]
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/barricade.png",
+    "contract": "32x32 RGBA static image"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "image_key": "barricade",
+    "gameplay_integrated": true,
+    "trigger": "static IMAGES entry, structureArtKey(\"BARRICADE\") resolves to it with no code change"
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/generic-structures-production-qa.md",
+    "gate": "manual Phaser playtest confirmation still open"
+  }
+}

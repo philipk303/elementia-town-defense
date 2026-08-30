@@ -1,0 +1,36 @@
+{
+  "sweepId": "2026-08-30-muddy-bog-r3",
+  "familyId": "muddy-bog-r3",
+  "mazes": ["A", "B"],
+  "seeds": 1600,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "humanElement": "EARTH"
+  },
+  "arms": [
+    {
+      "armId": "control",
+      "protocol": { "fuse": false, "partnerSpecial": "WATER" }
+    },
+    {
+      "armId": "muddy-bog",
+      "protocol": { "fuse": true, "fuseWith": "WATER" }
+    },
+    {
+      "armId": "muddy-bog-margin",
+      "protocol": { "fuse": true, "fuseWith": "WATER" },
+      "balanceOverrides": { "TOWER.MUDDY_BOG.marginPx": 15 }
+    },
+    {
+      "armId": "muddy-bog-longroot",
+      "protocol": { "fuse": true, "fuseWith": "WATER" },
+      "balanceOverrides": {
+        "TOWER.MUDDY_BOG.root.msByWeight.0": 900,
+        "TOWER.MUDDY_BOG.root.msByWeight.1": 1800,
+        "TOWER.MUDDY_BOG.root.msByWeight.2": 2700,
+        "TOWER.MUDDY_BOG.root.msByWeight.3": 3600
+      }
+    }
+  ]
+}

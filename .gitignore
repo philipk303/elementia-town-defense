@@ -1,0 +1,7 @@
+node_modules/
+dist/
+*.log
+test/harness/store/*.jsonl
+.worktrees/
+.env
+__pycache__/

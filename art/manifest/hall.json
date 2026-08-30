@@ -1,0 +1,46 @@
+{
+  "id": "hall",
+  "category": "generic_or_economy_structure",
+  "runtime_id": "HALL",
+  "display_alias": "Town Hall with visible princess",
+  "footprint_tiles": {
+    "w": 2,
+    "h": 2,
+    "walkable": false
+  },
+  "origin": {
+    "value": null,
+    "status": "calibration_pending"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "static"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/calibration/town-hall-source-v1.png",
+    "source_directory": "art/source/calibration",
+    "prompt_edit_lineage": [
+      "art/source/calibration/town-hall-source-v1.png"
+    ],
+    "frame_count": 1
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/hall.png",
+    "frame_count": 1,
+    "contract": "one centered 64x64 RGBA static image; magenta source background removed; nearest-neighbor downscale"
+  },
+  "runtime": {
+    "status": "integrated",
+    "image_key": "hall",
+    "gameplay_integrated": true,
+    "note": "Registered in client/src/assets/manifest.js IMAGES; GameScene.js's Hall footprint block uses entitySprite('hall', ...) with the old graphics-rect as its fallback."
+  },
+  "qa": {
+    "status": "production_validated",
+    "evidence": "docs/assets/hall-production-qa.md",
+    "gate": "automated source/package validation and visual package inspection; manual Phaser scale read confirmed 2026-08-13 (live browser preview, pagoda art renders correctly at its 2x2 footprint)"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "cooldown_indicator",
+  "category": "shared_presentation",
+  "runtime_id": "cooldown_indicator",
+  "display_alias": "Cooldown indicator",
+  "footprint_tiles": null,
+  "origin": {
+    "value": "screen-space, bottom-center (local player only)",
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "ready",
+    "cooling"
+  ],
+  "source": {
+    "status": "planned",
+    "reference_path": null,
+    "prompt_edit_lineage": null
+  },
+  "pillow": {
+    "status": "not_applicable",
+    "output": null,
+    "contract": "procedural client geometry"
+  },
+  "runtime": {
+    "status": "integrated",
+    "image_key": null,
+    "gameplay_integrated": true,
+    "note": "client/src/render/abilityBar.js (pure state/geometry) + GameScene.js _drawAbilityBar (Phaser draw). Three slots -- basic/Q/E. Required a wire change: remaining-cooldown ms appended to the player tuple as fields 7/8/9 (server/net/encode.js), since both Q and E emit the same SPECIAL_CAST atk kind and are therefore indistinguishable to client-side prediction."
+  },
+  "qa": {
+    "status": "production_validated",
+    "evidence": "test/client/abilityBar.test.js (11 tests), test/net/encode.test.js (cooldown ABI round-trip + legacy-tuple compatibility)",
+    "gate": "state timing readability -- OPEN: automated + build gates pass, but the live in-browser read has NOT been performed (the preview pane was not displayed, so Phaser's rAF loop never stepped)"
+  }
+}

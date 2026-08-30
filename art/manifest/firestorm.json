@@ -1,0 +1,57 @@
+{
+  "id": "firestorm",
+  "category": "fusion_structure",
+  "runtime_id": "FIRESTORM",
+  "display_alias": "Firestorm",
+  "footprint_tiles": {
+    "w": 2,
+    "h": 2,
+    "walkable": true
+  },
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "idle",
+    "telegraph",
+    "charged",
+    "active",
+    "recovery"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/firestorm/firestorm-concept-draft-v2.png",
+    "source_directory": "art/source/firestorm",
+    "prompt_edit_lineage": [
+      "art/source/firestorm/firestorm-concept-draft-v1.png",
+      "art/source/firestorm/firestorm-concept-draft-v2.png",
+      "art/source/firestorm/firestorm-runtime-chromakey.png",
+      "art/source/firestorm/frames"
+    ],
+    "frame_count": 10
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/firestorm_fx.png + client/public/art/firestorm_fx.json; client/public/art/firestorm.png (superseded static, kept as lineage evidence, not registered)",
+    "frame_count": 10,
+    "contract": "10 untrimmed 96x96 RGBA frames with 2px atlas gutters; idle, telegraph, charged, active, recovery, two frames each"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "atlas_key": "firestorm",
+    "gameplay_integrated": true,
+    "note": "manifest.js registers runtime key 'firestorm' (matches structureArtKey('FIRESTORM')) pointing at the firestorm_fx.png/.json files -- key and filename are intentionally different, same arrangement as wind_special -> wind_vortex. The earlier static firestorm.png is superseded by this atlas and deliberately left unregistered.",
+    "trigger": "StructureAnimator resolves structureArtKey('FIRESTORM') to the generic frame vocabulary. FIRESTORM is the 'volley' family, which has no phase machine: only idle and the cycleSeq-bump active window are reachable, so the packaged telegraph/charged/recovery frames ship but never play (structureBehaviors/volley.js already bumped cycleSeq per volley)."
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/firestorm-production-qa.md",
+    "gate": "manual Phaser playtest confirmation of aggregate-effect readability remains open; the atlas's telegraph/charged/recovery frames are unreachable for this behavior family and would only become live if FIRESTORM gained a phase machine"
+  }
+}

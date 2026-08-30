@@ -1,0 +1,58 @@
+{
+  "id": "hero_earth_atlas",
+  "category": "hero_atlas",
+  "runtime_id": "chibi_earth",
+  "display_alias": "Earth hero",
+  "footprint_tiles": null,
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "baseline_y": 56
+    },
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [
+    "down",
+    "up",
+    "left",
+    "right"
+  ],
+  "states": [
+    "idle",
+    "run",
+    "attack",
+    "cast",
+    "hurt",
+    "death"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/calibration/earth-reference-v1.png",
+    "source_directory": "art/source/earth-production",
+    "prompt_edit_lineage": [
+      "art/source/calibration/earth-reference-v1.png",
+      "art/source/earth-production/prompt-recipe.md",
+      "art/source/earth-production"
+    ],
+    "frame_count": 80,
+    "recovered_from": "C:\\Users\\phili\\.codex\\worktrees\\4580\\Elementia-Town-Defense (2026-08-07), integrated via codex/earth-asset-pipeline-recovery -> codex/asset-wiring-prep"
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/chibi_earth.png + client/public/art/chibi_earth.json",
+    "frame_count": 80,
+    "scale": 0.0402,
+    "contract": "80 untrimmed 64x64 RGBA frames, shared baseline 56, 2px atlas gutters"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "atlas_key": "chibi_earth",
+    "gameplay_integrated": true
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/earth-production-qa.md",
+    "gate": "manual Phaser playtest confirmation of idle/run/hurt/death/special readability still open (same open gate as Wind/Water)"
+  }
+}

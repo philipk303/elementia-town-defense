@@ -1,0 +1,46 @@
+{
+  "id": "marketplace",
+  "category": "generic_or_economy_structure",
+  "runtime_id": "MARKETPLACE",
+  "display_alias": "Marketplace market square",
+  "footprint_tiles": {
+    "w": 2,
+    "h": 2,
+    "walkable": false
+  },
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "static"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/marketplace/marketplace-source-draft-v2-2x2.png",
+    "source_directory": "art/source/marketplace",
+    "prompt_edit_lineage": [
+      "art/source/marketplace/marketplace-source-draft-v1.png",
+      "art/source/marketplace/marketplace-source-draft-v2-2x2.png"
+    ]
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/marketplace.png",
+    "contract": "64x64 RGBA, centered 2x2 blocking footprint; magenta source background removed; nearest-neighbor downscale"
+  },
+  "runtime": {
+    "status": "runtime-registered",
+    "image_key": "marketplace"
+  },
+  "qa": {
+    "status": "production_validated",
+    "evidence": "docs/assets/marketplace-production-qa.md",
+    "gate": "automated source/package/registration/footprint validation; manual Phaser scale read remains open"
+  }
+}

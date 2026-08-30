@@ -1,0 +1,121 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "elementia/balance-harness-v2/prereg",
+  "title": "Balance sweep pre-registration",
+  "description": "Committed BEFORE a sweep runs. test/harness/bench/analyze.mjs refuses to emit a verdict for a familyId with no matching, schema-valid file here; it prints descriptives under an EXPLORATORY - NO VERDICT banner instead. Any metric or cell analysed that is not declared here is tagged EXPLORATORY per-row. See docs/plans/2026-08-14-balance-harness-v2-spec.md section 3.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "familyId", "question", "primaryMetric", "mde", "alpha", "power",
+    "sigmaSource", "nRequired", "arms", "mazes", "familySize",
+    "decisionRule", "whatWouldRefute", "registeredAt"
+  ],
+  "properties": {
+    "familyId": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Matches the familyId stamped into every run record. Also this file's basename."
+    },
+    "question": {
+      "type": "string",
+      "minLength": 20,
+      "description": "The single question this family answers, in one sentence."
+    },
+    "primaryMetric": {
+      "type": "string",
+      "description": "Exactly one. Every other metric analysed is secondary or exploratory. Naming two primaries is how a family silently doubles its own multiplicity."
+    },
+    "secondaryMetrics": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": [],
+      "description": "Declared, so they are corrected rather than mined. Counted in familySize."
+    },
+    "mde": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Minimum detectable effect, in units of primaryMetric, declared BEFORE the run. The smallest difference worth calling a gameplay change - not the effect you expect to find."
+    },
+    "alpha": { "type": "number", "exclusiveMinimum": 0, "maximum": 0.2, "default": 0.05 },
+    "power": { "type": "number", "minimum": 0.5, "exclusiveMaximum": 1, "default": 0.8 },
+    "sigmaSource": {
+      "type": "string",
+      "minLength": 10,
+      "description": "Where the sigma feeding nRequired came from - which corpus, which metric, which value. A sigma taken from an underpowered pilot is how Phase 8A under-sized itself twice."
+    },
+    "nRequired": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Per-arm cell count from stats.js requiredN(sigma, mde) at the declared alpha/power. The runner warns if the sweep is smaller."
+    },
+    "arms": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "type": "string" },
+      "description": "armId values. Must include the control arm."
+    },
+    "mazes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "enum": ["A", "B"] }
+    },
+    "familySize": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of hypothesis tests the Benjamini-Hochberg correction spans: normally (arms - 1) * mazes * (1 + secondaryMetrics). Declared here so the correction cannot be quietly narrowed after seeing the results."
+    },
+    "decisionRule": {
+      "type": "string",
+      "minLength": 40,
+      "description": "The full conjunction that constitutes a PASS. State every gate: BH-adjusted q, sign test agreement, split-half rho, hang-imputation survival, cross-policy agreement."
+    },
+    "whatWouldRefute": {
+      "type": "string",
+      "minLength": 20,
+      "description": "The observation that would make this a FAIL. A family whose every possible outcome reads as confirmation is not measuring anything - that is precisely how the 2026-07-25 baseline over-read itself."
+    },
+    "positiveControl": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional but strongly preferred: an arm carrying a deliberately injected balance change of known size, used to prove the instrument can recover an effect at the declared mde. Success criterion 3 in the spec. A SINGLE-arm control declares expectedEffect (a number, in primaryMetric units). A LADDER control spanning several doses has no single expected effect and declares expectedDirection instead: the ordering commitment IS the pre-registered prediction. Exactly one of the two is required — loadRegistration enforces that, because this validator has no anyOf.",
+      "properties": {
+        "armId": { "type": "string" },
+        "override": { "type": "string", "description": "Dotted BALANCE path, per scenarios.js resolveDial." },
+        "expectedEffect": { "type": "number" },
+        "expectedDirection": {
+          "type": "string",
+          "minLength": 10,
+          "description": "For ladder controls: the committed sign and shape of the response across the ladder, per maze."
+        }
+      },
+      "required": ["armId", "override"]
+    },
+    "regime": {
+      "type": "object",
+      "description": "The measurement regime the family was taken in. Declared here because a corpus is only interpretable against the protocol that produced it, and because a regime chosen AFTER seeing results is the same defect as a metric chosen after seeing results.",
+      "properties": {
+        "label": { "type": "string" },
+        "protocol": { "type": "object", "description": "Protocol overrides defining the regime, e.g. spendDown/maxWaves." },
+        "justification": { "type": "string", "minLength": 20, "description": "Why this regime, on evidence. Sensitivity to a known defence change, not the survival band." },
+        "scopeLimit": { "type": "string", "minLength": 20, "description": "What this regime structurally CANNOT measure. Declared up front, not discovered afterwards." }
+      },
+      "required": ["label", "protocol", "justification"]
+    },
+    "amendedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the registration was amended. Only legitimate BEFORE any analysis has been run against the family; amendmentNote must say so explicitly."
+    },
+    "amendmentNote": {
+      "type": "string",
+      "minLength": 40,
+      "description": "What changed, why, and — critically — whether any analysis had been performed when the amendment was made. An amendment made after seeing results is post-hoc and the family is exploratory."
+    },
+    "registeredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Must predate the earliest startedAt in the sweep. analyze.mjs warns if it does not - that is a post-registration and the verdict is exploratory."
+    },
+    "notes": { "type": "string" }
+  }
+}

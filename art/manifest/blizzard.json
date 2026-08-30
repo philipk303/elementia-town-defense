@@ -1,0 +1,45 @@
+{
+  "id": "blizzard",
+  "category": "fusion_structure",
+  "runtime_id": "BLIZZARD",
+  "display_alias": "Blizzard",
+  "footprint_tiles": {
+    "w": 2,
+    "h": 2,
+    "walkable": true
+  },
+  "states": [
+    "idle",
+    "warning",
+    "spike",
+    "shatter"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/calibration/{town-hall-source-v1,barricade-source-v2,watchtower-source-v1,farm-source-v1}.png@c10c210",
+    "source_directory": "art/source/blizzard",
+    "prompt_edit_lineage": [
+      "blizzard-concept-draft-v1.png",
+      "structure-source-v2-chroma.png",
+      "fx/*-source-v1-chroma.png"
+    ]
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/blizzard.png + client/public/art/blizzard_fx.png + client/public/art/blizzard_fx.json",
+    "frame_count": 3,
+    "contract": "one 64x64 structure image (registered as a static IMAGES entry) and three centered, untrimmed 64x64 target-effect frames (warning/spike/shatter) with 2px atlas gutters, registered as the blizzard_fx ATLASES entry"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "image_key": "blizzard",
+    "atlas_key": "blizzard_fx",
+    "gameplay_integrated": true,
+    "trigger": "GameScene structure loop, generalized from the Rock-Trap-only hardcode into STRUCTURE_TARGET_FX/STRUCTURE_TARGET_WARNING_FX tables: blizzard_fx_warning one-shot on the targetImpact phase 0->1 edge at (ds.tx, ds.ty); spike then shatter chained via _spawnAttackFx on every cycleSeq bump. Superseded an incompatible older state.fx-array wiring (GameScene case \"blizzard\" and audio.js FX_MAP.blizzard) from the source branch that assumed Blizzard still used the old default tower-fire path -- both were removed as dead code since this branch's Blizzard has been on the targetImpact family since the redesign."
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/blizzard-production-qa.md",
+    "gate": "manual Phaser playtest confirmation of the warning/spike/shatter sequence still open"
+  }
+}

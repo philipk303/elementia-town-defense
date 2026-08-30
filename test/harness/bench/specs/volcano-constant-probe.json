@@ -1,0 +1,50 @@
+{
+  "sweepId": "2026-08-27-volcano-constant-probe",
+  "familyId": "volcano-constant-probe",
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "seeds": 750,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "humanElement": "EARTH",
+    "defenceCap": null,
+    "defence": "WATCHTOWER",
+    "legacySiting": false,
+    "specialSiting": "funnel",
+    "freeSpecial": true
+  },
+  "arms": [
+    {
+      "armId": "control",
+      "balanceOverrides": {
+        "TOWER.MAGMA_TRAP.aoe": false,
+        "TOWER.MAGMA_TRAP.dps": 0,
+        "TOWER.MAGMA_TRAP.chargeThreshold": 3,
+        "TOWER.MAGMA_TRAP.eruption.cooldownMs": 6000
+      },
+      "protocol": {
+        "fuse": true,
+        "fuseWith": "FIRE",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "volcano-constant",
+      "protocol": {
+        "fuse": true,
+        "fuseWith": "FIRE",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "wt-partner",
+      "protocol": {
+        "fuse": false,
+        "partnerSpecial": "FIRE"
+      }
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "id": "enemy_goblin",
+  "category": "enemy",
+  "runtime_id": "goblin",
+  "display_alias": "Karasu-tengu light runner",
+  "footprint_tiles": null,
+  "origin": {
+    "value": "sprite-centered, transparent corners, 1px bottom margin",
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "static"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/enemies/goblin-source.png"
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/goblin.png",
+    "contract": "24x24 target",
+    "verified": "24x24 RGBA, all 4 corners alpha=0, 342 opaque pixels"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "image_key": "goblin",
+    "elite_policy": "reuse_base_scaled",
+    "gameplay_integrated": true
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/enemies-production-qa.md",
+    "gate": "the combined Goblin/Orc/Troll Phaser scale-spike gate (docs/plans/2026-07-24-art-asset-generation-pipeline.md's 'Required calibration evidence') has not been performed"
+  }
+}

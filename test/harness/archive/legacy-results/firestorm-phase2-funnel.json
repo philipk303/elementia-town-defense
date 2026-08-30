@@ -1,0 +1,135 @@
+{
+  "generatedAt": "2026-08-05T04:51:21.980Z",
+  "siting": "funnel",
+  "protocol": "isolated",
+  "mazes": {
+    "A": {
+      "FIRESTORM": {
+        "human": "FIRE",
+        "partner": "WIND",
+        "hangs": {
+          "control": 0,
+          "wave1": 0,
+          "wave4": 0
+        },
+        "combo": {
+          "wave1Built": 144,
+          "wave1Mismatch": 0,
+          "wave4Built": 144,
+          "wave4Mismatch": 0
+        },
+        "wave1": {
+          "effect": -0.23911111111111083,
+          "t": 1.5964460809511283,
+          "signs": {
+            "better": 28,
+            "worse": 42,
+            "tied": 74
+          },
+          "pairedT": -2.172872671330833,
+          "signTestP": 0.11960933562988493,
+          "signTestN": 70,
+          "statsDisagree": true,
+          "imputed": {
+            "effect": -0.23911111111111083,
+            "t": 1.5964460809511283
+          },
+          "splitHalf": {
+            "half1": -0.16666666666666696,
+            "half2": -0.3115555555555556,
+            "agree": true
+          }
+        },
+        "wave4": {
+          "effect": -0.03472222222222232,
+          "t": 0.2552225842243059,
+          "signs": {
+            "better": 33,
+            "worse": 32,
+            "tied": 79
+          },
+          "pairedT": -0.453289729451671,
+          "signTestP": 0.9999999999999999,
+          "signTestN": 65,
+          "statsDisagree": false,
+          "imputed": {
+            "effect": -0.03472222222222232,
+            "t": 0.2552225842243059
+          },
+          "splitHalf": {
+            "half1": -0.04166666666666696,
+            "half2": -0.02777777777777768,
+            "agree": true
+          }
+        },
+        "controlMean": 7.902777777777778,
+        "wave1Mean": 7.663666666666667,
+        "wave4Mean": 7.868055555555555
+      }
+    },
+    "B": {
+      "FIRESTORM": {
+        "human": "FIRE",
+        "partner": "WIND",
+        "hangs": {
+          "control": 0,
+          "wave1": 0,
+          "wave4": 0
+        },
+        "combo": {
+          "wave1Built": 144,
+          "wave1Mismatch": 0,
+          "wave4Built": 144,
+          "wave4Mismatch": 0
+        },
+        "wave1": {
+          "effect": 0.048611111111110716,
+          "t": 0.2415762464428372,
+          "signs": {
+            "better": 41,
+            "worse": 40,
+            "tied": 63
+          },
+          "pairedT": 0.39450166804266346,
+          "signTestP": 1,
+          "signTestN": 81,
+          "statsDisagree": false,
+          "imputed": {
+            "effect": 0.048611111111110716,
+            "t": 0.2415762464428372
+          },
+          "splitHalf": {
+            "half1": -0.013888888888889284,
+            "half2": 0.11111111111111072,
+            "agree": false
+          }
+        },
+        "wave4": {
+          "effect": -0.03472222222222232,
+          "t": 0.16466310825218375,
+          "signs": {
+            "better": 27,
+            "worse": 26,
+            "tied": 91
+          },
+          "pairedT": -0.33837690091522354,
+          "signTestP": 1,
+          "signTestN": 53,
+          "statsDisagree": false,
+          "imputed": {
+            "effect": -0.03472222222222232,
+            "t": 0.16466310825218375
+          },
+          "splitHalf": {
+            "half1": -0.09722222222222232,
+            "half2": 0.02777777777777768,
+            "agree": false
+          }
+        },
+        "controlMean": 6.819444444444445,
+        "wave1Mean": 6.868055555555555,
+        "wave4Mean": 6.784722222222222
+      }
+    }
+  }
+}

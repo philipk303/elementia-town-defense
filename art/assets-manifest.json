@@ -1,0 +1,2089 @@
+{
+  "schema_version": 1,
+  "authority": "production graphics ledger",
+  "status": "in_progress",
+  "source_policy": {
+    "primary_generator": "GPT Image",
+    "optional_concept_generator": "Nano Banana",
+    "provenance_status": "not_started"
+  },
+  "pipeline": {
+    "conversion_tool": "Pillow",
+    "hero_canvas_px": [
+      64,
+      64
+    ],
+    "filter": "nearest_neighbor",
+    "atlas_frame_pattern": "<state>_<direction>_<idx>.png",
+    "runtime_root": "client/public/art/"
+  },
+  "categories": {
+    "terrain": 1,
+    "hero_atlas": 4,
+    "hero_attack_effect": 4,
+    "hero_special_effect": 1,
+    "enemy": 3,
+    "generic_or_economy_structure": 6,
+    "elemental_structure": 4,
+    "fusion_structure": 6,
+    "projectile": 2,
+    "shared_presentation": 10
+  },
+  "assets": [
+    {
+      "id": "ground",
+      "category": "terrain",
+      "runtime_id": "GROUND",
+      "display_alias": "Map ground layer — outskirts-to-courtyard, dusk",
+      "footprint_tiles": {
+        "w": 40,
+        "h": 23,
+        "walkable": true
+      },
+      "origin": {
+        "value": [
+          0,
+          0
+        ],
+        "status": "fixed_top_left"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "static"
+      ],
+      "source": {
+        "status": "procedural_no_source",
+        "reference_path": "tools/art/ground_pipeline.py",
+        "source_directory": null,
+        "prompt_edit_lineage": [],
+        "frame_count": 1,
+        "note": "No generated source art. The layer is drawn deterministically from a seed, the same approach as tools/art/generate_rock_trap.py. The binding constraint is VALUE, not subject matter, and only a script can assert its own luminance ceiling."
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/ground.png",
+        "frame_count": 1,
+        "contract": "one 1280x736 RGB image, opaque, drawn at map resolution (TILES_W*TILE_SIZE by TILES_H*TILE_SIZE); north-to-south gradient from field green at the gates to packed earth at the Hall; every pixel below luminance 72 and whole-image mean within [30, 55]"
+      },
+      "design": {
+        "transition_strategy": "single_prerendered_image",
+        "strategy_rationale": "The brief is one continuous north-to-south blend. Discrete tiles band at every boundary at 32px and per-tile tint shifts colour without shifting texture, which is the actual difference between grass and packed earth. Decided with Philip 2026-08-14.",
+        "value_band": "dusk, mean luminance ~44",
+        "value_rationale": "Every pre-existing sprite was authored dark against the old near-black field — goblin 59, orc 67, troll 64, Hall 79, Farm 94 (mean luminance of opaque pixels). A daylight ground at luminance 90-160 sits brighter than the enemies and erases their silhouettes. The dusk band was chosen over re-authoring 41 assets. Decided with Philip 2026-08-14.",
+        "regions": [
+          "paddy (far north): flooded rice parcels and earth bunds, echoing the Farm",
+          "treeline (north): cedar and broadleaf copses, boulders, shrub clumps",
+          "scrub (midfield): thinning shrub and stone, the transition",
+          "courtyard (south): irregular flagstone court, lantern-lined approach, well, raked gravel, stacked goods, drifted blossom"
+        ],
+        "prop_value_rule": "Props read by being darker than the ground, never lighter. Inside a ~20-unit band a prop 4 units above the field is invisible while one 15 units below reads instantly. The lantern flame is the single deliberate warm accent.",
+        "hue_separation": "The outskirts are held as grass (green-minus-red gap +17) through the top fifth of the map, with the blend to packed earth compressed into the lower two thirds. This is a legibility device, not just a look: this dusk band has very little luminance range to spend, so separating the ground from the brown-ochre enemy and Earth palettes by HUE is what buys their readability. Against the outskirts the Earth ghost's hue separation is 22.7 vs 6.9 against the courtyard, and the Grinder's 25.9 vs 8.7. Requested by Philip 2026-08-14.",
+        "theme_colour_fallout": "Introducing a lit ground put six theme tokens under the WCAG 3:1 graphical-object threshold, all worst against the courtyard: EARTH 2.87, BARRICADE 2.96, WATCHTOWER 2.09, MAGMA_TRAP 2.71, MUDDY_BOG 2.46, GRINDER 2.46. All six were lifted along their own hue by a uniform RGB scale, so colour identity is unchanged; Muddy Bog additionally moved from olive-green to mud-brown (hue separation from the grass outskirts 10.5 -> 18.3) because it was colliding with the new meadow and brown reads truer for mud anyway. The gate marker literal in GameScene.create() was lifted with WATCHTOWER (2.15 -> 3.41 against the grass it sits on). Gated going forward by test/themeContrast.test.js.",
+        "worn_routes": "The three gate-to-Hall routes are drawn DARKER than the field. A smooth brighter stripe reads as a light beam regardless of shape or blur; damp trodden earth is genuinely darker, and it spends none of the contrast budget."
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": "ground",
+        "gameplay_integrated": true,
+        "note": "Registered in client/src/assets/manifest.js IMAGES. GameScene.js create() adds it at GROUND_DEPTH (-20), below the placement grid (-19) and structureAuraGfx (-1); guarded by this.textures.exists('ground') so the scene still renders the bare grid if the texture is absent. The grid's alpha drops to 0.22 when the ground is present."
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "test/groundLayer.test.js, test/themeContrast.test.js",
+        "gate": "automated: image dimensions asserted against shared/constants.js, luminance ceiling/mean/bright-pixel budget asserted against the sprites the ground must not overpower, registration/depth-order asserted in GameScene, and every element/structure/enemy theme token asserted at >=3:1 against all three ground bands. Measured legibility replaced visual review: sprite worst-case contrast is computed from the brightest 20% of each sprite's opaque pixels, which is stricter and cheaper than a screenshot read."
+      }
+    },
+    {
+      "id": "hero_earth_atlas",
+      "category": "hero_atlas",
+      "runtime_id": "chibi_earth",
+      "display_alias": "Earth hero",
+      "footprint_tiles": null,
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "baseline_y": 56
+        },
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [
+        "down",
+        "up",
+        "left",
+        "right"
+      ],
+      "states": [
+        "idle",
+        "run",
+        "attack",
+        "cast",
+        "hurt",
+        "death"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/calibration/earth-reference-v1.png",
+        "source_directory": "art/source/earth-production",
+        "prompt_edit_lineage": [
+          "art/source/calibration/earth-reference-v1.png",
+          "art/source/earth-production/prompt-recipe.md",
+          "art/source/earth-production"
+        ],
+        "frame_count": 80,
+        "recovered_from": "C:\\Users\\phili\\.codex\\worktrees\\4580\\Elementia-Town-Defense (2026-08-07), integrated via codex/earth-asset-pipeline-recovery -> codex/asset-wiring-prep"
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/chibi_earth.png + client/public/art/chibi_earth.json",
+        "frame_count": 80,
+        "scale": 0.0402,
+        "contract": "80 untrimmed 64x64 RGBA frames, shared baseline 56, 2px atlas gutters"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "atlas_key": "chibi_earth",
+        "gameplay_integrated": true
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/earth-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of idle/run/hurt/death/special readability still open (same open gate as Wind/Water)"
+      }
+    },
+    {
+      "id": "hero_fire_atlas",
+      "category": "hero_atlas",
+      "runtime_id": "chibi_fire",
+      "display_alias": "Fire hero",
+      "footprint_tiles": null,
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "baseline_y": 56
+        },
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [
+        "down",
+        "up",
+        "left",
+        "right"
+      ],
+      "states": [
+        "idle",
+        "run",
+        "attack",
+        "cast",
+        "hurt",
+        "death"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/calibration/fire.png",
+        "source_directory": "art/source/fire-production",
+        "prompt_edit_lineage": [
+          "art/source/fire-production/prompt-recipe.md",
+          "14 GPT Image right-facing source frames",
+          "20 non-destructive right-to-left horizontal mirrors"
+        ],
+        "frame_count": 80,
+        "calibration_sources_preserved": true
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/chibi_fire.png + client/public/art/chibi_fire.json",
+        "frame_count": 80,
+        "scale": 0.0402,
+        "contract": "80 untrimmed 64x64 RGBA frames, shared baseline 56, 2px atlas gutters"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "atlas_key": "chibi_fire",
+        "gameplay_integrated": true
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/fire-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of idle/run/hurt/death/special readability still open; Fire attack FX remain out of scope (no source produced)"
+      }
+    },
+    {
+      "id": "hero_water_atlas",
+      "category": "hero_atlas",
+      "runtime_id": "chibi_water",
+      "display_alias": "Water hero",
+      "footprint_tiles": null,
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "baseline_y": 56
+        },
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [
+        "down",
+        "up",
+        "left",
+        "right"
+      ],
+      "states": [
+        "idle",
+        "run",
+        "attack",
+        "cast",
+        "hurt",
+        "death"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/calibration/water-reference-v1.png",
+        "source_directories": [
+          "art/source/water-production"
+        ],
+        "raw_scale_drift_directory": "art/source/water-production-raw-scale-drift",
+        "normalization_metadata": "art/source/water-production/source-normalization.json",
+        "prompt_edit_lineage": [
+          "art/source/calibration/water-reference-v1.png",
+          "art/source/water-production/prompt-recipe.md",
+          "art/source/water-production"
+        ],
+        "frame_count": 80,
+        "raw_sources_preserved": true
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/chibi_water.png + client/public/art/chibi_water.json",
+        "frame_count": 80,
+        "scale": 0.0402,
+        "contract": "80 untrimmed 64x64 RGBA frames, shared baseline 56, 2px atlas gutters"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "atlas_key": "chibi_water",
+        "preview_page": "client/water-preview.html",
+        "gameplay_integrated": true
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/water-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of idle/run/hurt/death/special readability still open"
+      }
+    },
+    {
+      "id": "hero_wind_atlas",
+      "category": "hero_atlas",
+      "runtime_id": "chibi_wind",
+      "display_alias": "Wind hero",
+      "footprint_tiles": null,
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "baseline_y": 56
+        },
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [
+        "down",
+        "up",
+        "left",
+        "right"
+      ],
+      "states": [
+        "idle",
+        "run",
+        "attack",
+        "cast",
+        "hurt",
+        "death"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/calibration/wind.png",
+        "source_directories": [
+          "art/source/wind-vertical-slice",
+          "art/source/wind-production"
+        ],
+        "prompt_edit_lineage": [
+          "art/source/wind-vertical-slice",
+          "art/source/wind-production"
+        ],
+        "frame_count": 80,
+        "calibration_sources_preserved": true
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/chibi_wind.png + client/public/art/chibi_wind.json",
+        "frame_count": 80,
+        "scale": 0.0402,
+        "contract": "80 untrimmed 64x64 RGBA frames, shared baseline 56, 2px atlas gutters"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "atlas_key": "chibi_wind",
+        "preview_page": "client/wind-preview.html",
+        "gameplay_integrated": true
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/wind-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of idle/run/hurt/death/special readability still open"
+      }
+    },
+    {
+      "id": "earth_sweep_effect",
+      "category": "hero_attack_effect",
+      "runtime_id": "earth_basic_fx",
+      "display_alias": "Earth sweep",
+      "footprint_tiles": null,
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "status": "production_validated"
+      },
+      "orientation": "actor_facing",
+      "directions": [],
+      "states": [
+        "flight",
+        "impact",
+        "dissipation"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "source_directory": "art/source/earth-basic-fx",
+        "prompt_edit_lineage": [
+          "art/source/earth-basic-fx/prompt-recipe.md",
+          "art/source/earth-basic-fx"
+        ],
+        "frame_count": 10
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/earth_basic_fx.png + client/public/art/earth_basic_fx.json",
+        "frame_count": 10,
+        "contract": "10 centered, untrimmed 64x64 RGBA frames with 2px atlas gutters, same flight/impact/dissipation states as water_basic_fx/wind_basic_fx"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "atlas_key": "earth_basic_fx",
+        "gameplay_integrated": true,
+        "trigger": "GameScene._playAtk on EARTH_CONE atk events, flight->impact->dissipation one-shot at the reach point (same _spawnAttackFx path as Water)"
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": null,
+        "gate": "no dedicated QA doc was recovered for this asset (unlike earth-production-qa.md for the hero body); manual Phaser playtest confirmation of in-combat readability still open"
+      }
+    },
+    {
+      "id": "fire_saber_extension_effect",
+      "category": "hero_attack_effect",
+      "runtime_id": "fire_saber_extension",
+      "display_alias": "Fire saber extension",
+      "footprint_tiles": null,
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "status": "production_validated"
+      },
+      "orientation": "actor_facing",
+      "directions": [
+        "down",
+        "up",
+        "left",
+        "right"
+      ],
+      "states": [
+        "extend",
+        "impact"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/fire-basic-fx/fire-saber-extension-concept-v1.png",
+        "source_directory": "art/source/fire-basic-fx",
+        "prompt_edit_lineage": [
+          "art/source/fire-basic-fx/prompt-recipe.md",
+          "art/source/fire-basic-fx/fire-saber-extension-concept-v1.png",
+          "art/source/fire-basic-fx/fire-saber-impact-concept-v1.png"
+        ],
+        "source_count": 2
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/fire_saber_extension.png + client/public/art/fire_saber_extension.json",
+        "frame_count": 10,
+        "contract": "10 centered, untrimmed 64x64 RGBA frames with 2px atlas gutters; six extend plus four impact frames authored right and rotated for actor-facing down/up/left/right"
+      },
+      "runtime": {
+        "status": "integrated",
+        "atlas_key": "fire_saber_extension",
+        "image_key": null,
+        "gameplay_integrated": true,
+        "trigger": "FIRE_REACH basic attack (client/src/scenes/GameScene.js _playAtk)",
+        "substitute": false,
+        "note": "Registered in client/src/assets/manifest.js ATLASES; replaces the fireball substitute. GameScene._playAtk rotates the actor-facing-right atlas via _aimRotation() to the same 4-way facing CharacterAnimator quantizes to, covered by test/client/fireAimRotation.test.js."
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "docs/assets/fire-basic-fx-production-qa.md",
+        "gate": "pipeline and visual package validated; runtime registration and manual Phaser combat readability remain for target-branch integration"
+      }
+    },
+    {
+      "id": "water_palm_effect",
+      "category": "hero_attack_effect",
+      "runtime_id": "water_palm",
+      "display_alias": "Water palm",
+      "footprint_tiles": null,
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "status": "production_validated"
+      },
+      "orientation": "actor_facing",
+      "directions": [
+        "down",
+        "up",
+        "left",
+        "right"
+      ],
+      "states": [
+        "release",
+        "impact",
+        "dissipation"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/calibration/water-reference-v1.png",
+        "source_directory": "art/source/water-basic-fx",
+        "prompt_edit_lineage": [
+          "art/source/water-production/attack_down_01.png",
+          "art/source/water-basic-fx/prompt-recipe.md",
+          "art/source/water-basic-fx"
+        ],
+        "frame_count": 10
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/water_basic_fx.png + client/public/art/water_basic_fx.json",
+        "frame_count": 10,
+        "contract": "10 centered, untrimmed 64x64 RGBA frames with 2px atlas gutters"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "atlas_key": "water_basic_fx",
+        "hero_atlas_key": "chibi_water",
+        "preview_page": "client/water-preview.html",
+        "gameplay_integrated": true,
+        "trigger": "GameScene._playAtk on WATER_REACH atk events, flight->impact->dissipation one-shot at the reach point"
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/water-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of in-combat readability still open"
+      }
+    },
+    {
+      "id": "wind_basic_effect",
+      "category": "hero_attack_effect",
+      "runtime_id": "wind_fan_basic",
+      "display_alias": "Wind wind-up, release, fan and impact",
+      "footprint_tiles": null,
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "status": "production_validated"
+      },
+      "orientation": "actor_facing",
+      "directions": [
+        "down",
+        "up",
+        "left",
+        "right"
+      ],
+      "states": [
+        "windup",
+        "release",
+        "flight",
+        "impact",
+        "dissipation"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/calibration/wind.png",
+        "source_directory": "art/source/wind-basic-fx",
+        "prompt_edit_lineage": [
+          "art/source/wind-production/attack_*_00.png",
+          "art/source/wind-basic-fx"
+        ],
+        "frame_count": 10
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/wind_basic_fx.png + client/public/art/wind_basic_fx.json",
+        "frame_count": 10,
+        "contract": "10 centered, untrimmed 64x64 RGBA frames with 2px atlas gutters"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "atlas_key": "wind_basic_fx",
+        "hero_atlas_key": "chibi_wind",
+        "preview_page": "client/wind-preview.html",
+        "gameplay_integrated": true,
+        "trigger": "shares the FAN_BLADE projectile sprite (see wind_fan_blade entry) — no separate caster-side burst"
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/wind-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of in-combat readability still open"
+      }
+    },
+    {
+      "id": "wind_blast_special_effect",
+      "category": "hero_attack_effect",
+      "runtime_id": "wind_special_fx",
+      "display_alias": "Wind Blast",
+      "footprint_tiles": null,
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "status": "production_validated"
+      },
+      "orientation": "caster_centered",
+      "directions": [],
+      "states": [
+        "flight",
+        "impact",
+        "dissipation"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/calibration/wind.png",
+        "source_directory": "art/source/wind_special_fx/frames",
+        "prompt_edit_lineage": [
+          "docs/assets/water-wind-special-fx-prompt-recipe.md",
+          "art/source/wind_special_fx/sequence-sheet.png",
+          "art/source/wind_special_fx/frames"
+        ],
+        "frame_count": 10
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/wind_special_fx.png + client/public/art/wind_special_fx.json",
+        "frame_count": 10,
+        "contract": "10 centered, untrimmed 64x64 RGBA frames with 2px atlas gutters; flight_00-03, impact_00-02, dissipation_00-02"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "atlas_key": "wind_special_fx",
+        "gameplay_integrated": true,
+        "trigger": "GameScene._playAtk on Wind SPECIAL_CAST events, flight->impact->dissipation one-shot at the caster position"
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/wind-special-fx-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of in-combat readability remains open"
+      }
+    },
+    {
+      "id": "water_whirlpool_effect",
+      "category": "hero_special_effect",
+      "runtime_id": "water_special_fx",
+      "display_alias": "Whirlpool",
+      "footprint_tiles": null,
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "status": "production_validated"
+      },
+      "orientation": "caster_centered",
+      "directions": [],
+      "states": [
+        "flight",
+        "impact",
+        "dissipation"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "source_directory": "art/source/water_special_fx/frames",
+        "review_sheet": "art/source/water_special_fx/sequence-sheet.png",
+        "prompt_edit_lineage": [
+          "docs/assets/water-wind-special-fx-prompt-recipe.md",
+          "art/source/water_special_fx/frames"
+        ],
+        "frame_count": 10
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/water_special_fx.png + client/public/art/water_special_fx.json",
+        "frame_count": 10,
+        "contract": "10 centered, untrimmed 64x64 RGBA frames with 2px atlas gutters; flight_00-03, impact_00-02, dissipation_00-02"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "atlas_key": "water_special_fx",
+        "gameplay_integrated": true,
+        "trigger": "GameScene._playAtk on Water SPECIAL_CAST events, flight->impact->dissipation one-shot at the caster position"
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/water-special-fx-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of in-combat readability remains open"
+      }
+    },
+    {
+      "id": "enemy_goblin",
+      "category": "enemy",
+      "runtime_id": "goblin",
+      "display_alias": "Karasu-tengu light runner",
+      "footprint_tiles": null,
+      "origin": {
+        "value": "sprite-centered, transparent corners, 1px bottom margin",
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "static"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/enemies/goblin-source.png"
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/goblin.png",
+        "contract": "24x24 target",
+        "verified": "24x24 RGBA, all 4 corners alpha=0, 342 opaque pixels"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": "goblin",
+        "elite_policy": "reuse_base_scaled",
+        "gameplay_integrated": true
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/enemies-production-qa.md",
+        "gate": "the combined Goblin/Orc/Troll Phaser scale-spike gate (docs/plans/2026-07-24-art-asset-generation-pipeline.md's 'Required calibration evidence') has not been performed"
+      }
+    },
+    {
+      "id": "enemy_orc",
+      "category": "enemy",
+      "runtime_id": "orc",
+      "display_alias": "Oni ashigaru medium bruiser",
+      "footprint_tiles": null,
+      "origin": {
+        "value": "sprite-centered, transparent corners, 1px bottom margin",
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "static"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/enemies/orc-source.png"
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/orc.png",
+        "contract": "28x28 target",
+        "verified": "28x28 RGBA, all 4 corners alpha=0, 404 opaque pixels"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": "orc",
+        "elite_policy": "reuse_base_scaled",
+        "gameplay_integrated": true
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/enemies-production-qa.md",
+        "gate": "codex/orc-oni-art-integration produced a byte-slightly-different orc.png (1932b vs this package's 1944b) with its own asset-contract test, not used here per the designated primary recovery source; the combined scale-spike gate has not been performed"
+      }
+    },
+    {
+      "id": "enemy_troll",
+      "category": "enemy",
+      "runtime_id": "troll",
+      "display_alias": "Mountain-oni heavy",
+      "footprint_tiles": null,
+      "origin": {
+        "value": "sprite-centered, transparent corners, 1px bottom margin",
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "static"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/enemies/troll-source.png"
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/troll.png",
+        "contract": "32x32 target",
+        "verified": "32x32 RGBA, all 4 corners alpha=0, 460 opaque pixels"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": "troll",
+        "elite_policy": "reuse_base_scaled",
+        "gameplay_integrated": true
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/enemies-production-qa.md",
+        "gate": "the combined Goblin/Orc/Troll Phaser scale-spike gate has not been performed"
+      }
+    },
+    {
+      "id": "barricade",
+      "category": "generic_or_economy_structure",
+      "runtime_id": "BARRICADE",
+      "display_alias": "Barricade",
+      "footprint_tiles": {
+        "w": 1,
+        "h": 1,
+        "walkable": false
+      },
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "baseline_y": 30
+        },
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "static"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/calibration/barricade-source-v2.png",
+        "prompt_edit_lineage": [
+          "recovered from c10c210"
+        ]
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/barricade.png",
+        "contract": "32x32 RGBA static image"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": "barricade",
+        "gameplay_integrated": true,
+        "trigger": "static IMAGES entry, structureArtKey(\"BARRICADE\") resolves to it with no code change"
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/generic-structures-production-qa.md",
+        "gate": "manual Phaser playtest confirmation still open"
+      }
+    },
+    {
+      "id": "farm",
+      "category": "generic_or_economy_structure",
+      "runtime_id": "FARM",
+      "display_alias": "Farm",
+      "footprint_tiles": {
+        "w": 1,
+        "h": 1,
+        "walkable": false
+      },
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "baseline_y": 30
+        },
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "static"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/calibration/farm-source-v3.png",
+        "source_directory": "art/source/calibration",
+        "prompt_edit_lineage": [
+          "farm-source.png, farm-source-v1.png, farm-source-v2.png, and farm-source-v3.png visually compared 2026-08-13",
+          "farm-source-v3.png selected for its complete farmhouse-and-rice-paddy composition"
+        ],
+        "frame_count": 1
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/farm.png",
+        "frame_count": 1,
+        "contract": "32x32 RGBA static image; magenta calibration background removed; subject centered on baseline y=30"
+      },
+      "runtime": {
+        "status": "integrated",
+        "image_key": "farm",
+        "gameplay_integrated": true,
+        "note": "Registered in client/src/assets/manifest.js IMAGES; renders automatically through GameScene.js's generic placed-structure loop (entitySprite(structureArtKey(s.type), ...)), no code change needed beyond registration."
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "docs/assets/farm-production-qa.md",
+        "gate": "manual Phaser scale/readability confirmed 2026-08-13 (live browser preview, placed a Farm and confirmed real art rendered at its 1x1 footprint)"
+      }
+    },
+    {
+      "id": "hall",
+      "category": "generic_or_economy_structure",
+      "runtime_id": "HALL",
+      "display_alias": "Town Hall with visible princess",
+      "footprint_tiles": {
+        "w": 2,
+        "h": 2,
+        "walkable": false
+      },
+      "origin": {
+        "value": null,
+        "status": "calibration_pending"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "static"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/calibration/town-hall-source-v1.png",
+        "source_directory": "art/source/calibration",
+        "prompt_edit_lineage": [
+          "art/source/calibration/town-hall-source-v1.png"
+        ],
+        "frame_count": 1
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/hall.png",
+        "frame_count": 1,
+        "contract": "one centered 64x64 RGBA static image; magenta source background removed; nearest-neighbor downscale"
+      },
+      "runtime": {
+        "status": "integrated",
+        "image_key": "hall",
+        "gameplay_integrated": true,
+        "note": "Registered in client/src/assets/manifest.js IMAGES; GameScene.js's Hall footprint block uses entitySprite('hall', ...) with the old graphics-rect as its fallback."
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "docs/assets/hall-production-qa.md",
+        "gate": "automated source/package validation and visual package inspection; manual Phaser scale read confirmed 2026-08-13 (live browser preview, pagoda art renders correctly at its 2x2 footprint)"
+      }
+    },
+    {
+      "id": "marketplace",
+      "category": "generic_or_economy_structure",
+      "runtime_id": "MARKETPLACE",
+      "display_alias": "Marketplace market square",
+      "footprint_tiles": {
+        "w": 2,
+        "h": 2,
+        "walkable": false
+      },
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "static"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/marketplace/marketplace-source-draft-v2-2x2.png",
+        "source_directory": "art/source/marketplace",
+        "prompt_edit_lineage": [
+          "art/source/marketplace/marketplace-source-draft-v1.png",
+          "art/source/marketplace/marketplace-source-draft-v2-2x2.png"
+        ]
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/marketplace.png",
+        "contract": "64x64 RGBA, centered 2x2 blocking footprint; magenta source background removed; nearest-neighbor downscale"
+      },
+      "runtime": {
+        "status": "runtime-registered",
+        "image_key": "marketplace"
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "docs/assets/marketplace-production-qa.md",
+        "gate": "automated source/package/registration/footprint validation; manual Phaser scale read remains open"
+      }
+    },
+    {
+      "id": "snare_post",
+      "category": "generic_or_economy_structure",
+      "runtime_id": "SNARE_POST",
+      "display_alias": "Snare Post",
+      "footprint_tiles": {
+        "w": 1,
+        "h": 1,
+        "walkable": true
+      },
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "baseline_y": 60
+        },
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "idle",
+        "active"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/snare-post/snare-post-concept-v1.png",
+        "source_directory": "art/source/snare-post",
+        "prompt_edit_lineage": [
+          "GPT Image draft approved 2026-08-09",
+          "art/source/snare-post/prompt.md"
+        ],
+        "frame_count": 2
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/snare_post.png + client/public/art/snare_post.json",
+        "frame_count": 2,
+        "contract": "2 untrimmed 64x64 RGBA frames with 2px atlas gutter, frame names renamed from the delivered idle/pulse to the generic idle/active vocabulary StructureAnimator expects"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": "snare_post",
+        "gameplay_integrated": true,
+        "trigger": "StructureAnimator cycleSeq-bump ACTIVE window (static family, no phase machine): server/game/structureBehaviors/aura.js now bumps cycleSeq every cadenceMs pulse tick, which also (newly) fires the existing snare_pulse activation SFX"
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/snare-post-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of the idle/active pulse readability still open; the cycleSeq bump that drives it is a small gameplay-code change made alongside the art wiring, not separately balance-reviewed"
+      }
+    },
+    {
+      "id": "watchtower",
+      "category": "generic_or_economy_structure",
+      "runtime_id": "WATCHTOWER",
+      "display_alias": "Watchtower",
+      "footprint_tiles": {
+        "w": 1,
+        "h": 1,
+        "walkable": false
+      },
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "baseline_y": 60
+        },
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "idle",
+        "active"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/calibration/watchtower-source-v1.png",
+        "source_directory": "art/source/watchtower",
+        "prompt_edit_lineage": [
+          "recovered from c10c210"
+        ],
+        "frame_count": 2
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/watchtower.png + client/public/art/watchtower.json",
+        "frame_count": 2,
+        "contract": "2 untrimmed 48x64 RGBA frames with 2px atlas gutter, frame names renamed from the delivered idle/recoil to the generic idle/active vocabulary StructureAnimator expects"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": "watchtower",
+        "gameplay_integrated": true,
+        "trigger": "StructureAnimator cycleSeq-bump ACTIVE window (static family, no phase machine): server/game/towers.js default tower-fire branch (Watchtower is its only occupant) now bumps cycleSeq on every shot, which also (newly) fires the existing watchtower_fire activation SFX"
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/generic-structures-production-qa.md",
+        "gate": "manual Phaser playtest confirmation still open; the cycleSeq bump is a small gameplay-code change made alongside the art wiring, not separately balance-reviewed"
+      }
+    },
+    {
+      "id": "firepit",
+      "category": "elemental_structure",
+      "runtime_id": "FIRE_SPECIAL",
+      "display_alias": "Firepit",
+      "footprint_tiles": {
+        "w": 2,
+        "h": 1,
+        "walkable": true,
+        "rotates_to": {
+          "w": 1,
+          "h": 2
+        }
+      },
+      "origin": {
+        "value": null,
+        "status": "calibration_pending"
+      },
+      "orientation": "horizontal_or_vertical",
+      "directions": [
+        "horizontal",
+        "vertical"
+      ],
+      "states": [
+        "idle",
+        "active"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/firepit/approved.png"
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/fire_special.png + client/public/art/fire_special.json",
+        "frame_count": 8,
+        "contract": "8 untrimmed 96x64 cells with 2px atlas gutters; idle_00-03 loop, active_00-03 available for shared active playback"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "atlas_key": "fire_special",
+        "gameplay_integrated": true
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/firepit-production-qa.md",
+        "gate": "atlas has no telegraph/recovery/charged states (StructureAnimator's targetImpact/cycle families do not apply here — spec has neither targetImpact nor cycle/grind, so it renders idle/active only); manual Phaser playtest confirmation still open"
+      }
+    },
+    {
+      "id": "rock_trap",
+      "category": "elemental_structure",
+      "runtime_id": "EARTH_SPECIAL",
+      "display_alias": "Rock Trap",
+      "footprint_tiles": {
+        "w": 2,
+        "h": 1,
+        "walkable": true,
+        "rotates_to": {
+          "w": 1,
+          "h": 2
+        }
+      },
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "baseline_y": 28
+        },
+        "status": "production_validated"
+      },
+      "orientation": "horizontal_or_vertical",
+      "directions": [
+        "horizontal",
+        "vertical"
+      ],
+      "states": [
+        "idle",
+        "warning",
+        "fall",
+        "impact"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/rock-trap/earth_special_idle.png",
+        "source_directory": "art/source/rock-trap",
+        "prompt_edit_lineage": [
+          "art/source/rock-trap/earth_special_idle.png"
+        ],
+        "frame_count": 11
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/earth_special.png + client/public/art/earth_special.json; client/public/art/rock_trap_fx.png + client/public/art/rock_trap_fx.json",
+        "frame_count": 11,
+        "contract": "3 launcher frames plus 8 target-point warning, fall, and impact frames"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": "earth_special",
+        "effect_atlas_key": "rock_trap_fx",
+        "gameplay_integrated": true,
+        "trigger": "GameScene structure loop: rock_trap_fx_impact_down one-shot at (ds.tx, ds.ty) on every EARTH_SPECIAL cycleSeq bump"
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/rock-trap-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of target-point timing/readability still open; rock_trap_fx.json ships only a single impact_down state (8 frames), not the separate warning/fall/impact split this entry's description implies"
+      }
+    },
+    {
+      "id": "water_geyser",
+      "category": "elemental_structure",
+      "runtime_id": "WATER_SPECIAL",
+      "display_alias": "Water Geyser",
+      "footprint_tiles": {
+        "w": 2,
+        "h": 1,
+        "walkable": true,
+        "rotates_to": {
+          "w": 1,
+          "h": 2
+        }
+      },
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "baseline_y": 32
+        },
+        "status": "production_validated"
+      },
+      "orientation": "horizontal_or_vertical",
+      "directions": [
+        "horizontal",
+        "vertical"
+      ],
+      "states": [
+        "idle",
+        "compress",
+        "launch"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/water-geyser/water-geyser-concept-v2.png",
+        "source_directory": "art/source/water-geyser",
+        "prompt_edit_lineage": [
+          "art/source/water-geyser/water-geyser-concept-v2.png"
+        ],
+        "frame_count": 20
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/water_special.png + client/public/art/water_special.json",
+        "frame_count": 20,
+        "contract": "20 directional fixed-size RGBA frames"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": "water_special"
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "docs/assets/water-geyser-production-qa.md",
+        "gate": "activation readability"
+      }
+    },
+    {
+      "id": "wind_vortex",
+      "category": "elemental_structure",
+      "runtime_id": "WIND_SPECIAL",
+      "display_alias": "Wind Vortex",
+      "footprint_tiles": {
+        "w": 2,
+        "h": 1,
+        "walkable": true,
+        "rotates_to": {
+          "w": 1,
+          "h": 2
+        }
+      },
+      "origin": {
+        "value": null,
+        "status": "calibration_pending"
+      },
+      "orientation": "horizontal_or_vertical",
+      "directions": [
+        "N",
+        "E",
+        "S",
+        "W"
+      ],
+      "states": [
+        "idle",
+        "telegraph",
+        "active",
+        "charged",
+        "recovery"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "source_directory": "art/source/wind-vortex",
+        "prompt_edit_lineage": [
+          "art/source/wind-vortex/wind-vortex-concept-v1.png",
+          "art/source/wind-vortex/wind-vortex-gpt-image-chromakey.png",
+          "art/source/wind-vortex/frames"
+        ],
+        "frame_count": 20,
+        "note": "supersedes an earlier incomplete wind_special.png single-image attempt (codex/asset-wiring-prep commit 3aa7be2), corrected by commit 55c7f33"
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/wind_vortex.png + client/public/art/wind_vortex.json",
+        "frame_count": 20,
+        "contract": "20 untrimmed 64x64 RGBA directional frames (idle/telegraph/active/charged/recovery x N/E/S/W), 2px atlas gutters"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": "wind_special",
+        "gameplay_integrated": true,
+        "note": "manifest.js registers runtime key 'wind_special' (matches structureArtKey('WIND_SPECIAL')) pointing at the wind_vortex.png/.json files -- key and filename are intentionally different"
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/wind-vortex-production-qa.md",
+        "gate": "manual Phaser playtest confirmation still open"
+      }
+    },
+    {
+      "id": "blizzard",
+      "category": "fusion_structure",
+      "runtime_id": "BLIZZARD",
+      "display_alias": "Blizzard",
+      "footprint_tiles": {
+        "w": 2,
+        "h": 2,
+        "walkable": true
+      },
+      "states": [
+        "idle",
+        "warning",
+        "spike",
+        "shatter"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/calibration/{town-hall-source-v1,barricade-source-v2,watchtower-source-v1,farm-source-v1}.png@c10c210",
+        "source_directory": "art/source/blizzard",
+        "prompt_edit_lineage": [
+          "blizzard-concept-draft-v1.png",
+          "structure-source-v2-chroma.png",
+          "fx/*-source-v1-chroma.png"
+        ]
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/blizzard.png + client/public/art/blizzard_fx.png + client/public/art/blizzard_fx.json",
+        "frame_count": 3,
+        "contract": "one 64x64 structure image (registered as a static IMAGES entry) and three centered, untrimmed 64x64 target-effect frames (warning/spike/shatter) with 2px atlas gutters, registered as the blizzard_fx ATLASES entry"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": "blizzard",
+        "atlas_key": "blizzard_fx",
+        "gameplay_integrated": true,
+        "trigger": "GameScene structure loop, generalized from the Rock-Trap-only hardcode into STRUCTURE_TARGET_FX/STRUCTURE_TARGET_WARNING_FX tables: blizzard_fx_warning one-shot on the targetImpact phase 0->1 edge at (ds.tx, ds.ty); spike then shatter chained via _spawnAttackFx on every cycleSeq bump. Superseded an incompatible older state.fx-array wiring (GameScene case \"blizzard\" and audio.js FX_MAP.blizzard) from the source branch that assumed Blizzard still used the old default tower-fire path -- both were removed as dead code since this branch's Blizzard has been on the targetImpact family since the redesign."
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/blizzard-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of the warning/spike/shatter sequence still open"
+      }
+    },
+    {
+      "id": "firestorm",
+      "category": "fusion_structure",
+      "runtime_id": "FIRESTORM",
+      "display_alias": "Firestorm",
+      "footprint_tiles": {
+        "w": 2,
+        "h": 2,
+        "walkable": true
+      },
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "idle",
+        "telegraph",
+        "charged",
+        "active",
+        "recovery"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/firestorm/firestorm-concept-draft-v2.png",
+        "source_directory": "art/source/firestorm",
+        "prompt_edit_lineage": [
+          "art/source/firestorm/firestorm-concept-draft-v1.png",
+          "art/source/firestorm/firestorm-concept-draft-v2.png",
+          "art/source/firestorm/firestorm-runtime-chromakey.png",
+          "art/source/firestorm/frames"
+        ],
+        "frame_count": 10
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/firestorm_fx.png + client/public/art/firestorm_fx.json; client/public/art/firestorm.png (superseded static, kept as lineage evidence, not registered)",
+        "frame_count": 10,
+        "contract": "10 untrimmed 96x96 RGBA frames with 2px atlas gutters; idle, telegraph, charged, active, recovery, two frames each"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "atlas_key": "firestorm",
+        "gameplay_integrated": true,
+        "note": "manifest.js registers runtime key 'firestorm' (matches structureArtKey('FIRESTORM')) pointing at the firestorm_fx.png/.json files -- key and filename are intentionally different, same arrangement as wind_special -> wind_vortex. The earlier static firestorm.png is superseded by this atlas and deliberately left unregistered.",
+        "trigger": "StructureAnimator resolves structureArtKey('FIRESTORM') to the generic frame vocabulary. FIRESTORM is the 'volley' family, which has no phase machine: only idle and the cycleSeq-bump active window are reachable, so the packaged telegraph/charged/recovery frames ship but never play (structureBehaviors/volley.js already bumped cycleSeq per volley)."
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/firestorm-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of aggregate-effect readability remains open; the atlas's telegraph/charged/recovery frames are unreachable for this behavior family and would only become live if FIRESTORM gained a phase machine"
+      }
+    },
+    {
+      "id": "grinder",
+      "category": "fusion_structure",
+      "runtime_id": "GRINDER",
+      "display_alias": "Grinder",
+      "footprint_tiles": {
+        "w": 2,
+        "h": 2,
+        "walkable": true
+      },
+      "origin": {
+        "value": null,
+        "status": "calibration_pending"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "idle",
+        "telegraph",
+        "charged",
+        "active",
+        "recovery"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/grinder/grinder-concept-v1.png",
+        "source_directory": "art/source/grinder/frames",
+        "prompt_edit_lineage": [
+          "art/source/calibration/town-hall-source-v1.png",
+          "art/source/calibration/barricade-source-v2.png",
+          "art/source/calibration/watchtower-source-v1.png",
+          "art/source/calibration/farm-source-v1.png",
+          "art/source/grinder/grinder-concept-v1.png"
+        ],
+        "frame_count": 4
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/grinder.png + client/public/art/grinder.json",
+        "frame_count": 4,
+        "contract": "5 untrimmed 128x128 RGBA frames (charged duplicates telegraph) with 2px atlas gutters, frame names renamed from the delivered idle/intake/crush/release to the generic idle/telegraph/charged/active/recovery vocabulary StructureAnimator expects"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": "grinder",
+        "gameplay_integrated": true,
+        "trigger": "StructureAnimator (cycle family, spec.grind): telegraph/charged while INTAKE charge ramps, active for the cycleSeq-bump pulse window on CRUSH entry, recovery for the rest of the CRUSH phase tail"
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/grinder-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of the telegraph/active/recovery readability still open; frame vocabulary was renamed post-delivery to match the generic structure-state contract, not re-reviewed by the original art QA pass"
+      }
+    },
+    {
+      "id": "muddy_bog",
+      "category": "fusion_structure",
+      "runtime_id": "MUDDY_BOG",
+      "display_alias": "Muddy Bog",
+      "footprint_tiles": {
+        "w": 2,
+        "h": 2,
+        "walkable": true
+      },
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "baseline_y": 60
+        },
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "idle",
+        "active"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/muddy-bog/muddy-bog-draft-v2.png",
+        "source_directory": "art/source/muddy-bog",
+        "prompt_edit_lineage": [
+          "art/source/muddy-bog/muddy-bog-draft-v1.png",
+          "art/source/muddy-bog/muddy-bog-draft-v2.png",
+          "art/source/muddy-bog/prompt.md",
+          "art/source/muddy-bog/frames"
+        ],
+        "frame_count": 3
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/muddy_bog.png + client/public/art/muddy_bog.json",
+        "frame_count": 3,
+        "contract": "3 untrimmed 64x64 RGBA frames, centered x=0.5, baseline y=60; idle_0, active_0, active_1"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "atlas_key": "muddy_bog",
+        "gameplay_integrated": true,
+        "note": "delivered idle/entry/root frame names renamed to idle_0/active_0/active_1 -- a two-frame active clip, same pattern as Steam Vent -- because MUDDY_BOG's spec is `areaEntry`, which structureFamily() has no phase machine for (falls through to 'static', idle/active only, same as Firepit).",
+        "trigger": "server/game/structureBehaviors/areaEntry.js's tickAreaEntry bumps s.cycleSeq once per fresh crossing (a new root cycle starting, not the recurring damage pulse); areaEntry.js previously never bumped cycleSeq, the same gap Snare Post's aura.js and Watchtower's towers.js default branch had before their own fixes."
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/muddy-bog-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of entry/root readability remains open; the packaged idle_0.png/active_0.png/active_1.png names differ from the delivery branch's idle_0/entry_0/root_0 -- same pixels, renamed JSON keys, see this asset's runtime.note above and client/src/assets/manifest.js's muddy_bog comment"
+      }
+    },
+    {
+      "id": "steam_vent",
+      "category": "fusion_structure",
+      "runtime_id": "STEAM_VENT",
+      "display_alias": "Steam Vent",
+      "footprint_tiles": {
+        "w": 2,
+        "h": 2,
+        "walkable": true
+      },
+      "origin": {
+        "value": null,
+        "status": "calibration_pending"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "idle",
+        "active"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/steam-vent/steam-vent-concept-v4-overflowing-steam.png",
+        "source_directory": "art/source/steam-vent",
+        "prompt_edit_lineage": [
+          "steam-vent-concept-v1.png",
+          "steam-vent-concept-v2-reference-aligned.png",
+          "steam-vent-concept-v3-steam-gate.png",
+          "steam-vent-concept-v4-overflowing-steam.png"
+        ],
+        "frame_count": 3
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/steam_vent.png + client/public/art/steam_vent.json",
+        "frame_count": 3,
+        "contract": "3 untrimmed 128x128 RGBA frames with 2px atlas gutters, delivered as idle/pressure/confusion; pressure and confusion renamed to active_0/active_1 (a two-frame active clip) to match StructureAnimator vocabulary"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": "steam_vent",
+        "gameplay_integrated": true,
+        "trigger": "StructureAnimator cycleSeq-bump ACTIVE window (static family, no phase machine): server/game/structureBehaviors/confusion.js tickConfusion now bumps cycleSeq on every ready-and-occupied pulse (previously never bumped it, so this was dead like Snare Post/Watchtower before their fixes)"
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/steam-vent-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of the idle/active pulse readability still open; the cycleSeq bump is a small gameplay-code change made alongside the art wiring, not separately balance-reviewed"
+      }
+    },
+    {
+      "id": "volcano",
+      "category": "fusion_structure",
+      "runtime_id": "MAGMA_TRAP",
+      "display_alias": "Volcano",
+      "footprint_tiles": {
+        "w": 2,
+        "h": 2,
+        "walkable": true
+      },
+      "origin": {
+        "value": null,
+        "status": "calibration_pending"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "idle",
+        "charge",
+        "eruption"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/volcano/volcano-magma-trap-crater-draft-v3.png",
+        "source_directory": "art/source/volcano",
+        "prompt_edit_lineage": [
+          "art/source/calibration/{town-hall-source-v1,barricade-source-v2,watchtower-source-v1,farm-source-v1}.png@c10c210",
+          "art/source/volcano/volcano-magma-trap-crater-draft-v3.png",
+          "art/source/volcano/volcano-magma-trap-charge-source-v1.png",
+          "art/source/volcano/volcano-magma-trap-eruption-source-v1.png"
+        ],
+        "frame_count": 5
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/magma_trap.png + client/public/art/magma_trap.json",
+        "frame_count": 5,
+        "contract": "five centered, untrimmed 128x128 RGBA frames with 2px atlas gutters; idle, telegraph, charged, active, recovery"
+      },
+      "runtime": {
+        "status": "runtime-registered",
+        "atlas_key": "magma_trap",
+        "gameplay_integrated": true,
+        "trigger": "StructureAnimator resolves structureArtKey('MAGMA_TRAP') to the generic idle/telegraph/charged/active/recovery frame vocabulary. MAGMA_TRAP is the entryTrigger family, which already drove every one of those states before this registration (phase 1 = recovery, charge >= 0.65 = charged, charge > 0 = telegraph) and already bumped cycleSeq on eruption (structureBehaviors/entryTrigger.js), so no server or renderer change was needed."
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "docs/assets/volcano-production-qa.md",
+        "gate": "target-branch runtime integration plus manual Phaser footprint and payoff readability confirmation"
+      }
+    },
+    {
+      "id": "fireball",
+      "category": "projectile",
+      "runtime_id": "fireball",
+      "display_alias": "Fireball",
+      "footprint_tiles": null,
+      "origin": {
+        "value": "sprite-centered, 22x18 opaque limit on a 24x24 canvas",
+        "status": "production_validated"
+      },
+      "orientation": "velocity",
+      "directions": [
+        "velocity_aligned"
+      ],
+      "states": [
+        "static"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/fireball-gpt-image-chromakey.png"
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/fireball.png",
+        "contract": "static 24x24 untrimmed RGBA, no atlas JSON (single-frame projectile)",
+        "verified": "24x24 RGBA, all 4 corners alpha=0, 185 opaque pixels, matches docs/art/fireball-asset-record.md's SHA-256 a7f45f48f...c4add"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": "fireball",
+        "gameplay_integrated": true,
+        "trigger": "GameScene projectile render loop: FIREBALL type renders the static fireball sprite instead of the orange-circle fallback; no flight/impact animation (single static frame, per its asset record)"
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/art/fireball-asset-record.md",
+        "gate": "manual Phaser playtest confirmation still open"
+      }
+    },
+    {
+      "id": "wind_fan_blade",
+      "category": "projectile",
+      "runtime_id": "wind_fan_blade",
+      "display_alias": "Wind fan blade",
+      "footprint_tiles": null,
+      "origin": {
+        "value": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "status": "production_validated"
+      },
+      "orientation": "velocity",
+      "directions": [
+        "velocity_aligned"
+      ],
+      "states": [
+        "flight",
+        "impact",
+        "dissipation"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/calibration/wind.png",
+        "source_directory": "art/source/wind-basic-fx",
+        "prompt_edit_lineage": [
+          "art/source/wind-basic-fx"
+        ],
+        "frame_count": 10,
+        "shared_with": "wind_basic_effect"
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/wind_basic_fx.png + client/public/art/wind_basic_fx.json",
+        "frame_count": 10,
+        "contract": "10 centered, untrimmed 64x64 RGBA frames with 2px atlas gutters",
+        "shared_with": "wind_basic_effect"
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "atlas_key": "wind_basic_fx",
+        "preview_page": "client/wind-preview.html",
+        "gameplay_integrated": true,
+        "trigger": "GameScene projectile render loop: FAN_BLADE plays wind_basic_fx_flight while live, wind_basic_fx_impact then wind_basic_fx_dissipation on removal"
+      },
+      "qa": {
+        "status": "gameplay_registered",
+        "evidence": "docs/assets/wind-production-qa.md",
+        "gate": "manual Phaser playtest confirmation of in-combat readability still open"
+      }
+    },
+    {
+      "id": "charge_indicator",
+      "category": "shared_presentation",
+      "runtime_id": "charge_indicator",
+      "display_alias": "Charge indicator",
+      "footprint_tiles": null,
+      "origin": {
+        "value": "screen-space, bottom-center (local player only)",
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "uncharged",
+        "charging",
+        "charged"
+      ],
+      "source": {
+        "status": "planned",
+        "reference_path": null,
+        "prompt_edit_lineage": null
+      },
+      "pillow": {
+        "status": "not_applicable",
+        "output": null,
+        "contract": "procedural client geometry"
+      },
+      "runtime": {
+        "status": "integrated",
+        "image_key": null,
+        "gameplay_integrated": true,
+        "note": "Shares the cooldown_indicator implementation (client/src/render/abilityBar.js). This fragment's three states map onto slotState(): 'uncharged' = cooling, 'charging' = the final 25% of the cooldown (accented warm so a cast can be timed without reading numbers), 'charged' = ready. Fill decays by local frame time between the 20 Hz emits so it moves at display rate."
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "test/client/abilityBar.test.js -- slotState/slotFill boundary tests cover all three states and the charge-window edge",
+        "gate": "state timing readability -- OPEN: same as cooldown_indicator, the live in-browser read has NOT been performed"
+      }
+    },
+    {
+      "id": "cooldown_indicator",
+      "category": "shared_presentation",
+      "runtime_id": "cooldown_indicator",
+      "display_alias": "Cooldown indicator",
+      "footprint_tiles": null,
+      "origin": {
+        "value": "screen-space, bottom-center (local player only)",
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "ready",
+        "cooling"
+      ],
+      "source": {
+        "status": "planned",
+        "reference_path": null,
+        "prompt_edit_lineage": null
+      },
+      "pillow": {
+        "status": "not_applicable",
+        "output": null,
+        "contract": "procedural client geometry"
+      },
+      "runtime": {
+        "status": "integrated",
+        "image_key": null,
+        "gameplay_integrated": true,
+        "note": "client/src/render/abilityBar.js (pure state/geometry) + GameScene.js _drawAbilityBar (Phaser draw). Three slots -- basic/Q/E. Required a wire change: remaining-cooldown ms appended to the player tuple as fields 7/8/9 (server/net/encode.js), since both Q and E emit the same SPECIAL_CAST atk kind and are therefore indistinguishable to client-side prediction."
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "test/client/abilityBar.test.js (11 tests), test/net/encode.test.js (cooldown ABI round-trip + legacy-tuple compatibility)",
+        "gate": "state timing readability -- OPEN: automated + build gates pass, but the live in-browser read has NOT been performed (the preview pane was not displayed, so Phaser's rAF loop never stepped)"
+      }
+    },
+    {
+      "id": "direction_indicator",
+      "category": "shared_presentation",
+      "runtime_id": "direction_indicator",
+      "display_alias": "Direction indicator",
+      "footprint_tiles": null,
+      "origin": {
+        "value": "owner-centered",
+        "status": "production_validated"
+      },
+      "orientation": "directional",
+      "directions": [
+        "horizontal",
+        "vertical"
+      ],
+      "states": [
+        "preview",
+        "confirmed"
+      ],
+      "source": {
+        "status": "planned",
+        "reference_path": null,
+        "prompt_edit_lineage": null
+      },
+      "pillow": {
+        "status": "not_applicable",
+        "output": null,
+        "contract": "procedural client geometry"
+      },
+      "runtime": {
+        "status": "integrated",
+        "image_key": null,
+        "gameplay_integrated": true,
+        "note": "'preview' state is ghostGfx's arrow during placement (R rotates orientation); 'confirmed' state is structureDirGfx, a shared graphics object redrawn per frame for every already-placed directional structure (Water Geyser / Wind Vortex). No art asset -- procedural, as speced."
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "GameScene.js structureDirGfx (search 'Locked output-direction arrows')",
+        "gate": "direction alignment -- confirmed by observation on placed Water Geyser/Wind Vortex"
+      }
+    },
+    {
+      "id": "elemental_particle_library",
+      "category": "shared_presentation",
+      "runtime_id": "elemental_particles",
+      "display_alias": "Reusable elemental particles",
+      "footprint_tiles": null,
+      "origin": {
+        "value": "effect-centered",
+        "status": "planned"
+      },
+      "orientation": "effect_defined",
+      "directions": [
+        "directional_when_required"
+      ],
+      "states": [
+        "fire",
+        "steam",
+        "wind",
+        "water",
+        "snow",
+        "smoke",
+        "debris"
+      ],
+      "source": {
+        "status": "production_source_complete",
+        "reference_path": "art/source/elemental-particles/",
+        "source_directory": "art/source/elemental-particles/",
+        "prompt_edit_lineage": "art/source/elemental-particles/prompt-recipe.md"
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/elemental_particles.png + client/public/art/elemental_particles.json",
+        "frame_count": 7,
+        "contract": "seven centered untrimmed 64x64 RGBA state frames, 2px transparent atlas gutters; pooled runtime particles"
+      },
+      "runtime": {
+        "status": "planned",
+        "image_key": null
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "docs/assets/elemental-particles-production-qa.md",
+        "gate": "worst-case effect performance"
+      }
+    },
+    {
+      "id": "footprint_indicator",
+      "category": "shared_presentation",
+      "runtime_id": "footprint_indicator",
+      "display_alias": "Footprint indicator",
+      "footprint_tiles": "dynamic",
+      "origin": {
+        "value": "tile-aligned",
+        "status": "production_validated"
+      },
+      "orientation": "matches_structure",
+      "directions": [
+        "horizontal",
+        "vertical"
+      ],
+      "states": [
+        "preview",
+        "selected"
+      ],
+      "source": {
+        "status": "planned",
+        "reference_path": null,
+        "prompt_edit_lineage": null
+      },
+      "pillow": {
+        "status": "not_applicable",
+        "output": null,
+        "contract": "procedural client geometry"
+      },
+      "runtime": {
+        "status": "integrated",
+        "image_key": null,
+        "gameplay_integrated": true,
+        "note": "Same ghostGfx system as placement_indicator (build hover) plus structureDirGfx-adjacent footprint outline draws for already-placed structures. No art asset -- procedural, as speced."
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "GameScene.js _updateGhost (search 'Placement ghost')",
+        "gate": "footprint alignment -- confirmed by observation, live in every build phase"
+      }
+    },
+    {
+      "id": "fusion_indicator",
+      "category": "shared_presentation",
+      "runtime_id": "fusion_indicator",
+      "display_alias": "Fusion indicator",
+      "footprint_tiles": null,
+      "origin": {
+        "value": "pair-centered",
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "proposed",
+        "accepted",
+        "rejected_or_expired",
+        "created",
+        "destroyed"
+      ],
+      "source": {
+        "status": "planned",
+        "reference_path": null,
+        "prompt_edit_lineage": null
+      },
+      "pillow": {
+        "status": "not_applicable",
+        "output": null,
+        "contract": "procedural client geometry with elemental variants"
+      },
+      "runtime": {
+        "status": "integrated",
+        "image_key": null,
+        "gameplay_integrated": true,
+        "note": "Full 5-state lifecycle driven by server events, not procedural geometry: FUSION_PROPOSED (proposed), FUSION_UPDATED (accepted, per-consent tracking), FUSION_RESOLVED (created/rejected_or_expired, via p.outcome), and structure-diff cleanup covers destroyed. Text HUD (fusionHud/fusionMessage), not geometric -- no elemental color variants were built, unlike the fragment's original 'with elemental variants' contract."
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "GameScene.js _wireEvents FUSION_* handlers (search 'FUSION_PROPOSED')",
+        "gate": "consent and lifecycle readability -- text-based, not geometric; elemental color variants remain a gap if that's still wanted"
+      }
+    },
+    {
+      "id": "placement_indicator",
+      "category": "shared_presentation",
+      "runtime_id": "placement_indicator",
+      "display_alias": "Placement indicator",
+      "footprint_tiles": "dynamic",
+      "origin": {
+        "value": "tile-aligned",
+        "status": "production_validated"
+      },
+      "orientation": "matches_placement",
+      "directions": [
+        "horizontal",
+        "vertical"
+      ],
+      "states": [
+        "valid",
+        "invalid",
+        "preview"
+      ],
+      "source": {
+        "status": "planned",
+        "reference_path": null,
+        "prompt_edit_lineage": null
+      },
+      "pillow": {
+        "status": "not_applicable",
+        "output": null,
+        "contract": "procedural client geometry"
+      },
+      "runtime": {
+        "status": "integrated",
+        "image_key": null,
+        "gameplay_integrated": true,
+        "note": "GameScene.js's ghostGfx graphics object (Task 9): valid/invalid draws with fill color keyed off placement legality, preview is the hover-tracked footprint outline. No art asset -- procedural, as speced."
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "GameScene.js _updateGhost (search 'Placement ghost')",
+        "gate": "tile and boundary alignment -- confirmed by observation, live in every build phase"
+      }
+    },
+    {
+      "id": "range_indicator",
+      "category": "shared_presentation",
+      "runtime_id": "range_indicator",
+      "display_alias": "Range indicator",
+      "footprint_tiles": null,
+      "origin": {
+        "value": "owner-centered",
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "preview",
+        "selected"
+      ],
+      "source": {
+        "status": "planned",
+        "reference_path": null,
+        "prompt_edit_lineage": null
+      },
+      "pillow": {
+        "status": "not_applicable",
+        "output": null,
+        "contract": "procedural client geometry"
+      },
+      "runtime": {
+        "status": "integrated",
+        "image_key": null,
+        "gameplay_integrated": true,
+        "note": "'preview' state is ghostGfx's true-rangePx circle drawn behind the footprint during placement; 'selected' state is structureAuraGfx, a live hitbox aura redrawn per frame for placed range/area structures. No art asset -- procedural, as speced."
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "GameScene.js structureAuraGfx (search 'Live hitbox aura')",
+        "gate": "authoritative range alignment -- both draws read the same rangePx/radiusPx the server uses"
+      }
+    },
+    {
+      "id": "status_indicator",
+      "category": "shared_presentation",
+      "runtime_id": "status_indicator",
+      "display_alias": "Status indicator",
+      "footprint_tiles": null,
+      "origin": {
+        "value": "entity-centered",
+        "status": "production_validated"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "root",
+        "freeze",
+        "burn",
+        "confusion",
+        "downed",
+        "reviving",
+        "dead"
+      ],
+      "source": {
+        "status": "planned",
+        "reference_path": null,
+        "prompt_edit_lineage": null
+      },
+      "pillow": {
+        "status": "not_applicable",
+        "output": null,
+        "contract": "procedural client geometry"
+      },
+      "runtime": {
+        "status": "integrated",
+        "image_key": null,
+        "gameplay_integrated": true,
+        "note": "GameScene.js tints/strokes entity dots per status flag: root/freeze (blue), confusion (violet), burn (orange, added 2026-08-13 -- FLAG.BURN existed server-side but had no client visual until this pass), downed/reviving (player dot alpha+stroke), dead (dot hidden + overlay text). No art asset -- procedural, as speced."
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "GameScene.js enemy/player render loops (search 'FLAG.BURN', 'PLAYER_FLAG.DOWNED')",
+        "gate": "status readability -- confirmed by observation; each status has a visually distinct color"
+      }
+    },
+    {
+      "id": "telegraph_library",
+      "category": "shared_presentation",
+      "runtime_id": "telegraph_library",
+      "display_alias": "Reusable telegraphs",
+      "footprint_tiles": "dynamic",
+      "origin": {
+        "value": "effect-centered",
+        "status": "production_validated"
+      },
+      "orientation": "matches_effect",
+      "directions": [
+        "horizontal",
+        "vertical",
+        "radial"
+      ],
+      "states": [
+        "warning",
+        "locked",
+        "impact"
+      ],
+      "source": {
+        "status": "planned",
+        "reference_path": null,
+        "prompt_edit_lineage": null
+      },
+      "pillow": {
+        "status": "not_applicable",
+        "output": null,
+        "contract": "procedural client geometry"
+      },
+      "runtime": {
+        "status": "integrated",
+        "image_key": null,
+        "gameplay_integrated": true,
+        "note": "'warning' state is _drawArcTelegraph (Earth cone/Water reach/Fire reach) and _drawWindTelegraph (Wind wind-up); 'locked'/'impact' states are the per-structure STRUCTURE_TARGET_WARNING_FX/STRUCTURE_TARGET_FX tables (Blizzard's target-point burst, Rock Trap's impact). No art asset -- procedural, as speced."
+      },
+      "qa": {
+        "status": "production_validated",
+        "evidence": "GameScene.js _drawArcTelegraph/_drawWindTelegraph and STRUCTURE_TARGET_FX tables",
+        "gate": "telegraph readability and boundary alignment -- shapes are drawn at the class/structure's true range/angle, not stylized"
+      }
+    }
+  ]
+}

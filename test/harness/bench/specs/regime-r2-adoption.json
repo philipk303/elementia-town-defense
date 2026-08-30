@@ -1,0 +1,18 @@
+{
+  "sweepId": "2026-08-15-regime-r2-adoption",
+  "familyId": "regime-r2-adoption",
+  "mazes": ["A", "B"],
+  "seeds": 1500,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "humanElement": "FIRE",
+    "fuse": false
+  },
+  "arms": [
+    { "armId": "control" },
+    { "armId": "wt-x0.67", "balanceOverrides": { "TOWER.WATCHTOWER.damage": 2 } },
+    { "armId": "wt-x1.33", "balanceOverrides": { "TOWER.WATCHTOWER.damage": 4 } },
+    { "armId": "wt-x2", "balanceOverrides": { "TOWER.WATCHTOWER.damage": 6 } }
+  ]
+}

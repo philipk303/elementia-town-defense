@@ -1,0 +1,37 @@
+{
+  "id": "enemy_orc",
+  "category": "enemy",
+  "runtime_id": "orc",
+  "display_alias": "Oni ashigaru medium bruiser",
+  "footprint_tiles": null,
+  "origin": {
+    "value": "sprite-centered, transparent corners, 1px bottom margin",
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "static"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/enemies/orc-source.png"
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/orc.png",
+    "contract": "28x28 target",
+    "verified": "28x28 RGBA, all 4 corners alpha=0, 404 opaque pixels"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "image_key": "orc",
+    "elite_policy": "reuse_base_scaled",
+    "gameplay_integrated": true
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/enemies-production-qa.md",
+    "gate": "codex/orc-oni-art-integration produced a byte-slightly-different orc.png (1932b vs this package's 1944b) with its own asset-contract test, not used here per the designated primary recovery source; the combined scale-spike gate has not been performed"
+  }
+}

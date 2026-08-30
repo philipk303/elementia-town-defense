@@ -1,0 +1,54 @@
+{
+  "id": "muddy_bog",
+  "category": "fusion_structure",
+  "runtime_id": "MUDDY_BOG",
+  "display_alias": "Muddy Bog",
+  "footprint_tiles": {
+    "w": 2,
+    "h": 2,
+    "walkable": true
+  },
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "baseline_y": 60
+    },
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "idle",
+    "active"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/muddy-bog/muddy-bog-draft-v2.png",
+    "source_directory": "art/source/muddy-bog",
+    "prompt_edit_lineage": [
+      "art/source/muddy-bog/muddy-bog-draft-v1.png",
+      "art/source/muddy-bog/muddy-bog-draft-v2.png",
+      "art/source/muddy-bog/prompt.md",
+      "art/source/muddy-bog/frames"
+    ],
+    "frame_count": 3
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/muddy_bog.png + client/public/art/muddy_bog.json",
+    "frame_count": 3,
+    "contract": "3 untrimmed 64x64 RGBA frames, centered x=0.5, baseline y=60; idle_0, active_0, active_1"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "atlas_key": "muddy_bog",
+    "gameplay_integrated": true,
+    "note": "delivered idle/entry/root frame names renamed to idle_0/active_0/active_1 -- a two-frame active clip, same pattern as Steam Vent -- because MUDDY_BOG's spec is `areaEntry`, which structureFamily() has no phase machine for (falls through to 'static', idle/active only, same as Firepit).",
+    "trigger": "server/game/structureBehaviors/areaEntry.js's tickAreaEntry bumps s.cycleSeq once per fresh crossing (a new root cycle starting, not the recurring damage pulse); areaEntry.js previously never bumped cycleSeq, the same gap Snare Post's aura.js and Watchtower's towers.js default branch had before their own fixes."
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/muddy-bog-production-qa.md",
+    "gate": "manual Phaser playtest confirmation of entry/root readability remains open; the packaged idle_0.png/active_0.png/active_1.png names differ from the delivery branch's idle_0/entry_0/root_0 -- same pixels, renamed JSON keys, see this asset's runtime.note above and client/src/assets/manifest.js's muddy_bog comment"
+  }
+}

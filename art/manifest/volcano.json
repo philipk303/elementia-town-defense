@@ -1,0 +1,51 @@
+{
+  "id": "volcano",
+  "category": "fusion_structure",
+  "runtime_id": "MAGMA_TRAP",
+  "display_alias": "Volcano",
+  "footprint_tiles": {
+    "w": 2,
+    "h": 2,
+    "walkable": true
+  },
+  "origin": {
+    "value": null,
+    "status": "calibration_pending"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "idle",
+    "charge",
+    "eruption"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/volcano/volcano-magma-trap-crater-draft-v3.png",
+    "source_directory": "art/source/volcano",
+    "prompt_edit_lineage": [
+      "art/source/calibration/{town-hall-source-v1,barricade-source-v2,watchtower-source-v1,farm-source-v1}.png@c10c210",
+      "art/source/volcano/volcano-magma-trap-crater-draft-v3.png",
+      "art/source/volcano/volcano-magma-trap-charge-source-v1.png",
+      "art/source/volcano/volcano-magma-trap-eruption-source-v1.png"
+    ],
+    "frame_count": 5
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/magma_trap.png + client/public/art/magma_trap.json",
+    "frame_count": 5,
+    "contract": "five centered, untrimmed 128x128 RGBA frames with 2px atlas gutters; idle, telegraph, charged, active, recovery"
+  },
+  "runtime": {
+    "status": "runtime-registered",
+    "atlas_key": "magma_trap",
+    "gameplay_integrated": true,
+    "trigger": "StructureAnimator resolves structureArtKey('MAGMA_TRAP') to the generic idle/telegraph/charged/active/recovery frame vocabulary. MAGMA_TRAP is the entryTrigger family, which already drove every one of those states before this registration (phase 1 = recovery, charge >= 0.65 = charged, charge > 0 = telegraph) and already bumped cycleSeq on eruption (structureBehaviors/entryTrigger.js), so no server or renderer change was needed."
+  },
+  "qa": {
+    "status": "production_validated",
+    "evidence": "docs/assets/volcano-production-qa.md",
+    "gate": "target-branch runtime integration plus manual Phaser footprint and payoff readability confirmation"
+  }
+}

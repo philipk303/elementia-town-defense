@@ -1,0 +1,26 @@
+{
+  "sweepId": "2026-08-16-steam-vent-scald-dial",
+  "familyId": "steam-vent-scald-dial",
+  "mazes": ["A", "B"],
+  "seeds": 1500,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "humanElement": "FIRE"
+  },
+  "arms": [
+    {
+      "armId": "control",
+      "protocol": { "fuse": false, "partnerSpecial": "WATER" }
+    },
+    {
+      "armId": "scald-4",
+      "protocol": { "fuse": true, "fuseWith": "WATER" },
+      "balanceOverrides": { "TOWER.STEAM_VENT.pulse.damage": 4 }
+    },
+    {
+      "armId": "scald-8",
+      "protocol": { "fuse": true, "fuseWith": "WATER" }
+    }
+  ]
+}

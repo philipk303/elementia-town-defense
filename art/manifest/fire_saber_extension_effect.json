@@ -1,0 +1,56 @@
+{
+  "id": "fire_saber_extension_effect",
+  "category": "hero_attack_effect",
+  "runtime_id": "fire_saber_extension",
+  "display_alias": "Fire saber extension",
+  "footprint_tiles": null,
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "status": "production_validated"
+  },
+  "orientation": "actor_facing",
+  "directions": [
+    "down",
+    "up",
+    "left",
+    "right"
+  ],
+  "states": [
+    "extend",
+    "impact"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/fire-basic-fx/fire-saber-extension-concept-v1.png",
+    "source_directory": "art/source/fire-basic-fx",
+    "prompt_edit_lineage": [
+      "art/source/fire-basic-fx/prompt-recipe.md",
+      "art/source/fire-basic-fx/fire-saber-extension-concept-v1.png",
+      "art/source/fire-basic-fx/fire-saber-impact-concept-v1.png"
+    ],
+    "source_count": 2
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/fire_saber_extension.png + client/public/art/fire_saber_extension.json",
+    "frame_count": 10,
+    "contract": "10 centered, untrimmed 64x64 RGBA frames with 2px atlas gutters; six extend plus four impact frames authored right and rotated for actor-facing down/up/left/right"
+  },
+  "runtime": {
+    "status": "integrated",
+    "atlas_key": "fire_saber_extension",
+    "image_key": null,
+    "gameplay_integrated": true,
+    "trigger": "FIRE_REACH basic attack (client/src/scenes/GameScene.js _playAtk)",
+    "substitute": false,
+    "note": "Registered in client/src/assets/manifest.js ATLASES; replaces the fireball substitute. GameScene._playAtk rotates the actor-facing-right atlas via _aimRotation() to the same 4-way facing CharacterAnimator quantizes to, covered by test/client/fireAimRotation.test.js."
+  },
+  "qa": {
+    "status": "production_validated",
+    "evidence": "docs/assets/fire-basic-fx-production-qa.md",
+    "gate": "pipeline and visual package validated; runtime registration and manual Phaser combat readability remain for target-branch integration"
+  }
+}

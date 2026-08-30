@@ -1,0 +1,247 @@
+{
+  "canvas_size": 64,
+  "baseline_y": 56,
+  "scale": 0.04890829694323144,
+  "frames": [
+    {
+      "source": "art\\source\\wind-vertical-slice\\attack_down_00.png",
+      "output": "client\\public\\art\\calibration\\wind\\frames\\attack_down_00.png",
+      "scale": 0.04890829694323144,
+      "baseline_y": 56,
+      "source_bounds": [
+        152,
+        116,
+        937,
+        1138
+      ],
+      "key_color": [
+        251,
+        2,
+        248
+      ]
+    },
+    {
+      "source": "art\\source\\wind-vertical-slice\\attack_down_01.png",
+      "output": "client\\public\\art\\calibration\\wind\\frames\\attack_down_01.png",
+      "scale": 0.04890829694323144,
+      "baseline_y": 56,
+      "source_bounds": [
+        268,
+        103,
+        1021,
+        1169
+      ],
+      "key_color": [
+        250,
+        2,
+        241
+      ]
+    },
+    {
+      "source": "art\\source\\wind-vertical-slice\\attack_down_02.png",
+      "output": "client\\public\\art\\calibration\\wind\\frames\\attack_down_02.png",
+      "scale": 0.04890829694323144,
+      "baseline_y": 56,
+      "source_bounds": [
+        243,
+        111,
+        1175,
+        1180
+      ],
+      "key_color": [
+        250,
+        2,
+        245
+      ]
+    },
+    {
+      "source": "art\\source\\wind-vertical-slice\\attack_down_03.png",
+      "output": "client\\public\\art\\calibration\\wind\\frames\\attack_down_03.png",
+      "scale": 0.04890829694323144,
+      "baseline_y": 56,
+      "source_bounds": [
+        247,
+        107,
+        1054,
+        1179
+      ],
+      "key_color": [
+        250,
+        2,
+        245
+      ]
+    },
+    {
+      "source": "art\\source\\wind-vertical-slice\\cast_down_00.png",
+      "output": "client\\public\\art\\calibration\\wind\\frames\\cast_down_00.png",
+      "scale": 0.04890829694323144,
+      "baseline_y": 56,
+      "source_bounds": [
+        243,
+        117,
+        903,
+        1163
+      ],
+      "key_color": [
+        251,
+        2,
+        246
+      ]
+    },
+    {
+      "source": "art\\source\\wind-vertical-slice\\cast_down_01.png",
+      "output": "client\\public\\art\\calibration\\wind\\frames\\cast_down_01.png",
+      "scale": 0.04890829694323144,
+      "baseline_y": 56,
+      "source_bounds": [
+        268,
+        89,
+        915,
+        1182
+      ],
+      "key_color": [
+        250,
+        2,
+        244
+      ]
+    },
+    {
+      "source": "art\\source\\wind-vertical-slice\\cast_down_02.png",
+      "output": "client\\public\\art\\calibration\\wind\\frames\\cast_down_02.png",
+      "scale": 0.04890829694323144,
+      "baseline_y": 56,
+      "source_bounds": [
+        251,
+        47,
+        1080,
+        1192
+      ],
+      "key_color": [
+        250,
+        2,
+        246
+      ]
+    },
+    {
+      "source": "art\\source\\wind-vertical-slice\\cast_down_03.png",
+      "output": "client\\public\\art\\calibration\\wind\\frames\\cast_down_03.png",
+      "scale": 0.04890829694323144,
+      "baseline_y": 56,
+      "source_bounds": [
+        323,
+        115,
+        991,
+        1156
+      ],
+      "key_color": [
+        249,
+        2,
+        244
+      ]
+    },
+    {
+      "source": "art\\source\\wind-vertical-slice\\idle_down_00.png",
+      "output": "client\\public\\art\\calibration\\wind\\frames\\idle_down_00.png",
+      "scale": 0.04890829694323144,
+      "baseline_y": 56,
+      "source_bounds": [
+        263,
+        109,
+        964,
+        1183
+      ],
+      "key_color": [
+        250,
+        2,
+        247
+      ]
+    },
+    {
+      "source": "art\\source\\wind-vertical-slice\\idle_down_01.png",
+      "output": "client\\public\\art\\calibration\\wind\\frames\\idle_down_01.png",
+      "scale": 0.04890829694323144,
+      "baseline_y": 56,
+      "source_bounds": [
+        234,
+        100,
+        1054,
+        1186
+      ],
+      "key_color": [
+        250,
+        2,
+        245
+      ]
+    },
+    {
+      "source": "art\\source\\wind-vertical-slice\\run_down_00.png",
+      "output": "client\\public\\art\\calibration\\wind\\frames\\run_down_00.png",
+      "scale": 0.04890829694323144,
+      "baseline_y": 56,
+      "source_bounds": [
+        215,
+        121,
+        928,
+        1155
+      ],
+      "key_color": [
+        250,
+        2,
+        245
+      ]
+    },
+    {
+      "source": "art\\source\\wind-vertical-slice\\run_down_01.png",
+      "output": "client\\public\\art\\calibration\\wind\\frames\\run_down_01.png",
+      "scale": 0.04890829694323144,
+      "baseline_y": 56,
+      "source_bounds": [
+        254,
+        96,
+        1032,
+        1149
+      ],
+      "key_color": [
+        251,
+        2,
+        247
+      ]
+    },
+    {
+      "source": "art\\source\\wind-vertical-slice\\run_down_02.png",
+      "output": "client\\public\\art\\calibration\\wind\\frames\\run_down_02.png",
+      "scale": 0.04890829694323144,
+      "baseline_y": 56,
+      "source_bounds": [
+        185,
+        115,
+        919,
+        1129
+      ],
+      "key_color": [
+        251,
+        2,
+        247
+      ]
+    },
+    {
+      "source": "art\\source\\wind-vertical-slice\\run_down_03.png",
+      "output": "client\\public\\art\\calibration\\wind\\frames\\run_down_03.png",
+      "scale": 0.04890829694323144,
+      "baseline_y": 56,
+      "source_bounds": [
+        175,
+        114,
+        1085,
+        1150
+      ],
+      "key_color": [
+        249,
+        2,
+        247
+      ]
+    }
+  ],
+  "atlas_png": "client\\public\\art\\calibration\\wind\\wind_preview.png",
+  "atlas_json": "client\\public\\art\\calibration\\wind\\wind_preview.json"
+}

@@ -1,0 +1,45 @@
+{
+  "id": "elemental_particle_library",
+  "category": "shared_presentation",
+  "runtime_id": "elemental_particles",
+  "display_alias": "Reusable elemental particles",
+  "footprint_tiles": null,
+  "origin": {
+    "value": "effect-centered",
+    "status": "planned"
+  },
+  "orientation": "effect_defined",
+  "directions": [
+    "directional_when_required"
+  ],
+  "states": [
+    "fire",
+    "steam",
+    "wind",
+    "water",
+    "snow",
+    "smoke",
+    "debris"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/elemental-particles/",
+    "source_directory": "art/source/elemental-particles/",
+    "prompt_edit_lineage": "art/source/elemental-particles/prompt-recipe.md"
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/elemental_particles.png + client/public/art/elemental_particles.json",
+    "frame_count": 7,
+    "contract": "seven centered untrimmed 64x64 RGBA state frames, 2px transparent atlas gutters; pooled runtime particles"
+  },
+  "runtime": {
+    "status": "planned",
+    "image_key": null
+  },
+  "qa": {
+    "status": "production_validated",
+    "evidence": "docs/assets/elemental-particles-production-qa.md",
+    "gate": "worst-case effect performance"
+  }
+}

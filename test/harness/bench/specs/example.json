@@ -1,0 +1,38 @@
+{
+  "sweepId": "2026-08-14-metric-selection-v1",
+  "familyId": "metric-selection-v1",
+  "mazes": ["A", "B"],
+  "seeds": 144,
+  "protocol": {
+    "maxWaves": 10
+  },
+  "arms": [
+    {
+      "armId": "control"
+    },
+    {
+      "armId": "dose-13",
+      "balanceOverrides": {
+        "ENEMY.BASE.0.hp": 13
+      }
+    },
+    {
+      "armId": "dose-15",
+      "balanceOverrides": {
+        "ENEMY.BASE.0.hp": 15
+      }
+    },
+    {
+      "armId": "dose-20",
+      "balanceOverrides": {
+        "ENEMY.BASE.0.hp": 20
+      }
+    },
+    {
+      "armId": "dose-30",
+      "balanceOverrides": {
+        "ENEMY.BASE.0.hp": 30
+      }
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "generatedAt": "2026-08-04T02:08:51.620Z",
+  "mazes": {
+    "A": {
+      "hangs": {
+        "watchtower": 0,
+        "rockTrap": 0
+      },
+      "watchtowerMean": 8.23611111111111,
+      "rockTrapMean": 7.652777777777778,
+      "diff": -0.583333333333333,
+      "t": 6.408588750169959,
+      "signs": {
+        "better": 18,
+        "worse": 79,
+        "tied": 47
+      },
+      "imputed": {
+        "diff": -0.583333333333333,
+        "t": 6.408588750169959
+      },
+      "splitHalf": {
+        "half1": -0.5277777777777777,
+        "half2": -0.6388888888888893,
+        "agree": true
+      }
+    },
+    "B": {
+      "hangs": {
+        "watchtower": 0,
+        "rockTrap": 0
+      },
+      "watchtowerMean": 6.486111111111111,
+      "rockTrapMean": 7.270833333333333,
+      "diff": 0.7847222222222223,
+      "t": 4.917335596270715,
+      "signs": {
+        "better": 71,
+        "worse": 26,
+        "tied": 47
+      },
+      "imputed": {
+        "diff": 0.7847222222222223,
+        "t": 4.917335596270715
+      },
+      "splitHalf": {
+        "half1": 0.625,
+        "half2": 0.9444444444444438,
+        "agree": true
+      }
+    }
+  }
+}

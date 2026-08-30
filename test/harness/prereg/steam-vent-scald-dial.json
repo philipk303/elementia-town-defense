@@ -1,0 +1,43 @@
+{
+  "familyId": "steam-vent-scald-dial",
+  "question": "Does Steam Vent's doubled scald (8 per pulse) buy anything over the shipped-original 4, now that the slow is present — or is the damage dial inert and the retune reducible to the slow alone?",
+  "primaryMetric": "hallHpAuc",
+  "secondaryMetrics": [
+    "score",
+    "wavesCleared"
+  ],
+  "mde": 0.1,
+  "alpha": 0.05,
+  "power": 0.8,
+  "sigmaSource": "hallHpAuc paired delta sd measured in the R2 regime by the registered steam-vent-retune family (18,000 runs, n=3000/cell), on the arm pair closest to this one (vent-new vs control): ~0.65 (maze A) / ~1.03 (maze B). The wider Watchtower-ladder sigma from regime-r2-adoption (0.87/1.41) is used for nRequired instead, as the conservative choice — two arms differing only in a damage dial are more tightly paired than a ladder rung, so sizing on the ladder sigma over-powers rather than under-powers this family.",
+  "nRequired": 2990,
+  "arms": [
+    "control",
+    "scald-4",
+    "scald-8"
+  ],
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "familySize": 12,
+  "regime": {
+    "label": "R2",
+    "protocol": {
+      "spendDown": true,
+      "maxWaves": 10,
+      "humanElement": "FIRE"
+    },
+    "justification": "R2 was adopted in regime-r2-adoption on 18/18 gates and is the regime the retune was measured in, so this family is directly comparable to steam-vent-retune. The control again uses `partnerSpecial: WATER`, holding both ingredients unfused, so the two vent arms are each measured against the correct spec §1 baseline as well as against each other.",
+    "scopeLimit": "R2 bars every TERMINAL measure (0-7% of runs end with the hall alive), so hallHpFrac and win rate are excluded; hallHpAuc is exempt as an integral over waves played. The cross-policy gate is empty (scripted-v1 only) and every verdict is provisional on it. This family varies ONLY `TOWER.STEAM_VENT.pulse.damage`; the slow (factor 0.5, ms 1500) and cloudMarginPx 15 are identical in both vent arms, so nothing here speaks to whether the SLOW magnitudes are right."
+  },
+  "positiveControl": {
+    "armId": "control",
+    "override": "TOWER.STEAM_VENT.pulse.damage",
+    "expectedDirection": "Both vent arms must sit at or below the two-ingredient control on maze B, reproducing steam-vent-retune's finding that the retuned vent does not outperform its ingredients. If either arm comes back resolvably ABOVE control on maze B, that contradicts an 18,000-run registered family measured on the same regime and control, and the discrepancy must be explained before either arm's damage reading is trusted."
+  },
+  "decisionRule": "The question is whether the ADDED damage earns its place, so the burden of proof sits on the larger number. This is stated before the run precisely because 'no significant difference' can otherwise be read either way after the fact.\n\nADOPT scald 4 (revert the doubling) when BOTH hold:\n  (a) `scald-8 - scald-4` is NOT resolvably positive on either maze — i.e. it fails to reach BH-adjusted q < 0.05 across the declared family of 12 with the sign test agreeing; AND\n  (b) the 95% CI on that difference EXCLUDES +0.10, the declared MDE, on both mazes.\n\nCondition (b) is what makes this an equivalence claim rather than an absence of evidence. A null at n=3000 with a CI spanning +/-0.3 would mean the family could not see the effect; a null with a CI inside +/-0.10 means any effect is smaller than the smallest difference this project has declared worth caring about. Only the latter licenses a revert.\n\nKEEP scald 8 when `scald-8 - scald-4` is resolvably positive on either maze at q < 0.05 with the sign test agreeing. Per Philip's 2026-08-04 ruling, either maze is sufficient.\n\nUNRESOLVED — and NO change is made — when the difference is null but the CI still admits an effect of +0.10 or larger on both mazes. The response is more n, not a revert.\n\nBoth vent arms are additionally reported against the two-ingredient control, as in steam-vent-retune, so the spec §1 standing of each is visible rather than inferred.\n\nSPLIT-HALF IS DECLARED UNINFORMATIVE AND IS NOT A GATE (3 arms -> four possible values). Reported only.\n\nMONOTONICITY RULE: carried from metric-selection-v2, unchanged.",
+  "whatWouldRefute": "PRE-REGISTERED PREDICTION: I expect scald-8 and scald-4 to be indistinguishable, with the CI inside +/-0.10 — i.e. a revert. The evidence is from steam-vent-retune: isolating the vent's own damage by differencing against a zero-damage vent gave 193.3 (scald 4) vs 198.0 (scald 8), a ratio of 1.02 despite the per-pulse damage doubling, and the maze-A outcome delta for the same doubling was +0.017 at t 1.35. The mechanism I infer is that the vent already kills what stands in it, so extra per-pulse damage kills sooner and fewer later pulses land, conserving total damage dealt.\n\nThat prediction is REFUTED if scald-8 is resolvably above scald-4 on either maze. If so, the damage doubling does work through some route the damage-differencing measure missed — most plausibly against high-HP elites in waves 9-10, which the 80-match differencing probe was far too small to resolve and which R1 could never see at all. That would be a genuine finding about WHERE the vent's damage matters, not merely a failed revert.\n\nA null with a WIDE CI refutes nothing and licenses nothing; it says this family was under-powered for an equivalence claim despite n=3000, and the honest response is more n.\n\nIf either vent arm comes back resolvably ABOVE the two-ingredient control on maze B, the positive control has failed and no reading here may be trusted (see positiveControl).",
+  "registeredAt": "2026-08-16T00:05:00.000Z",
+  "notes": "WHY REVERT IS THE DEFAULT. Simplicity is the tie-breaker: the retune's purpose was to replace an inert mechanic (confusion, worth +0.013), and shipping a second change that is ALSO inert would repeat the error in a new place. Keeping the damage at its long-standing 4 also leaves the dial unspent as a future lever, which matters because the retuned vent still does not outperform its ingredients (steam-vent-retune: -0.042, q 0.062 on maze B) and will need one.\n\nSAMPLE SIZE. 1500 seeds x 2 postGaps = 3000 cells per arm per maze, against nRequired 2990. 3 arms x 2 mazes x 3000 = 18,000 runs.\n\nfamilySize 12 = 2 non-control arms x 2 mazes x 3 metrics.\n\nFRESH SEEDS. Seeds are deterministic (20260801 + i). This family runs 20300801 + i, disjoint from the fusion corpus (20260801+), the steam-vent replication (20270801+), regime-r2-adoption (20280801+) and steam-vent-retune (20290801+).\n\nARM CONSTRUCTION. `scald-8` runs the CURRENT balance table with no overrides (the retune landed in 5759028). `scald-4` overrides only TOWER.STEAM_VENT.pulse.damage to 4. The slow is untouched in both."
+}

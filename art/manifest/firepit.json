@@ -1,0 +1,48 @@
+{
+  "id": "firepit",
+  "category": "elemental_structure",
+  "runtime_id": "FIRE_SPECIAL",
+  "display_alias": "Firepit",
+  "footprint_tiles": {
+    "w": 2,
+    "h": 1,
+    "walkable": true,
+    "rotates_to": {
+      "w": 1,
+      "h": 2
+    }
+  },
+  "origin": {
+    "value": null,
+    "status": "calibration_pending"
+  },
+  "orientation": "horizontal_or_vertical",
+  "directions": [
+    "horizontal",
+    "vertical"
+  ],
+  "states": [
+    "idle",
+    "active"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/firepit/approved.png"
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/fire_special.png + client/public/art/fire_special.json",
+    "frame_count": 8,
+    "contract": "8 untrimmed 96x64 cells with 2px atlas gutters; idle_00-03 loop, active_00-03 available for shared active playback"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "atlas_key": "fire_special",
+    "gameplay_integrated": true
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/firepit-production-qa.md",
+    "gate": "atlas has no telegraph/recovery/charged states (StructureAnimator's targetImpact/cycle families do not apply here — spec has neither targetImpact nor cycle/grind, so it renders idle/active only); manual Phaser playtest confirmation still open"
+  }
+}

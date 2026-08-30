@@ -1,0 +1,53 @@
+{
+  "frames": {
+    "idle_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 64
+      }
+    },
+    "active_0.png": {
+      "frame": {
+        "x": 50,
+        "y": 0,
+        "w": 48,
+        "h": 64
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 64
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 64
+      }
+    }
+  },
+  "meta": {
+    "app": "generic_structures_pipeline.py",
+    "image": "watchtower.png",
+    "size": {
+      "w": 98,
+      "h": 64
+    },
+    "scale": "1"
+  }
+}

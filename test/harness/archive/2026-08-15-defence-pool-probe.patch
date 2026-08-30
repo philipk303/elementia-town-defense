@@ -1,0 +1,155 @@
+diff --git a/test/harness/matchRunner.js b/test/harness/matchRunner.js
+index 080e503..ce9dd81 100644
+--- a/test/harness/matchRunner.js
++++ b/test/harness/matchRunner.js
+@@ -228,14 +228,75 @@ function offLaneSites(maze) {
+ //
+ // Opt-in and additive: `funnelSites`/`towerSites`/`offLaneSites` are all
+ // untouched, so every legacy measurement stays reproducible byte-for-byte.
+-function isolatedTowerSites(maze) {
++function isolatedTowerSites(maze, pool = 'gap') {
++  if (pool === 'hallApproach') return hallApproachSites(maze)
++  if (pool === 'hallBand') return hallBandSites(maze)
++  const cols = pool === 'gapWide' || pool === 'gapWideDeep' ? [-1, -2] : [-1]
++  const rows = pool === 'gapDeep' ? 12 : pool === 'gapWideDeep' ? 9 : 6
++  // Row-major so the pool grows in DEPTH bands rather than filling one column
++  // to the bottom first: a policy that buys N of these gets a coherent band at
++  // every N, which is what makes defenceCap a meaningful capacity dial.
+   const sites = []
+-  for (let dy = 1; dy <= 6; dy++) {
+-    for (const gap of maze.gaps) sites.push([gap - 1, maze.wallRow + dy])
++  for (let dy = 1; dy <= rows; dy++) {
++    for (const gap of maze.gaps) for (const dx of cols) sites.push([gap + dx, maze.wallRow + dy])
+   }
+   return sites
+ }
+ 
++// THE HALL-APPROACH POOL (2026-08-15). The horde must converge on the hall from
++// whatever gap it used, so the corridor between the wall and the hall is the
++// one region every enemy on every maze must cross. The gap columns are not:
++// maze B's gaps sit 14-16 tiles from the hall and a 75px Watchtower covers ~2
++// tiles of that journey, which is why maze B saturates at ~8 waves against a
++// 16x damage buff.
++//
++// DISJOINTNESS. Every special/fusion site is at rows wallRow+1..wallRow+4
++// (isolatedSpecialSites, dy 1..4). Confining this pool to row wallRow+5 and
++// below makes it disjoint from the entire special site space BY ROW, on every
++// maze, with no column reasoning at all -- so no defence purchase can ever
++// displace the free special or the fusion partner, which is the confound the
++// isolated protocol exists to remove.
++//
++// Sparse (every 2nd column) so a blocking 1x1 defence can never ring the hall
++// closed -- see the 2026-07-25 hall-ring soft-lock. Ordered nearest-hall-first
++// so that defenceCap trims the pool from the outside in and every N is a
++// coherent band.
++function hallBandSites(maze) {
++  const HX = 19, HY = 21
++  const firstRow = maze.wallRow + 5
++  const sites = []
++  for (let gy = firstRow; gy <= 20; gy++) {
++    for (let gx = 3; gx <= 35; gx += 2) {
++      const d = Math.hypot(gx - HX, gy - HY)
++      if (d < 5.5 || d > 10.5) continue
++      sites.push([gx, gy, d])
++    }
++  }
++  sites.sort((a, b) => a[2] - b[2] || a[0] - b[0] || a[1] - b[1])
++  return sites.map(([gx, gy]) => [gx, gy])
++}
++
++// EXPLORATORY REFERENCE ONLY (2026-08-15). Sites the defence on the hall
++// approach. Overlaps the reserved special columns at rows 11-12, so it
++// reintroduces the displacement confound and must never carry a verdict. Kept
++// because it is the upper-bound arm the position-pool calibration is read
++// against. Sparse (every 2nd column) so a blocking 1x1 defence can never ring
++// the hall closed -- see the 2026-07-25 hall-ring soft-lock.
++function hallApproachSites(maze) {
++  const HX = 19, HY = 21
++  const sites = []
++  for (let gy = 11; gy <= 20; gy++) {
++    for (let gx = 4; gx <= 34; gx += 2) {
++      if (gy === maze.wallRow) continue
++      const d = Math.hypot(gx - HX, gy - HY)
++      if (d < 5.5 || d > 9.5) continue
++      sites.push([gx, gy, d])
++    }
++  }
++  sites.sort((a, b) => a[2] - b[2])
++  return sites.map(([gx, gy]) => [gx, gy])
++}
++
+ function isolatedSpecialSites(maze, siting) {
+   if (siting !== 'funnel' && siting !== 'flank') {
+     throw new Error(`isolatedSpecialSites: siting must be 'funnel' or 'flank', got ${JSON.stringify(siting)}`)
+@@ -320,7 +381,7 @@ function recordPlacement(state, m, role, gx, gy) {
+ function runBuildPolicy(state, maze, now, m, protocol) {
+   const {
+     fuse, fuseWave, defence, freeSpecial, spendDown, fuseWith,
+-    legacySiting, specialSiting, legacySpecialSites, defenceCap,
++    legacySiting, specialSiting, legacySpecialSites, defenceCap, defencePool,
+   } = protocol
+   const human = state.players.find(p => !p.isBot)
+   if (!human) return
+@@ -439,8 +500,8 @@ function runBuildPolicy(state, maze, now, m, protocol) {
+   // column too — otherwise the defence arm would reintroduce exactly the
+   // collision the protocol exists to remove.
+   const defSites = isWalkable(defence) ? walkableDefenceSites(maze)
+-    : !legacySiting ? isolatedTowerSites(maze)
+-    : towerSites(maze)
++    : legacySiting ? towerSites(maze)
++    : isolatedTowerSites(maze, defencePool)
+   // `defenceCap` (opt-in, default null = unbounded) caps the CONCURRENT STANDING
+   // count of `defence` structures the human owns, checked before each purchase.
+   // Standing, not cumulative: a defence lost to the horde frees its slot, so a
+diff --git a/test/harness/protocol.js b/test/harness/protocol.js
+index 3333020..7d1b4a7 100644
+--- a/test/harness/protocol.js
++++ b/test/harness/protocol.js
+@@ -61,6 +61,29 @@ export const PROTOCOL_DEFAULTS = Object.freeze({
+   defence: STRUCTURE_TYPES.WATCHTOWER,
+   spendDown: false,
+   defenceCap: null,           // null = unbounded
++
++  // THE DEFENCE POSITION POOL (2026-08-15). 'gap' is the shipped isolated
++  // protocol: column gap-1 only, 6 rows, 12 positions per maze. The
++  // 2026-08-15 regime calibration showed that at 12 positions the outcome is
++  // insensitive to defence strength across a 16x Watchtower damage range --
++  // i.e. every measurement taken on it sits in a saturated band. These widen
++  // the pool WITHOUT touching the column-disjointness that removes the
++  // watchtower-displacement confound: gap-1 and gap-2 are both disjoint from
++  // the funnel band (gap, gap+1) and the flank band (gap+2, gap+3).
++  //   'gap'          col gap-1, rows 1-6    -> 12
++  //   'gapDeep'      col gap-1, rows 1-12   -> 24
++  //   'gapWide'      cols gap-1,gap-2, rows 1-6  -> 24
++  //   'gapWideDeep'  cols gap-1,gap-2, rows 1-9  -> 36
++  //   'hallApproach' exploratory reference only; OVERLAPS the special bands
++  //                  at rows 11-12 and must not be used for a verdict.
++  //   'hallBand'     the clean hall-approach pool. Every special site lives in
++  //                  rows wallRow+1..wallRow+4 (9-12), so a pool confined to
++  //                  rows 13+ is disjoint from the ENTIRE special/fusion site
++  //                  space by ROW, on every maze, without needing to reason
++  //                  about columns at all. That is a stronger invariant than
++  //                  the column-band scheme it complements, and it is what
++  //                  makes this pool safe to carry a verdict.
++  defencePool: 'gap',
+ })
+ 
+ // Runtime-only. Never hashed, never persisted: a diagnostic callback cannot
+@@ -70,6 +93,7 @@ export const PROTOCOL_DEFAULTS = Object.freeze({
+ const HOOK_KEYS = Object.freeze(['onEnd', 'tiProbe', 'volleyProbe'])
+ 
+ const SITINGS = ['funnel', 'flank']
++const DEFENCE_POOLS = ['gap', 'gapDeep', 'gapWide', 'gapWideDeep', 'hallApproach', 'hallBand']
+ const LEGACY_SITE_LISTS = [null, 'funnel', 'offlane', 'tower']
+ 
+ function fail(msg) {
+@@ -129,6 +153,9 @@ export function resolveProtocol(partial = {}) {
+     fail(`defenceCap must be null or a non-negative integer, got ${JSON.stringify(p.defenceCap)}`)
+   }
+   if (!Number.isInteger(p.maxWaves) || p.maxWaves < 1) fail(`maxWaves must be a positive integer`)
++  if (!DEFENCE_POOLS.includes(p.defencePool)) {
++    fail(`defencePool "${p.defencePool}" unknown; expected one of ${DEFENCE_POOLS.join(', ')}`)
++  }
+ 
+   if (p.legacySiting) {
+     if (!LEGACY_SITE_LISTS.includes(p.legacySpecialSites)) {

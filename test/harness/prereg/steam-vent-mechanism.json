@@ -1,0 +1,46 @@
+{
+  "familyId": "steam-vent-mechanism",
+  "question": "Steam Vent is resolvably HARMFUL on maze B while costing nothing (-0.137 hallHpAuc, 4/4 gates, fusion-roster-v2). Which COMPONENT of the structure causes that harm — its 2x2 blocking body, its scald pulse, or its confusion field?",
+  "primaryMetric": "hallHpAuc",
+  "secondaryMetrics": [
+    "score",
+    "wavesCleared",
+    "structuresLostTotal",
+    "closestApproachPxMin"
+  ],
+  "mde": 0.1,
+  "alpha": 0.05,
+  "power": 0.8,
+  "sigmaSource": "hallHpAuc paired delta sd, measured on the R1 regime in the 2026-08-15 metric-selection-v2 corpus (2880 runs, n=288/cell): 0.455 (maze A) / 1.059 (maze B), averaged across the four Watchtower-ladder arms. Maze B is the binding constraint and is also the maze carrying the effect under investigation. Identical to the sigma used by fusion-roster-fire-v2, which is deliberate: this family must resolve effects no larger than the -0.137 that family measured.",
+  "nRequired": 880,
+  "arms": [
+    "control",
+    "vent-inert",
+    "vent-scald",
+    "vent-full"
+  ],
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "familySize": 30,
+  "regime": {
+    "label": "R1",
+    "protocol": {
+      "spendDown": true,
+      "maxWaves": 8,
+      "humanElement": "FIRE"
+    },
+    "justification": "R1 is the regime validated in metric-selection-v2 (control survival 46.9/44.8, uncensored at both ends, recovers a +/-33% Watchtower damage change on both mazes through all four gates) and is the regime in which the effect under investigation was measured. `vent-full` here is a byte-identical protocol replication of fusion-roster-fire-v2's `steam-vent` arm, so this family also re-measures that -0.137 on independent seeds. Note that spendDown is retained for regime comparability ONLY: per Amendment D it no longer creates an equal-gold contrast, because the 12-site pool saturates in every arm.",
+    "scopeLimit": "THREE limits. (1) maxWaves 8 means WAVES 9-10 ARE NEVER MEASURED, and that is where the elites concentrate; a confusion structure whose value lives against late elites is invisible here. (2) hallHpAuc is bounded above at 8.0 and maze A sits near that ceiling (46% of runs at the observed max in metric-selection-v2's 2x arm), so maze-A magnitudes are compressed and a small maze-A reading must be checked against ceiling share. (3) THIS FAMILY DECOMPOSES, IT DOES NOT RETUNE. It identifies which component carries the harm. The magnitude of any corrective dial change is a separate, separately-registered question — decomposition tells you WHERE to turn a dial, never HOW FAR."
+  },
+  "positiveControl": {
+    "armId": "vent-full",
+    "override": "TOWER.STEAM_VENT.confuse.ms",
+    "expectedEffect": -0.137
+  },
+  "decisionRule": "The three fusion arms form a nested LADDER of components, each measured as a paired delta against the same `control` (fuse:false) on hallHpAuc:\n\n  vent-inert  = 2x2 blocking body only (confuse.ms 0, pulse.damage 0)\n  vent-scald  = body + scald pulse      (confuse.ms 0)\n  vent-full   = body + scald + confusion (shipped spec)\n\nComponent attributions are the differences between adjacent rungs. All four arms run on the SAME seed set and are therefore paired throughout, so an adjacent-rung difference is a valid paired contrast even though analyze.mjs computes each delta against `control`.\n\n  cost of the BODY      = vent-inert - control\n  value of the SCALD    = vent-scald - vent-inert\n  effect of CONFUSION   = vent-full  - vent-scald\n\nA component is ATTRIBUTED the harm on a maze when its rung-to-rung difference is negative AND the arm at the top of that difference is itself resolvably negative against control at BH-adjusted q < 0.05 across the declared family of 30, with the exact sign test agreeing in direction, and the reading surviving hang-imputation at the cell minimum.\n\nSPLIT-HALF IS DECLARED UNINFORMATIVE HERE AND IS NOT A GATE. splitForMetric ranks the ARMS; with 4 arms it takes a coarse set of values, and fusion-roster-v2 showed the gate is degenerate below ~4 arms. It is reported for the record and MUST NOT be used to block or support an attribution in this family. This is declared in advance precisely because Muddy Bog B was blocked by exactly that gate.\n\nMONOTONICITY RULE (carried from metric-selection-v2): no arm may be disqualified on an ordering argument unless the offending adjacent pair is itself resolvable at BH-adjusted q < 0.05. An unresolvable inversion is reported as unresolved, never as a disqualification.\n\nUNRESOLVED is a legitimate and expected outcome for any individual rung. An unresolved rung attributes nothing and licenses no dial change.\n\nCROSS-POLICY GATE NOT MET: only scripted-v1 exists (docs/reviews/2026-08-15-wp5-competent-v1-review.md). Every reading here is PROVISIONAL on that gate, declared up front.",
+  "whatWouldRefute": "INSTRUMENT CHECK FIRST. `vent-full` is a byte-identical protocol replication of fusion-roster-fire-v2's `steam-vent` arm on independent seeds, and its declared expectedEffect of -0.137 on maze B is the positive control for this family. If vent-full comes back null or positive on maze B, the original finding failed to replicate and NO component attribution may be read from any other arm.\n\nPRE-REGISTERED PREDICTION, committed before the run: I expect CONFUSION to carry the maze-B harm — i.e. vent-inert and vent-scald at or above control, and vent-full resolvably below vent-scald. The named mechanism is that confusion SUSPENDS TARGET ACQUISITION (server/game/enemies.js:293), so a confused enemy stops bashing barricades and structures inside the kill zone and wanders onward instead. That trades structure damage for hall damage, which hallHpAuc scores as a loss. If that mechanism is real, `structuresLostTotal` must FALL in vent-full relative to vent-scald at the same time as hallHpAuc falls; a confusion harm WITHOUT that structuresLost drop refutes the named mechanism even if it confirms the attribution.\n\nThis prediction is refuted if vent-inert is itself resolvably negative on maze B at a magnitude comparable to vent-full's — that would attribute the harm to the BLOCKING BODY, making it a geometry/routing problem shared with every 2x2 fusion rather than a Steam Vent effect problem, and would redirect the retune entirely.\n\nThe family as a whole fails if vent-full does not reproduce a resolvably negative maze-B delta (see positiveControl): the original finding would then not have replicated, and no attribution may be read from any arm.\n\nIf every rung including vent-full is unresolvable at n=900, the family refutes the claim that hallHpAuc at this n can decompose a single structure into its components, and the response is to raise n rather than to declare the components individually harmless.",
+  "registeredAt": "2026-08-15T21:14:00.000Z",
+  "notes": "WHY DECOMPOSE BEFORE RETUNING. fusion-roster-v2 §4.5 named a plausible mechanism for negative-when-free fusions — 2x2 blocking structures re-routing the horde for the worse — but named it as a hypothesis, not a measurement. Steam Vent's shipped spec has three separable parts and there is no basis yet for choosing which dial to turn. Turning a dial on the wrong component is how the 2026-08-02 hp buffs ended up tuning an instrument artifact.\n\nHOW THE ARMS ARE BUILT. Both off-switches are clean, not approximations. `confuse.ms: 0` reaches applyConfusion, which returns immediately at `ms <= 0` (server/game/status.js:139) — the same path a confusion-immune super-fast enemy takes — so no confusion is ever applied and no episode budget is consumed. `pulse.damage: 0` is already an explicit no-damage branch in tickConfusion (server/game/structureBehaviors/confusion.js:50). Neither override changes the structure's type, hp (90), footprint, cost (0), fusion formation, or the cloud rect. vent-inert is therefore exactly the shipped 2x2 body with both effects silent.\n\nWHAT IS DELIBERATELY HELD FIXED. The cloud geometry (cloudMarginPx 15) is NOT varied. It is a spillover bug fix with a purely geometric justification (shared/balance.js:447) and varying it here would confound the cloud's SIZE with the confusion's EXISTENCE.\n\nSAMPLE SIZE. 450 seeds x 2 postGaps = 900 cells per arm per maze, against nRequired 880 for MDE 0.10 on maze B. 4 arms x 2 mazes x 900 = 7200 runs.\n\nfamilySize 30 = 3 fusion arms x 2 mazes x 5 metrics, the full width this family actually tests. Unlike the fusion-roster-v2 families this is NOT padded to the roster width, because this family asks a mechanism question about one structure rather than a roster-wide question split across stores.\n\nNO BALANCE CHANGE SHIPS FROM THIS FAMILY. It selects the dial. The retune magnitude is registered separately."
+}

@@ -1,0 +1,29 @@
+{
+  "familyId": "steam-vent-slow-dial",
+  "question": "Now that the doubled scald is measured as the retune's real driver, does Steam Vent's strong slow contribute anything of its own — or is it a second inert mechanic replacing the first?",
+  "primaryMetric": "hallHpAuc",
+  "secondaryMetrics": ["score", "wavesCleared"],
+  "mde": 0.1,
+  "alpha": 0.05,
+  "power": 0.8,
+  "sigmaSource": "hallHpAuc paired delta sd for a Steam Vent arm pair differing in one dial, measured in R2 by the registered steam-vent-scald-dial family (18,000 runs, n=3000/cell): 0.63 (maze A) / 1.05 (maze B), from the scald-8 minus scald-4 contrast. The conservative Watchtower-ladder sigma (0.87/1.41) is used for nRequired, as in that family.",
+  "nRequired": 2990,
+  "arms": ["control", "slow-off", "slow-on"],
+  "mazes": ["A", "B"],
+  "familySize": 12,
+  "regime": {
+    "label": "R2",
+    "protocol": { "spendDown": true, "maxWaves": 10, "humanElement": "FIRE" },
+    "justification": "Identical to steam-vent-scald-dial so the two families compose: that one held the slow fixed and varied the scald, this one holds the scald fixed at the adopted 8 and varies the slow. Together they decompose the retune into its two components with paired arms, replacing the cross-family inference that motivated this registration. The control again uses partnerSpecial:WATER, holding both ingredients unfused.",
+    "scopeLimit": "R2 bars every TERMINAL measure (0-7% of runs end with the hall alive); hallHpAuc is exempt as an integral. The cross-policy gate is empty and every verdict is provisional on it — this is MORE live here than anywhere else in the Steam Vent work, because a stationary scripted policy cannot reposition to exploit a slow, so a null is weaker evidence against a slow than against damage. This family varies ONLY TOWER.STEAM_VENT.slow.ms; factor 0.5, scald 8 and cloudMarginPx 15 are identical in both vent arms, so nothing here says the slow MAGNITUDES are wrong, only whether this slow at this strength earns its place."
+  },
+  "positiveControl": {
+    "armId": "slow-on",
+    "override": "TOWER.STEAM_VENT.slow.ms",
+    "expectedEffect": -0.05
+  },
+  "decisionRule": "The burden of proof sits on the mechanic, declared before the run.\n\nKEEP the slow when slow-on minus slow-off is resolvably positive on either maze: BH-adjusted q < 0.05 across the declared family of 12, sign test agreeing, surviving hang-imputation. Either maze is sufficient per Philip's 2026-08-04 ruling.\n\nDROP the slow (revert to scald 8 alone, and reopen what the vent's second mechanic should be) when BOTH hold: (a) the difference is not resolvably positive on either maze, AND (b) its 95% CI EXCLUDES +0.10, the declared MDE, on both mazes. Condition (b) is what makes this an equivalence claim rather than absence of evidence.\n\nUNRESOLVED, and NO change: a null whose CI still admits +0.10 on both mazes. The response is more n, not a revert.\n\nBoth vent arms are also reported against the two-ingredient control so each one's spec section 1 standing is visible.\n\nSPLIT-HALF IS DECLARED UNINFORMATIVE AND IS NOT A GATE (3 arms). MONOTONICITY RULE carried from metric-selection-v2.",
+  "whatWouldRefute": "PRE-REGISTERED PREDICTION: I expect the slow to be INERT — no resolvable difference, CI inside +/-0.10 — i.e. a drop. The evidence is a cross-family comparison this family exists to replace with a paired one: steam-vent-retune's vent-old (scald 4, slow OFF) sat at -0.309 against its control, and steam-vent-scald-dial's scald-4 (scald 4, slow ON) sat at -0.302 against a control whose mean differed by 0.015. That leaves roughly +0.007 for the slow, against +0.253 for the scald doubling in the same regime.\n\nI hold this prediction with LOW confidence and note that my last two mechanism predictions were both refuted, the most recent one in exactly this structure's favour: I predicted the scald dial was inert and it carried +0.253.\n\nThe prediction is REFUTED if slow-on beats slow-off resolvably on either maze, which would mean the cross-family inference was contaminated by the seed sets or the control difference — the precise reason this family runs paired arms instead.\n\nIf BOTH vent arms sit resolvably below the two-ingredient control on maze B, that stands regardless of which arm wins, and the vent still fails spec section 1.",
+  "registeredAt": "2026-08-16T00:40:00.000Z",
+  "notes": "WHY THIS MATTERS BEYOND ONE DIAL. The retune existed to remove a mechanic that did nothing (confusion, +0.013). Shipping a replacement mechanic that also does nothing would repeat the identical error one commit later, and it would do so while LOOKING like a fix because the co-shipped damage change carries the outcome. That is the specific failure this family exists to prevent.\n\nSAMPLE SIZE. 1500 seeds x 2 postGaps = 3000 cells per arm per maze. 3 arms x 2 mazes x 3000 = 18,000 runs. familySize 12 = 2 non-control arms x 2 mazes x 3 metrics.\n\nARM CONSTRUCTION. slow-on runs the current balance table unmodified (scald 8, slow factor 0.5 / ms 1500). slow-off overrides only TOWER.STEAM_VENT.slow.ms to 0, which returns immediately at applySlow's ms <= 0 guard (server/game/status.js:75-80) — the same path a slow-immune super-fast enemy takes. No other property differs.\n\nFRESH SEEDS: 20310801 + i, disjoint from every prior family."
+}

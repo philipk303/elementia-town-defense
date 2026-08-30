@@ -1,0 +1,1670 @@
+{
+  "storePath": "C:\\dev\\Elementia-Town-Defense\\test\\harness\\store\\2026-08-30-muddy-bog-r3-v2.jsonl.gz",
+  "inputRecords": 25600,
+  "recordsAfterDedupe": 25600,
+  "corruption": [],
+  "families": [
+    {
+      "familyId": "muddy-bog-r3",
+      "registration": {
+        "status": "valid",
+        "path": "C:\\dev\\Elementia-Town-Defense\\test\\harness\\prereg\\muddy-bog-r3.json",
+        "prereg": {
+          "familyId": "muddy-bog-r3",
+          "question": "Measured on hallHpAuc in the R2 regime against a two-ingredient control, does Muddy Bog -- as currently shipped, or with one of two candidate retunes (a footprint margin like Firepit/Steam Vent, or a longer root duration) -- clear the Amendment D contribution floor?",
+          "primaryMetric": "hallHpAuc",
+          "secondaryMetrics": [
+            "score",
+            "wavesCleared"
+          ],
+          "mde": 0.1,
+          "alpha": 0.05,
+          "power": 0.8,
+          "sigmaSource": "hallHpAuc paired delta sd measured in the R2 regime by the registered regime-r2-adoption family (24,000 runs, n=3000/cell, 18/18 gates PASS): ~0.87 (maze A) / ~1.41 (maze B). Maze B is the binding constraint. Identical source and values to fusion-r2-grinder and grinder-r3-worth, deliberately: the regime and control design are unchanged, only the structure under test differs.",
+          "nRequired": 3121,
+          "arms": [
+            "control",
+            "muddy-bog",
+            "muddy-bog-margin",
+            "muddy-bog-longroot"
+          ],
+          "mazes": [
+            "A",
+            "B"
+          ],
+          "familySize": 18,
+          "regime": {
+            "label": "R2",
+            "protocol": {
+              "spendDown": true,
+              "maxWaves": 10,
+              "humanElement": "EARTH"
+            },
+            "justification": "R2 carried unchanged from fusion-r2-grinder, grinder-r3-worth and every prior fusion-worth family, for the same reason: R1 stops at wave 8 and never sees the elites at 9-10, and R1's maze-A ceiling crushed the top Watchtower-ladder rung to +0.0011, nearly blind to the defence getting BETTER. The control arm uses partnerSpecial: WATER, which buys the partner special at the fusion's own anchor tile and DECLINES the fusion proposal, so the control holds BOTH ingredients standing (the same control design as fusion-r2-muddy-bog and bog-decouple-retune).",
+            "scopeLimit": "FOUR limits, carried from grinder-r3-worth. (1) R2 trades terminal survival for reach: only 0-7% of runs end with the hall alive, so hallHpFrac, win rate and every other TERMINAL measure are floor-censored and BARRED here; hallHpAuc is exempt as an integral over waves played, and wavesCleared is secondary despite being nearer a terminal measure. (2) The CROSS-POLICY GATE IS EMPTY -- only scripted-v1 exists -- so every verdict here is provisional on it. (3) humanElement confounds any cross-family comparison: this family measures ONLY whether a Muddy Bog variant beats ITS OWN control, never a ranking against fusions in other families. (4) This family CANNOT attribute a PASS between the margin change and the root change if both happened to pass -- each is tested as its own single-lever arm against the shared control precisely so it CAN be attributed; a future combined arm would need its own family."
+          },
+          "decisionRule": "Paired delta, each of {muddy-bog, muddy-bog-margin, muddy-bog-longroot} minus control, on hallHpAuc, per maze, evaluated independently per arm.\n\nPASS (clears the Amendment D contribution floor): for a given arm, delta > 0 AND BH-adjusted q < 0.05 across the declared family of 18 AND the exact sign test agrees in direction AND the verdict survives hang-imputation at the cell minimum. Per Philip's 2026-08-04 ruling, PASSING ON EITHER MAZE IS SUFFICIENT for that arm -- maze A is substantially easier than maze B and requiring both would force overtuning.\n\nFAIL (retune target, that specific lever): delta < 0 under those same gates on either maze, with no PASS on the other, for that arm.\n\nUNRESOLVED: anything else, for that arm. Not a pass, not a fail; no balance change follows from an unresolved cell.\n\nSPLIT-HALF IS DECLARED UNINFORMATIVE AND IS NOT A GATE, exactly as in grinder-r3-worth and steam-vent-retune: with a two-value scale per arm-vs-control comparison, splitForMetric ranks nothing informative. Reported for the record only.\n\nMONOTONICITY RULE: not applicable. The three non-control arms are not a dose ladder -- they are three structurally distinct, unordered interventions (ship-as-is, add a footprint margin, lengthen root) -- so there is no ordering to disqualify on. Each is judged solely against control.\n\nCROSS-POLICY GATE NOT MET: only scripted-v1 exists. Every verdict from this family is PROVISIONAL on that gate, declared here rather than discovered later.",
+          "whatWouldRefute": "For any one arm, a delta whose BH-adjusted q exceeds 0.05 on both mazes refutes a PASS claim for that specific variant. A resolvably negative delta on either maze with no PASS on the other refutes that variant's design premise and marks it (not the whole fusion) as a retune target. If ALL THREE arms fail to clear the floor on both mazes, that refutes the working hypothesis of this whole family -- that the floor-clearing gap is closeable by tuning Bog's own dials -- and returns the question to the mechanic-review track the 2026-08-28 review originally called for, this time on solid registered ground. If every arm comes back unresolvable against control on both mazes at n>=3121, that refutes the claim that hallHpAuc at this n can resolve a single-fusion trade in R2, and the response is to raise n rather than declare anything balanced.",
+          "registeredAt": "2026-08-30T17:37:00.000Z",
+          "notes": "WHY THIS FAMILY EXISTS. Muddy Bog is the only fusion in the six-fusion roster still measured negative against the two structures it consumes: +0.079 (A) / -0.147 (B), from the 2026-08-28 confirmation sweep (bog-decouple-retune, 750 seeds x 2 postGaps = 1500 cells/arm/maze, UNREGISTERED). That sweep's own review concluded 'damage saturates, root saturates, this needs a mechanic review, not another dial' -- but that conclusion was measured while Bog's damage was gated behind its own root. That coupling was removed in commit 9ee93ad (2026-08-29): damage is now gated on footprint PRESENCE only, independent of root, and pulse.damage was raised 12 -> 28 in the same commit. The 'saturates both ways' finding describes a mechanic that no longer exists, so the correct first step is to re-measure under registered conditions rather than start a redesign.\n\nWHY THREE ARMS, NOT ONE. The existing damage dial was already swept nearly exhaustively (bog-decouple-retune: pulse.damage 1-32, 16 arms, 48000 runs) and does not hold flat -- it oscillates within about +-0.11 on maze B from 8 to 26, then jumps sharply between 26 (-0.013) and 27 (+0.203), a genuine discrete threshold (docs/reviews/2026-08-28-fusion-roster-worth-retune.md, balance.js TOWER.MUDDY_BOG comment). 28 is one step past that threshold and is already the best value found in that range; pushing the same dial further is not a promising next lever. Two dials Bog has NEVER been tested against are: (1) marginPx, a footprint-expansion field Firepit (marginPx:15) and Steam Vent (cloudMarginPx:15) both have and Bog previously had no code path for at all -- added 2026-08-30 (server/game/towers.js's areaRect call site, shared/balance.js MUDDY_BOG.marginPx, default 0/off) specifically to make this arm possible; and (2) root.msByWeight, which controls how long an enemy is held on the (now damage-gated-on-presence) footprint and therefore how many 500ms pulses it eats per crossing -- a lever that was entangled with the old root-gated-damage mechanic and may behave completely differently now that root's only job is dwell time, not a damage gate.\n\nARM DEFINITIONS. muddy-bog: current shipped config verbatim (pulse.damage 28, marginPx 0, root.msByWeight [600,1200,1800,2400]) -- re-measures the exact configuration the stale verdict was about, this time registered. muddy-bog-margin: balanceOverrides TOWER.MUDDY_BOG.marginPx 0->15, matching Firepit/Steam Vent's value exactly rather than inventing a new one. muddy-bog-longroot: balanceOverrides TOWER.MUDDY_BOG.root.msByWeight all four tiers x1.5 (600->900, 1200->1800, 1800->2700, 2400->3600), a uniform scale-up chosen so the ordering across weight tiers is unchanged and the change is describable in one sentence, not a per-tier hand-tune.\n\nEXPECTATION, STATED IN ADVANCE so it cannot be read as confirmation afterwards. muddy-bog (baseline) is expected to reproduce something close to +0.079 (A) / -0.147 (B) -- i.e. likely FAIL or UNRESOLVED, not a surprise PASS, because this is the same configuration the unregistered probe already measured; registering it closes the loose end rather than expecting a different number. margin and longroot are both genuinely open: margin is a direct structural analogue of the fix that made the Grinder pass (holding an enemy inside its own damage zone, where Bog previously had a bare 2x2 with literally zero halo), and longroot is a direct analogue too (more pulses landed per crossing, now that damage isn't itself capped by root). Neither has ever been measured, in any regime, at any n.\n\nSAMPLE SIZE. 1600 seeds x 2 postGaps = 3200 cells per arm per maze, against nRequired 3121 for MDE 0.10 on maze B (stats.js requiredN(1.41, 0.10)), identical derivation to grinder-r3-worth. 4 arms (1 control + 3 treatment) x 2 mazes x 3200 = 25600 runs.\n\nfamilySize is declared as 18 = 3 non-control arms x 2 mazes x 3 metrics (primary + 2 secondary), the full width of this family's own hypothesis space. Not padded against any other family, since this question is self-contained and not being split across sessions the way the Grinder's root/worth split was.\n\nNo balance change ships directly from this family. A PASS on margin or longroot identifies a retune worth landing; any actual balance.js change is a separate, deliberate follow-up commit that also updates the pinned pulse.damage/root.msByWeight values test in test/game/muddyBog.test.js:341-349."
+        },
+        "errors": [],
+        "earliestStartedAt": "2026-08-30T17:37:20.946Z"
+      },
+      "prereg": {
+        "familyId": "muddy-bog-r3",
+        "question": "Measured on hallHpAuc in the R2 regime against a two-ingredient control, does Muddy Bog -- as currently shipped, or with one of two candidate retunes (a footprint margin like Firepit/Steam Vent, or a longer root duration) -- clear the Amendment D contribution floor?",
+        "primaryMetric": "hallHpAuc",
+        "secondaryMetrics": [
+          "score",
+          "wavesCleared"
+        ],
+        "mde": 0.1,
+        "alpha": 0.05,
+        "power": 0.8,
+        "sigmaSource": "hallHpAuc paired delta sd measured in the R2 regime by the registered regime-r2-adoption family (24,000 runs, n=3000/cell, 18/18 gates PASS): ~0.87 (maze A) / ~1.41 (maze B). Maze B is the binding constraint. Identical source and values to fusion-r2-grinder and grinder-r3-worth, deliberately: the regime and control design are unchanged, only the structure under test differs.",
+        "nRequired": 3121,
+        "arms": [
+          "control",
+          "muddy-bog",
+          "muddy-bog-margin",
+          "muddy-bog-longroot"
+        ],
+        "mazes": [
+          "A",
+          "B"
+        ],
+        "familySize": 18,
+        "regime": {
+          "label": "R2",
+          "protocol": {
+            "spendDown": true,
+            "maxWaves": 10,
+            "humanElement": "EARTH"
+          },
+          "justification": "R2 carried unchanged from fusion-r2-grinder, grinder-r3-worth and every prior fusion-worth family, for the same reason: R1 stops at wave 8 and never sees the elites at 9-10, and R1's maze-A ceiling crushed the top Watchtower-ladder rung to +0.0011, nearly blind to the defence getting BETTER. The control arm uses partnerSpecial: WATER, which buys the partner special at the fusion's own anchor tile and DECLINES the fusion proposal, so the control holds BOTH ingredients standing (the same control design as fusion-r2-muddy-bog and bog-decouple-retune).",
+          "scopeLimit": "FOUR limits, carried from grinder-r3-worth. (1) R2 trades terminal survival for reach: only 0-7% of runs end with the hall alive, so hallHpFrac, win rate and every other TERMINAL measure are floor-censored and BARRED here; hallHpAuc is exempt as an integral over waves played, and wavesCleared is secondary despite being nearer a terminal measure. (2) The CROSS-POLICY GATE IS EMPTY -- only scripted-v1 exists -- so every verdict here is provisional on it. (3) humanElement confounds any cross-family comparison: this family measures ONLY whether a Muddy Bog variant beats ITS OWN control, never a ranking against fusions in other families. (4) This family CANNOT attribute a PASS between the margin change and the root change if both happened to pass -- each is tested as its own single-lever arm against the shared control precisely so it CAN be attributed; a future combined arm would need its own family."
+        },
+        "decisionRule": "Paired delta, each of {muddy-bog, muddy-bog-margin, muddy-bog-longroot} minus control, on hallHpAuc, per maze, evaluated independently per arm.\n\nPASS (clears the Amendment D contribution floor): for a given arm, delta > 0 AND BH-adjusted q < 0.05 across the declared family of 18 AND the exact sign test agrees in direction AND the verdict survives hang-imputation at the cell minimum. Per Philip's 2026-08-04 ruling, PASSING ON EITHER MAZE IS SUFFICIENT for that arm -- maze A is substantially easier than maze B and requiring both would force overtuning.\n\nFAIL (retune target, that specific lever): delta < 0 under those same gates on either maze, with no PASS on the other, for that arm.\n\nUNRESOLVED: anything else, for that arm. Not a pass, not a fail; no balance change follows from an unresolved cell.\n\nSPLIT-HALF IS DECLARED UNINFORMATIVE AND IS NOT A GATE, exactly as in grinder-r3-worth and steam-vent-retune: with a two-value scale per arm-vs-control comparison, splitForMetric ranks nothing informative. Reported for the record only.\n\nMONOTONICITY RULE: not applicable. The three non-control arms are not a dose ladder -- they are three structurally distinct, unordered interventions (ship-as-is, add a footprint margin, lengthen root) -- so there is no ordering to disqualify on. Each is judged solely against control.\n\nCROSS-POLICY GATE NOT MET: only scripted-v1 exists. Every verdict from this family is PROVISIONAL on that gate, declared here rather than discovered later.",
+        "whatWouldRefute": "For any one arm, a delta whose BH-adjusted q exceeds 0.05 on both mazes refutes a PASS claim for that specific variant. A resolvably negative delta on either maze with no PASS on the other refutes that variant's design premise and marks it (not the whole fusion) as a retune target. If ALL THREE arms fail to clear the floor on both mazes, that refutes the working hypothesis of this whole family -- that the floor-clearing gap is closeable by tuning Bog's own dials -- and returns the question to the mechanic-review track the 2026-08-28 review originally called for, this time on solid registered ground. If every arm comes back unresolvable against control on both mazes at n>=3121, that refutes the claim that hallHpAuc at this n can resolve a single-fusion trade in R2, and the response is to raise n rather than declare anything balanced.",
+        "registeredAt": "2026-08-30T17:37:00.000Z",
+        "notes": "WHY THIS FAMILY EXISTS. Muddy Bog is the only fusion in the six-fusion roster still measured negative against the two structures it consumes: +0.079 (A) / -0.147 (B), from the 2026-08-28 confirmation sweep (bog-decouple-retune, 750 seeds x 2 postGaps = 1500 cells/arm/maze, UNREGISTERED). That sweep's own review concluded 'damage saturates, root saturates, this needs a mechanic review, not another dial' -- but that conclusion was measured while Bog's damage was gated behind its own root. That coupling was removed in commit 9ee93ad (2026-08-29): damage is now gated on footprint PRESENCE only, independent of root, and pulse.damage was raised 12 -> 28 in the same commit. The 'saturates both ways' finding describes a mechanic that no longer exists, so the correct first step is to re-measure under registered conditions rather than start a redesign.\n\nWHY THREE ARMS, NOT ONE. The existing damage dial was already swept nearly exhaustively (bog-decouple-retune: pulse.damage 1-32, 16 arms, 48000 runs) and does not hold flat -- it oscillates within about +-0.11 on maze B from 8 to 26, then jumps sharply between 26 (-0.013) and 27 (+0.203), a genuine discrete threshold (docs/reviews/2026-08-28-fusion-roster-worth-retune.md, balance.js TOWER.MUDDY_BOG comment). 28 is one step past that threshold and is already the best value found in that range; pushing the same dial further is not a promising next lever. Two dials Bog has NEVER been tested against are: (1) marginPx, a footprint-expansion field Firepit (marginPx:15) and Steam Vent (cloudMarginPx:15) both have and Bog previously had no code path for at all -- added 2026-08-30 (server/game/towers.js's areaRect call site, shared/balance.js MUDDY_BOG.marginPx, default 0/off) specifically to make this arm possible; and (2) root.msByWeight, which controls how long an enemy is held on the (now damage-gated-on-presence) footprint and therefore how many 500ms pulses it eats per crossing -- a lever that was entangled with the old root-gated-damage mechanic and may behave completely differently now that root's only job is dwell time, not a damage gate.\n\nARM DEFINITIONS. muddy-bog: current shipped config verbatim (pulse.damage 28, marginPx 0, root.msByWeight [600,1200,1800,2400]) -- re-measures the exact configuration the stale verdict was about, this time registered. muddy-bog-margin: balanceOverrides TOWER.MUDDY_BOG.marginPx 0->15, matching Firepit/Steam Vent's value exactly rather than inventing a new one. muddy-bog-longroot: balanceOverrides TOWER.MUDDY_BOG.root.msByWeight all four tiers x1.5 (600->900, 1200->1800, 1800->2700, 2400->3600), a uniform scale-up chosen so the ordering across weight tiers is unchanged and the change is describable in one sentence, not a per-tier hand-tune.\n\nEXPECTATION, STATED IN ADVANCE so it cannot be read as confirmation afterwards. muddy-bog (baseline) is expected to reproduce something close to +0.079 (A) / -0.147 (B) -- i.e. likely FAIL or UNRESOLVED, not a surprise PASS, because this is the same configuration the unregistered probe already measured; registering it closes the loose end rather than expecting a different number. margin and longroot are both genuinely open: margin is a direct structural analogue of the fix that made the Grinder pass (holding an enemy inside its own damage zone, where Bog previously had a bare 2x2 with literally zero halo), and longroot is a direct analogue too (more pulses landed per crossing, now that damage isn't itself capped by root). Neither has ever been measured, in any regime, at any n.\n\nSAMPLE SIZE. 1600 seeds x 2 postGaps = 3200 cells per arm per maze, against nRequired 3121 for MDE 0.10 on maze B (stats.js requiredN(1.41, 0.10)), identical derivation to grinder-r3-worth. 4 arms (1 control + 3 treatment) x 2 mazes x 3200 = 25600 runs.\n\nfamilySize is declared as 18 = 3 non-control arms x 2 mazes x 3 metrics (primary + 2 secondary), the full width of this family's own hypothesis space. Not padded against any other family, since this question is self-contained and not being split across sessions the way the Grinder's root/worth split was.\n\nNo balance change ships directly from this family. A PASS on margin or longroot identifies a retune worth landing; any actual balance.js change is a separate, deliberate follow-up commit that also updates the pinned pulse.damage/root.msByWeight values test in test/game/muddyBog.test.js:341-349."
+      },
+      "records": 25600,
+      "refused": false,
+      "mixed": false,
+      "verdictAllowed": true,
+      "familyCorruption": [],
+      "cellDrift": [],
+      "versionSummary": {
+        "gitShas": [
+          "101646a"
+        ],
+        "balanceHashes": [
+          "1c2ec4a554544a86d288d200bb16c5486f94a96d"
+        ],
+        "dirty": false
+      },
+      "bands": [
+        {
+          "label": "git 101646a | balance 1c2ec4a554544a86d288d200bb16c5486f94a96d | clean",
+          "records": 25600,
+          "descriptives": [
+            {
+              "metric": "hallHpAuc",
+              "maze": "A",
+              "armId": "control",
+              "n": 3200,
+              "mean": 7.7334424999999705,
+              "sd": 0.754776395039149,
+              "ceilingShare": 0.0003125,
+              "floorShare": 0.0003125,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "A",
+              "armId": "muddy-bog",
+              "n": 3200,
+              "mean": 7.878699999999957,
+              "sd": 0.8241014832938457,
+              "ceilingShare": 0.0009375,
+              "floorShare": 0,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "A",
+              "armId": "muddy-bog-margin",
+              "n": 3200,
+              "mean": 7.9019587499999515,
+              "sd": 0.9039262171149942,
+              "ceilingShare": 0.005625,
+              "floorShare": 0,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "A",
+              "armId": "muddy-bog-longroot",
+              "n": 3200,
+              "mean": 7.8782849999999565,
+              "sd": 0.8235438400095189,
+              "ceilingShare": 0.0009375,
+              "floorShare": 0,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "B",
+              "armId": "control",
+              "n": 3200,
+              "mean": 7.314276249999995,
+              "sd": 1.0795313878907835,
+              "ceilingShare": 0,
+              "floorShare": 0.00125,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "B",
+              "armId": "muddy-bog",
+              "n": 3200,
+              "mean": 7.515334374999989,
+              "sd": 1.066490497525662,
+              "ceilingShare": 0.0040625,
+              "floorShare": 0,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "B",
+              "armId": "muddy-bog-margin",
+              "n": 3200,
+              "mean": 7.600200000000002,
+              "sd": 1.0559582152825178,
+              "ceilingShare": 0.0059375,
+              "floorShare": 0,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "B",
+              "armId": "muddy-bog-longroot",
+              "n": 3200,
+              "mean": 7.5158093749999875,
+              "sd": 1.0671048391056082,
+              "ceilingShare": 0.0040625,
+              "floorShare": 0,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "score",
+              "maze": "A",
+              "armId": "control",
+              "n": 3200,
+              "mean": 7.35875,
+              "sd": 0.7934861018383383,
+              "ceilingShare": 0.0003125,
+              "floorShare": 0.0009375,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "score",
+              "maze": "A",
+              "armId": "muddy-bog",
+              "n": 3200,
+              "mean": 7.4690625,
+              "sd": 0.871008008439578,
+              "ceilingShare": 0.0009375,
+              "floorShare": 0.0034375,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "score",
+              "maze": "A",
+              "armId": "muddy-bog-margin",
+              "n": 3200,
+              "mean": 7.5064625000000005,
+              "sd": 0.9875200389307284,
+              "ceilingShare": 0.005625,
+              "floorShare": 0.005,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "score",
+              "maze": "A",
+              "armId": "muddy-bog-longroot",
+              "n": 3200,
+              "mean": 7.4684375,
+              "sd": 0.8702674791740207,
+              "ceilingShare": 0.0009375,
+              "floorShare": 0.0034375,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "score",
+              "maze": "B",
+              "armId": "control",
+              "n": 3200,
+              "mean": 7.02875,
+              "sd": 1.156056262969487,
+              "ceilingShare": 0.0459375,
+              "floorShare": 0.03875,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "score",
+              "maze": "B",
+              "armId": "muddy-bog",
+              "n": 3200,
+              "mean": 7.1259375,
+              "sd": 1.1086980538669529,
+              "ceilingShare": 0.059375,
+              "floorShare": 0.0403125,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "score",
+              "maze": "B",
+              "armId": "muddy-bog-margin",
+              "n": 3200,
+              "mean": 7.2025,
+              "sd": 1.085984484566406,
+              "ceilingShare": 0.0615625,
+              "floorShare": 0.0321875,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "score",
+              "maze": "B",
+              "armId": "muddy-bog-longroot",
+              "n": 3200,
+              "mean": 7.1265625,
+              "sd": 1.109472441720463,
+              "ceilingShare": 0.06,
+              "floorShare": 0.0403125,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "A",
+              "armId": "control",
+              "n": 3200,
+              "mean": 7.3584375,
+              "sd": 0.7922475630487048,
+              "ceilingShare": 0.0003125,
+              "floorShare": 0.0009375,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "A",
+              "armId": "muddy-bog",
+              "n": 3200,
+              "mean": 7.468125,
+              "sd": 0.8677380291754314,
+              "ceilingShare": 0.0009375,
+              "floorShare": 0.0034375,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "A",
+              "armId": "muddy-bog-margin",
+              "n": 3200,
+              "mean": 7.4978125,
+              "sd": 0.9612668596498294,
+              "ceilingShare": 0.010625,
+              "floorShare": 0.005,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "A",
+              "armId": "muddy-bog-longroot",
+              "n": 3200,
+              "mean": 7.4675,
+              "sd": 0.866994030877926,
+              "ceilingShare": 0.0009375,
+              "floorShare": 0.0034375,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "B",
+              "armId": "control",
+              "n": 3200,
+              "mean": 7.02875,
+              "sd": 1.156056262969487,
+              "ceilingShare": 0.0459375,
+              "floorShare": 0.03875,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "B",
+              "armId": "muddy-bog",
+              "n": 3200,
+              "mean": 7.1259375,
+              "sd": 1.1086980538669529,
+              "ceilingShare": 0.059375,
+              "floorShare": 0.0403125,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "B",
+              "armId": "muddy-bog-margin",
+              "n": 3200,
+              "mean": 7.2025,
+              "sd": 1.085984484566406,
+              "ceilingShare": 0.0615625,
+              "floorShare": 0.0321875,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "B",
+              "armId": "muddy-bog-longroot",
+              "n": 3200,
+              "mean": 7.1265625,
+              "sd": 1.109472441720463,
+              "ceilingShare": 0.06,
+              "floorShare": 0.0403125,
+              "hangs": 0,
+              "total": 3200
+            }
+          ],
+          "comparisons": [
+            {
+              "metric": "hallHpAuc",
+              "maze": "A",
+              "armId": "muddy-bog",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.7334424999999705,
+                "sd": 0.754776395039149,
+                "ceilingShare": 0.0003125,
+                "floorShare": 0.0003125,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.878699999999957,
+                "sd": 0.8241014832938457,
+                "ceilingShare": 0.0009375,
+                "floorShare": 0,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.14525749999999985,
+                "sd": 0.7880884656975696,
+                "se": 0.013931567456741333,
+                "t": 10.426500855057148,
+                "p": 4.7084193796469565e-25,
+                "ci": {
+                  "lo": 0.1179183281249997,
+                  "hi": 0.1725972187500001
+                },
+                "q": 1.6950309766729042e-24
+              },
+              "sign": {
+                "better": 1355,
+                "worse": 1009,
+                "n": 2364,
+                "p": 1.1761610641322648e-12
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.14525749999999985,
+                "sd": 0.7880884656975696,
+                "t": 10.426500855057148,
+                "p": 4.7084193796469565e-25,
+                "q": 1.6950309766729042e-24
+              },
+              "achievedMde": 0.03903047041329466,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": true,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "A",
+              "armId": "muddy-bog-margin",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.7334424999999705,
+                "sd": 0.754776395039149,
+                "ceilingShare": 0.0003125,
+                "floorShare": 0.0003125,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.9019587499999515,
+                "sd": 0.9039262171149942,
+                "ceilingShare": 0.005625,
+                "floorShare": 0,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.1685162499999997,
+                "sd": 0.7939648018925327,
+                "se": 0.014035447386041091,
+                "t": 12.006475131501473,
+                "p": 1.6253403522126976e-32,
+                "ci": {
+                  "lo": 0.14113543749999993,
+                  "hi": 0.19627810156249992
+                },
+                "q": 1.462806316991428e-31
+              },
+              "sign": {
+                "better": 1426,
+                "worse": 924,
+                "n": 2350,
+                "p": 3.2469527324808165e-25
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.1685162499999997,
+                "sd": 0.7939648018925327,
+                "t": 12.006475131501473,
+                "p": 1.6253403522126976e-32,
+                "q": 1.462806316991428e-31
+              },
+              "achievedMde": 0.03932149886502193,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": true,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "A",
+              "armId": "muddy-bog-longroot",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.7334424999999705,
+                "sd": 0.754776395039149,
+                "ceilingShare": 0.0003125,
+                "floorShare": 0.0003125,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.8782849999999565,
+                "sd": 0.8235438400095189,
+                "ceilingShare": 0.0009375,
+                "floorShare": 0,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.14484249999999985,
+                "sd": 0.7879537390677951,
+                "se": 0.013929185803903333,
+                "t": 10.39849005096989,
+                "p": 6.258923183581988e-25,
+                "ci": {
+                  "lo": 0.11758256249999999,
+                  "hi": 0.1718800937499999
+                },
+                "q": 1.8776769550745966e-24
+              },
+              "sign": {
+                "better": 1355,
+                "worse": 1009,
+                "n": 2364,
+                "p": 1.1761610641322648e-12
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.14484249999999985,
+                "sd": 0.7879537390677951,
+                "t": 10.39849005096989,
+                "p": 6.258923183581988e-25,
+                "q": 1.8776769550745966e-24
+              },
+              "achievedMde": 0.03902379801042852,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": true,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "B",
+              "armId": "muddy-bog",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.314276249999995,
+                "sd": 1.0795313878907835,
+                "ceilingShare": 0,
+                "floorShare": 0.00125,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.515334374999989,
+                "sd": 1.066490497525662,
+                "ceilingShare": 0.0040625,
+                "floorShare": 0,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.20105812500000056,
+                "sd": 0.9834423718639244,
+                "se": 0.01738496925127908,
+                "t": 11.565054967538002,
+                "p": 2.464119115305731e-30,
+                "ci": {
+                  "lo": 0.1665390468750002,
+                  "hi": 0.23547034375
+                },
+                "q": 1.1088536018875789e-29
+              },
+              "sign": {
+                "better": 1225,
+                "worse": 682,
+                "n": 1907,
+                "p": 7.751214397711372e-36
+              },
+              "splitHalfRho": 0.8,
+              "imputed": {
+                "mean": 0.20105812500000056,
+                "sd": 0.9834423718639244,
+                "t": 11.565054967538002,
+                "p": 2.464119115305731e-30,
+                "q": 1.1088536018875789e-29
+              },
+              "achievedMde": 0.0487054690798447,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": true,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "B",
+              "armId": "muddy-bog-margin",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.314276249999995,
+                "sd": 1.0795313878907835,
+                "ceilingShare": 0,
+                "floorShare": 0.00125,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.600200000000002,
+                "sd": 1.0559582152825178,
+                "ceilingShare": 0.0059375,
+                "floorShare": 0,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.28592375,
+                "sd": 0.9691521922159972,
+                "se": 0.0171323521779435,
+                "t": 16.68911233146978,
+                "p": 5.061246949933083e-60,
+                "ci": {
+                  "lo": 0.25186862500000023,
+                  "hi": 0.31947396874999995
+                },
+                "q": 9.110244509879549e-59
+              },
+              "sign": {
+                "better": 1330,
+                "worse": 601,
+                "n": 1931,
+                "p": 3.836715564443461e-63
+              },
+              "splitHalfRho": 0.8,
+              "imputed": {
+                "mean": 0.28592375,
+                "sd": 0.9691521922159972,
+                "t": 16.68911233146978,
+                "p": 5.061246949933083e-60,
+                "q": 9.110244509879549e-59
+              },
+              "achievedMde": 0.047997740876443845,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": true,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "B",
+              "armId": "muddy-bog-longroot",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.314276249999995,
+                "sd": 1.0795313878907835,
+                "ceilingShare": 0,
+                "floorShare": 0.00125,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.5158093749999875,
+                "sd": 1.0671048391056082,
+                "ceilingShare": 0.0040625,
+                "floorShare": 0,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.20153312500000056,
+                "sd": 0.9835478904426765,
+                "se": 0.0173868345738435,
+                "t": 11.591133748013226,
+                "p": 1.8402588351101335e-30,
+                "ci": {
+                  "lo": 0.16751595312500026,
+                  "hi": 0.23617578125000002
+                },
+                "q": 1.1041553010660802e-29
+              },
+              "sign": {
+                "better": 1226,
+                "worse": 683,
+                "n": 1909,
+                "p": 8.435957820577878e-36
+              },
+              "splitHalfRho": 0.8,
+              "imputed": {
+                "mean": 0.20153312500000056,
+                "sd": 0.9835478904426765,
+                "t": 11.591133748013226,
+                "p": 1.8402588351101335e-30,
+                "q": 1.1041553010660802e-29
+              },
+              "achievedMde": 0.04871069493956135,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": true,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "score",
+              "maze": "A",
+              "armId": "muddy-bog",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.35875,
+                "sd": 0.7934861018383383,
+                "ceilingShare": 0.0003125,
+                "floorShare": 0.0009375,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.4690625,
+                "sd": 0.871008008439578,
+                "ceilingShare": 0.0009375,
+                "floorShare": 0.0034375,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.1103125,
+                "sd": 0.8512462018263455,
+                "se": 0.015048049044267533,
+                "t": 7.330684507705197,
+                "p": 2.8861291932047567e-13,
+                "ci": {
+                  "lo": 0.08125,
+                  "hi": 0.1396875
+                },
+                "q": 4.678644465549691e-13
+              },
+              "sign": {
+                "better": 813,
+                "worse": 538,
+                "n": 1351,
+                "p": 7.429581083611651e-14
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.1103125,
+                "sd": 0.8512462018263455,
+                "t": 7.330684507705197,
+                "p": 2.8861291932047567e-13,
+                "q": 4.678644465549691e-13
+              },
+              "achievedMde": 0.04215838848168426,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "score",
+              "maze": "A",
+              "armId": "muddy-bog-margin",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.35875,
+                "sd": 0.7934861018383383,
+                "ceilingShare": 0.0003125,
+                "floorShare": 0.0009375,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.5064625000000005,
+                "sd": 0.9875200389307284,
+                "ceilingShare": 0.005625,
+                "floorShare": 0.005,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.14771249999999997,
+                "sd": 0.8930708830879248,
+                "se": 0.01578741193779325,
+                "t": 9.356346726241634,
+                "p": 1.5064345839993022e-20,
+                "ci": {
+                  "lo": 0.116432546875,
+                  "hi": 0.17795678124999992
+                },
+                "q": 3.0128691679986045e-20
+              },
+              "sign": {
+                "better": 852,
+                "worse": 520,
+                "n": 1372,
+                "p": 2.710524063731025e-19
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.14771249999999997,
+                "sd": 0.8930708830879248,
+                "t": 9.356346726241634,
+                "p": 1.5064345839993022e-20,
+                "q": 3.0128691679986045e-20
+              },
+              "achievedMde": 0.0442297764737425,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "score",
+              "maze": "A",
+              "armId": "muddy-bog-longroot",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.35875,
+                "sd": 0.7934861018383383,
+                "ceilingShare": 0.0003125,
+                "floorShare": 0.0009375,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.4684375,
+                "sd": 0.8702674791740207,
+                "ceilingShare": 0.0009375,
+                "floorShare": 0.0034375,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.1096875,
+                "sd": 0.8505922926754315,
+                "se": 0.015036489454395252,
+                "t": 7.29475455907946,
+                "p": 3.7546908024222935e-13,
+                "ci": {
+                  "lo": 0.080625,
+                  "hi": 0.13875
+                },
+                "q": 5.198802649507791e-13
+              },
+              "sign": {
+                "better": 812,
+                "worse": 538,
+                "n": 1350,
+                "p": 8.96263007977744e-14
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.1096875,
+                "sd": 0.8505922926754315,
+                "t": 7.29475455907946,
+                "p": 3.7546908024222935e-13,
+                "q": 5.198802649507791e-13
+              },
+              "achievedMde": 0.04212600330809193,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "score",
+              "maze": "B",
+              "armId": "muddy-bog",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.02875,
+                "sd": 1.156056262969487,
+                "ceilingShare": 0.0459375,
+                "floorShare": 0.03875,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.1259375,
+                "sd": 1.1086980538669529,
+                "ceilingShare": 0.059375,
+                "floorShare": 0.0403125,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.0971875,
+                "sd": 1.057102785003396,
+                "se": 0.018687113692177158,
+                "t": 5.200776406721646,
+                "p": 2.1094123676935102e-7,
+                "ci": {
+                  "lo": 0.0609375,
+                  "hi": 0.1340625
+                },
+                "q": 2.1094123676935102e-7
+              },
+              "sign": {
+                "better": 722,
+                "worse": 600,
+                "n": 1322,
+                "p": 0.0008684128993661355
+              },
+              "splitHalfRho": 0.9486832980505138,
+              "imputed": {
+                "mean": 0.0971875,
+                "sd": 1.057102785003396,
+                "t": 5.200776406721646,
+                "p": 2.1094123676935102e-7,
+                "q": 2.1094123676935102e-7
+              },
+              "achievedMde": 0.052353537413298144,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "score",
+              "maze": "B",
+              "armId": "muddy-bog-margin",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.02875,
+                "sd": 1.156056262969487,
+                "ceilingShare": 0.0459375,
+                "floorShare": 0.03875,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.2025,
+                "sd": 1.085984484566406,
+                "ceilingShare": 0.0615625,
+                "floorShare": 0.0321875,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.17375,
+                "sd": 1.021095863025591,
+                "se": 0.018050595224673137,
+                "t": 9.6257213591773,
+                "p": 1.2198297966412728e-21,
+                "ci": {
+                  "lo": 0.139375,
+                  "hi": 0.2090625
+                },
+                "q": 2.7446170424428636e-21
+              },
+              "sign": {
+                "better": 795,
+                "worse": 527,
+                "n": 1322,
+                "p": 1.7289718867855076e-13
+              },
+              "splitHalfRho": 0.9486832980505138,
+              "imputed": {
+                "mean": 0.17375,
+                "sd": 1.021095863025591,
+                "t": 9.6257213591773,
+                "p": 1.2198297966412728e-21,
+                "q": 2.7446170424428636e-21
+              },
+              "achievedMde": 0.0505702768225159,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "score",
+              "maze": "B",
+              "armId": "muddy-bog-longroot",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.02875,
+                "sd": 1.156056262969487,
+                "ceilingShare": 0.0459375,
+                "floorShare": 0.03875,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.1265625,
+                "sd": 1.109472441720463,
+                "ceilingShare": 0.06,
+                "floorShare": 0.0403125,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.0978125,
+                "sd": 1.0573408061441572,
+                "se": 0.018691321351244607,
+                "t": 5.233043622862271,
+                "p": 1.7749091652253041e-7,
+                "ci": {
+                  "lo": 0.06125,
+                  "hi": 0.133125
+                },
+                "q": 1.9967728108784672e-7
+              },
+              "sign": {
+                "better": 724,
+                "worse": 600,
+                "n": 1324,
+                "p": 0.0007181071033808592
+              },
+              "splitHalfRho": 0.9486832980505138,
+              "imputed": {
+                "mean": 0.0978125,
+                "sd": 1.0573408061441572,
+                "t": 5.233043622862271,
+                "p": 1.7749091652253041e-7,
+                "q": 1.9967728108784672e-7
+              },
+              "achievedMde": 0.05236532552782662,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "A",
+              "armId": "muddy-bog",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.3584375,
+                "sd": 0.7922475630487048,
+                "ceilingShare": 0.0003125,
+                "floorShare": 0.0009375,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.468125,
+                "sd": 0.8677380291754314,
+                "ceilingShare": 0.0009375,
+                "floorShare": 0.0034375,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.1096875,
+                "sd": 0.8476471467364308,
+                "se": 0.014984426137768968,
+                "t": 7.320100148748931,
+                "p": 3.1190963103664604e-13,
+                "ci": {
+                  "lo": 0.0803125,
+                  "hi": 0.139375
+                },
+                "q": 4.678644465549691e-13
+              },
+              "sign": {
+                "better": 813,
+                "worse": 538,
+                "n": 1351,
+                "p": 7.429581083611651e-14
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.1096875,
+                "sd": 0.8476471467364308,
+                "t": 7.320100148748931,
+                "p": 3.1190963103664604e-13,
+                "q": 4.678644465549691e-13
+              },
+              "achievedMde": 0.041980143501181476,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "A",
+              "armId": "muddy-bog-margin",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.3584375,
+                "sd": 0.7922475630487048,
+                "ceilingShare": 0.0003125,
+                "floorShare": 0.0009375,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.4978125,
+                "sd": 0.9612668596498294,
+                "ceilingShare": 0.010625,
+                "floorShare": 0.005,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.139375,
+                "sd": 0.869733289936424,
+                "se": 0.015374857678443276,
+                "t": 9.065124563423725,
+                "p": 2.1176659005433268e-19,
+                "ci": {
+                  "lo": 0.109375,
+                  "hi": 0.1696875
+                },
+                "q": 3.811798620977988e-19
+              },
+              "sign": {
+                "better": 852,
+                "worse": 520,
+                "n": 1372,
+                "p": 2.710524063731025e-19
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.139375,
+                "sd": 0.869733289936424,
+                "t": 9.065124563423725,
+                "p": 2.1176659005433268e-19,
+                "q": 3.811798620977988e-19
+              },
+              "achievedMde": 0.0430739706490615,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "A",
+              "armId": "muddy-bog-longroot",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.3584375,
+                "sd": 0.7922475630487048,
+                "ceilingShare": 0.0003125,
+                "floorShare": 0.0009375,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.4675,
+                "sd": 0.866994030877926,
+                "ceilingShare": 0.0009375,
+                "floorShare": 0.0034375,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.1090625,
+                "sd": 0.8469899976453565,
+                "se": 0.014972809273305238,
+                "t": 7.284037217681364,
+                "p": 4.060263945759817e-13,
+                "ci": {
+                  "lo": 0.0803125,
+                  "hi": 0.1375
+                },
+                "q": 5.22033935883405e-13
+              },
+              "sign": {
+                "better": 812,
+                "worse": 538,
+                "n": 1350,
+                "p": 8.96263007977744e-14
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.1090625,
+                "sd": 0.8469899976453565,
+                "t": 7.284037217681364,
+                "p": 4.060263945759817e-13,
+                "q": 5.22033935883405e-13
+              },
+              "achievedMde": 0.04194759786795286,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "B",
+              "armId": "muddy-bog",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.02875,
+                "sd": 1.156056262969487,
+                "ceilingShare": 0.0459375,
+                "floorShare": 0.03875,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.1259375,
+                "sd": 1.1086980538669529,
+                "ceilingShare": 0.059375,
+                "floorShare": 0.0403125,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.0971875,
+                "sd": 1.057102785003396,
+                "se": 0.018687113692177158,
+                "t": 5.200776406721646,
+                "p": 2.1094123676935102e-7,
+                "ci": {
+                  "lo": 0.06,
+                  "hi": 0.1340625
+                },
+                "q": 2.1094123676935102e-7
+              },
+              "sign": {
+                "better": 722,
+                "worse": 600,
+                "n": 1322,
+                "p": 0.0008684128993661355
+              },
+              "splitHalfRho": 0.9486832980505138,
+              "imputed": {
+                "mean": 0.0971875,
+                "sd": 1.057102785003396,
+                "t": 5.200776406721646,
+                "p": 2.1094123676935102e-7,
+                "q": 2.1094123676935102e-7
+              },
+              "achievedMde": 0.052353537413298144,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "B",
+              "armId": "muddy-bog-margin",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.02875,
+                "sd": 1.156056262969487,
+                "ceilingShare": 0.0459375,
+                "floorShare": 0.03875,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.2025,
+                "sd": 1.085984484566406,
+                "ceilingShare": 0.0615625,
+                "floorShare": 0.0321875,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.17375,
+                "sd": 1.021095863025591,
+                "se": 0.018050595224673137,
+                "t": 9.6257213591773,
+                "p": 1.2198297966412728e-21,
+                "ci": {
+                  "lo": 0.13875,
+                  "hi": 0.2090703124999999
+                },
+                "q": 2.7446170424428636e-21
+              },
+              "sign": {
+                "better": 795,
+                "worse": 527,
+                "n": 1322,
+                "p": 1.7289718867855076e-13
+              },
+              "splitHalfRho": 0.9486832980505138,
+              "imputed": {
+                "mean": 0.17375,
+                "sd": 1.021095863025591,
+                "t": 9.6257213591773,
+                "p": 1.2198297966412728e-21,
+                "q": 2.7446170424428636e-21
+              },
+              "achievedMde": 0.0505702768225159,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "B",
+              "armId": "muddy-bog-longroot",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.02875,
+                "sd": 1.156056262969487,
+                "ceilingShare": 0.0459375,
+                "floorShare": 0.03875,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.1265625,
+                "sd": 1.109472441720463,
+                "ceilingShare": 0.06,
+                "floorShare": 0.0403125,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.0978125,
+                "sd": 1.0573408061441572,
+                "se": 0.018691321351244607,
+                "t": 5.233043622862271,
+                "p": 1.7749091652253041e-7,
+                "ci": {
+                  "lo": 0.061875,
+                  "hi": 0.1340625
+                },
+                "q": 1.9967728108784672e-7
+              },
+              "sign": {
+                "better": 724,
+                "worse": 600,
+                "n": 1324,
+                "p": 0.0007181071033808592
+              },
+              "splitHalfRho": 0.9486832980505138,
+              "imputed": {
+                "mean": 0.0978125,
+                "sd": 1.0573408061441572,
+                "t": 5.233043622862271,
+                "p": 1.7749091652253041e-7,
+                "q": 1.9967728108784672e-7
+              },
+              "achievedMde": 0.05236532552782662,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            }
+          ],
+          "unavailableMetrics": [],
+          "actualTests": 18
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "id": "steam_vent",
+  "category": "fusion_structure",
+  "runtime_id": "STEAM_VENT",
+  "display_alias": "Steam Vent",
+  "footprint_tiles": {
+    "w": 2,
+    "h": 2,
+    "walkable": true
+  },
+  "origin": {
+    "value": null,
+    "status": "calibration_pending"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "idle",
+    "active"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/steam-vent/steam-vent-concept-v4-overflowing-steam.png",
+    "source_directory": "art/source/steam-vent",
+    "prompt_edit_lineage": [
+      "steam-vent-concept-v1.png",
+      "steam-vent-concept-v2-reference-aligned.png",
+      "steam-vent-concept-v3-steam-gate.png",
+      "steam-vent-concept-v4-overflowing-steam.png"
+    ],
+    "frame_count": 3
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/steam_vent.png + client/public/art/steam_vent.json",
+    "frame_count": 3,
+    "contract": "3 untrimmed 128x128 RGBA frames with 2px atlas gutters, delivered as idle/pressure/confusion; pressure and confusion renamed to active_0/active_1 (a two-frame active clip) to match StructureAnimator vocabulary"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "image_key": "steam_vent",
+    "gameplay_integrated": true,
+    "trigger": "StructureAnimator cycleSeq-bump ACTIVE window (static family, no phase machine): server/game/structureBehaviors/confusion.js tickConfusion now bumps cycleSeq on every ready-and-occupied pulse (previously never bumped it, so this was dead like Snare Post/Watchtower before their fixes)"
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/steam-vent-production-qa.md",
+    "gate": "manual Phaser playtest confirmation of the idle/active pulse readability still open; the cycleSeq bump is a small gameplay-code change made alongside the art wiring, not separately balance-reviewed"
+  }
+}

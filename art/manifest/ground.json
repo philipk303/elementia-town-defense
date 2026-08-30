@@ -1,0 +1,61 @@
+{
+  "id": "ground",
+  "category": "terrain",
+  "runtime_id": "GROUND",
+  "display_alias": "Map ground layer — outskirts-to-courtyard, dusk",
+  "footprint_tiles": {
+    "w": 40,
+    "h": 23,
+    "walkable": true
+  },
+  "origin": {
+    "value": [0, 0],
+    "status": "fixed_top_left"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "static"
+  ],
+  "source": {
+    "status": "procedural_no_source",
+    "reference_path": "tools/art/ground_pipeline.py",
+    "source_directory": null,
+    "prompt_edit_lineage": [],
+    "frame_count": 1,
+    "note": "No generated source art. The layer is drawn deterministically from a seed, the same approach as tools/art/generate_rock_trap.py. The binding constraint is VALUE, not subject matter, and only a script can assert its own luminance ceiling."
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/ground.png",
+    "frame_count": 1,
+    "contract": "one 1280x736 RGB image, opaque, drawn at map resolution (TILES_W*TILE_SIZE by TILES_H*TILE_SIZE); north-to-south gradient from field green at the gates to packed earth at the Hall; every pixel below luminance 72 and whole-image mean within [30, 55]"
+  },
+  "design": {
+    "transition_strategy": "single_prerendered_image",
+    "strategy_rationale": "The brief is one continuous north-to-south blend. Discrete tiles band at every boundary at 32px and per-tile tint shifts colour without shifting texture, which is the actual difference between grass and packed earth. Decided with Philip 2026-08-14.",
+    "value_band": "dusk, mean luminance ~44",
+    "value_rationale": "Every pre-existing sprite was authored dark against the old near-black field — goblin 59, orc 67, troll 64, Hall 79, Farm 94 (mean luminance of opaque pixels). A daylight ground at luminance 90-160 sits brighter than the enemies and erases their silhouettes. The dusk band was chosen over re-authoring 41 assets. Decided with Philip 2026-08-14.",
+    "regions": [
+      "paddy (far north): flooded rice parcels and earth bunds, echoing the Farm",
+      "treeline (north): cedar and broadleaf copses, boulders, shrub clumps",
+      "scrub (midfield): thinning shrub and stone, the transition",
+      "courtyard (south): irregular flagstone court, lantern-lined approach, well, raked gravel, stacked goods, drifted blossom"
+    ],
+    "prop_value_rule": "Props read by being darker than the ground, never lighter. Inside a ~20-unit band a prop 4 units above the field is invisible while one 15 units below reads instantly. The lantern flame is the single deliberate warm accent.",
+    "hue_separation": "The outskirts are held as grass (green-minus-red gap +17) through the top fifth of the map, with the blend to packed earth compressed into the lower two thirds. This is a legibility device, not just a look: this dusk band has very little luminance range to spend, so separating the ground from the brown-ochre enemy and Earth palettes by HUE is what buys their readability. Against the outskirts the Earth ghost's hue separation is 22.7 vs 6.9 against the courtyard, and the Grinder's 25.9 vs 8.7. Requested by Philip 2026-08-14.",
+    "theme_colour_fallout": "Introducing a lit ground put six theme tokens under the WCAG 3:1 graphical-object threshold, all worst against the courtyard: EARTH 2.87, BARRICADE 2.96, WATCHTOWER 2.09, MAGMA_TRAP 2.71, MUDDY_BOG 2.46, GRINDER 2.46. All six were lifted along their own hue by a uniform RGB scale, so colour identity is unchanged; Muddy Bog additionally moved from olive-green to mud-brown (hue separation from the grass outskirts 10.5 -> 18.3) because it was colliding with the new meadow and brown reads truer for mud anyway. The gate marker literal in GameScene.create() was lifted with WATCHTOWER (2.15 -> 3.41 against the grass it sits on). Gated going forward by test/themeContrast.test.js.",
+    "worn_routes": "The three gate-to-Hall routes are drawn DARKER than the field. A smooth brighter stripe reads as a light beam regardless of shape or blur; damp trodden earth is genuinely darker, and it spends none of the contrast budget."
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "image_key": "ground",
+    "gameplay_integrated": true,
+    "note": "Registered in client/src/assets/manifest.js IMAGES. GameScene.js create() adds it at GROUND_DEPTH (-20), below the placement grid (-19) and structureAuraGfx (-1); guarded by this.textures.exists('ground') so the scene still renders the bare grid if the texture is absent. The grid's alpha drops to 0.22 when the ground is present."
+  },
+  "qa": {
+    "status": "production_validated",
+    "evidence": "test/groundLayer.test.js, test/themeContrast.test.js",
+    "gate": "automated: image dimensions asserted against shared/constants.js, luminance ceiling/mean/bright-pixel budget asserted against the sprites the ground must not overpower, registration/depth-order asserted in GameScene, and every element/structure/enemy theme token asserted at >=3:1 against all three ground bands. Measured legibility replaced visual review: sprite worst-case contrast is computed from the brightest 20% of each sprite's opaque pixels, which is stricter and cheaper than a screenshot read."
+  }
+}

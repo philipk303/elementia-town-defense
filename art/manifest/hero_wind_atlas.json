@@ -1,0 +1,61 @@
+{
+  "id": "hero_wind_atlas",
+  "category": "hero_atlas",
+  "runtime_id": "chibi_wind",
+  "display_alias": "Wind hero",
+  "footprint_tiles": null,
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "baseline_y": 56
+    },
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [
+    "down",
+    "up",
+    "left",
+    "right"
+  ],
+  "states": [
+    "idle",
+    "run",
+    "attack",
+    "cast",
+    "hurt",
+    "death"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/calibration/wind.png",
+    "source_directories": [
+      "art/source/wind-vertical-slice",
+      "art/source/wind-production"
+    ],
+    "prompt_edit_lineage": [
+      "art/source/wind-vertical-slice",
+      "art/source/wind-production"
+    ],
+    "frame_count": 80,
+    "calibration_sources_preserved": true
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/chibi_wind.png + client/public/art/chibi_wind.json",
+    "frame_count": 80,
+    "scale": 0.0402,
+    "contract": "80 untrimmed 64x64 RGBA frames, shared baseline 56, 2px atlas gutters"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "atlas_key": "chibi_wind",
+    "preview_page": "client/wind-preview.html",
+    "gameplay_integrated": true
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/wind-production-qa.md",
+    "gate": "manual Phaser playtest confirmation of idle/run/hurt/death/special readability still open"
+  }
+}

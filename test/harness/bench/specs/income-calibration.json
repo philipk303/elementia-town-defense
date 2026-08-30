@@ -1,0 +1,21 @@
+{
+  "sweepId": "2026-08-15-income-calibration",
+  "familyId": "income-calibration",
+  "mazes": ["A", "B"],
+  "seeds": 144,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 8,
+    "humanElement": "EARTH",
+    "fuse": false
+  },
+  "arms": [
+    { "armId": "control" },
+    { "armId": "income-7", "balanceOverrides": { "ECONOMY.HALL_BASE_INCOME": 7 } },
+    { "armId": "income-5", "balanceOverrides": { "ECONOMY.HALL_BASE_INCOME": 5 } },
+    { "armId": "income-3", "balanceOverrides": { "ECONOMY.HALL_BASE_INCOME": 3 } },
+    { "armId": "income-2", "balanceOverrides": { "ECONOMY.HALL_BASE_INCOME": 2 } },
+    { "armId": "income-1", "balanceOverrides": { "ECONOMY.HALL_BASE_INCOME": 1 } },
+    { "armId": "income-0", "balanceOverrides": { "ECONOMY.HALL_BASE_INCOME": 0 } }
+  ]
+}

@@ -1,0 +1,225 @@
+{
+  "sweepId": "2026-08-27-fusion-lever-split",
+  "familyId": "fusion-lever-split",
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "seeds": 750,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "defenceCap": null,
+    "defence": "WATCHTOWER",
+    "legacySiting": false,
+    "specialSiting": "funnel",
+    "freeSpecial": true
+  },
+  "arms": [
+    {
+      "armId": "bog-unfused",
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": false,
+        "partnerSpecial": "WATER"
+      }
+    },
+    {
+      "armId": "bog-base",
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "bog-cadence",
+      "balanceOverrides": {
+        "TOWER.MUDDY_BOG.pulse.ms": 250
+      },
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "bog-damage",
+      "balanceOverrides": {
+        "TOWER.MUDDY_BOG.pulse.damage": 6
+      },
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "grinder-unfused",
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": false,
+        "partnerSpecial": "WIND"
+      }
+    },
+    {
+      "armId": "grinder-base",
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "grinder-cadence",
+      "balanceOverrides": {
+        "TOWER.GRINDER.grind.immunityMs": 900
+      },
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "grinder-damage",
+      "balanceOverrides": {
+        "TOWER.GRINDER.damage": 90
+      },
+      "protocol": {
+        "humanElement": "EARTH",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "firestorm-unfused",
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": false,
+        "partnerSpecial": "WIND"
+      }
+    },
+    {
+      "armId": "firestorm-base",
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "firestorm-cadence",
+      "balanceOverrides": {
+        "TOWER.FIRESTORM.cooldownMs": 450
+      },
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "firestorm-damage",
+      "balanceOverrides": {
+        "TOWER.FIRESTORM.damage": 26
+      },
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "blizzard-unfused",
+      "protocol": {
+        "humanElement": "WATER",
+        "fuse": false,
+        "partnerSpecial": "WIND"
+      }
+    },
+    {
+      "armId": "blizzard-base",
+      "protocol": {
+        "humanElement": "WATER",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "blizzard-cadence",
+      "balanceOverrides": {
+        "TOWER.BLIZZARD.cooldownMs": 2500
+      },
+      "protocol": {
+        "humanElement": "WATER",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "blizzard-damage",
+      "balanceOverrides": {
+        "TOWER.BLIZZARD.damage": 24
+      },
+      "protocol": {
+        "humanElement": "WATER",
+        "fuse": true,
+        "fuseWith": "WIND",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "vent-unfused",
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": false,
+        "partnerSpecial": "WATER"
+      }
+    },
+    {
+      "armId": "vent-base",
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "vent-cadence",
+      "balanceOverrides": {
+        "TOWER.STEAM_VENT.pulse.ms": 250
+      },
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    },
+    {
+      "armId": "vent-damage",
+      "balanceOverrides": {
+        "TOWER.STEAM_VENT.pulse.damage": 16
+      },
+      "protocol": {
+        "humanElement": "FIRE",
+        "fuse": true,
+        "fuseWith": "WATER",
+        "fuseWave": 4
+      }
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "sweepId": "2026-08-27-option-set-pilot",
+  "familyId": "option-set-pilot",
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "seeds": 750,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "humanElement": "EARTH",
+    "defenceCap": null,
+    "defence": "WATCHTOWER",
+    "legacySiting": false
+  },
+  "arms": [
+    {
+      "armId": "wt-pure",
+      "protocol": {
+        "freeSpecial": false,
+        "fuse": false,
+        "specialSiting": "funnel"
+      }
+    },
+    {
+      "armId": "control",
+      "protocol": {
+        "freeSpecial": true,
+        "fuse": false,
+        "specialSiting": "funnel"
+      }
+    },
+    {
+      "armId": "wt-partner",
+      "protocol": {
+        "freeSpecial": true,
+        "fuse": false,
+        "partnerSpecial": "FIRE",
+        "specialSiting": "funnel"
+      }
+    },
+    {
+      "armId": "fuse-early",
+      "protocol": {
+        "freeSpecial": true,
+        "fuse": true,
+        "fuseWith": "FIRE",
+        "fuseWave": 2,
+        "specialSiting": "funnel"
+      }
+    },
+    {
+      "armId": "fuse-mid",
+      "protocol": {
+        "freeSpecial": true,
+        "fuse": true,
+        "fuseWith": "FIRE",
+        "fuseWave": 4,
+        "specialSiting": "funnel"
+      }
+    },
+    {
+      "armId": "fuse-late",
+      "protocol": {
+        "freeSpecial": true,
+        "fuse": true,
+        "fuseWith": "FIRE",
+        "fuseWave": 7,
+        "specialSiting": "funnel"
+      }
+    },
+    {
+      "armId": "fuse-flank",
+      "protocol": {
+        "freeSpecial": true,
+        "fuse": true,
+        "fuseWith": "FIRE",
+        "fuseWave": 4,
+        "specialSiting": "flank"
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "id": "fusion_indicator",
+  "category": "shared_presentation",
+  "runtime_id": "fusion_indicator",
+  "display_alias": "Fusion indicator",
+  "footprint_tiles": null,
+  "origin": {
+    "value": "pair-centered",
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "proposed",
+    "accepted",
+    "rejected_or_expired",
+    "created",
+    "destroyed"
+  ],
+  "source": {
+    "status": "planned",
+    "reference_path": null,
+    "prompt_edit_lineage": null
+  },
+  "pillow": {
+    "status": "not_applicable",
+    "output": null,
+    "contract": "procedural client geometry with elemental variants"
+  },
+  "runtime": {
+    "status": "integrated",
+    "image_key": null,
+    "gameplay_integrated": true,
+    "note": "Full 5-state lifecycle driven by server events, not procedural geometry: FUSION_PROPOSED (proposed), FUSION_UPDATED (accepted, per-consent tracking), FUSION_RESOLVED (created/rejected_or_expired, via p.outcome), and structure-diff cleanup covers destroyed. Text HUD (fusionHud/fusionMessage), not geometric -- no elemental color variants were built, unlike the fragment's original 'with elemental variants' contract."
+  },
+  "qa": {
+    "status": "production_validated",
+    "evidence": "GameScene.js _wireEvents FUSION_* handlers (search 'FUSION_PROPOSED')",
+    "gate": "consent and lifecycle readability -- text-based, not geometric; elemental color variants remain a gap if that's still wanted"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "id": "farm",
+  "category": "generic_or_economy_structure",
+  "runtime_id": "FARM",
+  "display_alias": "Farm",
+  "footprint_tiles": {
+    "w": 1,
+    "h": 1,
+    "walkable": false
+  },
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "baseline_y": 30
+    },
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "static"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/calibration/farm-source-v3.png",
+    "source_directory": "art/source/calibration",
+    "prompt_edit_lineage": [
+      "farm-source.png, farm-source-v1.png, farm-source-v2.png, and farm-source-v3.png visually compared 2026-08-13",
+      "farm-source-v3.png selected for its complete farmhouse-and-rice-paddy composition"
+    ],
+    "frame_count": 1
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/farm.png",
+    "frame_count": 1,
+    "contract": "32x32 RGBA static image; magenta calibration background removed; subject centered on baseline y=30"
+  },
+  "runtime": {
+    "status": "integrated",
+    "image_key": "farm",
+    "gameplay_integrated": true,
+    "note": "Registered in client/src/assets/manifest.js IMAGES; renders automatically through GameScene.js's generic placed-structure loop (entitySprite(structureArtKey(s.type), ...)), no code change needed beyond registration."
+  },
+  "qa": {
+    "status": "production_validated",
+    "evidence": "docs/assets/farm-production-qa.md",
+    "gate": "manual Phaser scale/readability confirmed 2026-08-13 (live browser preview, placed a Farm and confirmed real art rendered at its 1x1 footprint)"
+  }
+}

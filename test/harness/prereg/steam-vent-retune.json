@@ -1,0 +1,43 @@
+{
+  "familyId": "steam-vent-retune",
+  "question": "Does the retuned Steam Vent (strong slow + doubled scald, confusion retired) outperform BOTH the ingredients it consumes, measured on hallHpAuc in the R2 regime against a two-ingredient control?",
+  "primaryMetric": "hallHpAuc",
+  "secondaryMetrics": [
+    "score",
+    "wavesCleared"
+  ],
+  "mde": 0.1,
+  "alpha": 0.05,
+  "power": 0.8,
+  "sigmaSource": "hallHpAuc paired delta sd measured in the R2 regime by the registered regime-r2-adoption family (24,000 runs, n=3000/cell, 18/18 gates PASS): ~0.87 (maze A) / ~1.41 (maze B) across the three Watchtower ladder rungs. Maze B is the binding constraint. R1 sigmas (0.455/1.059) do NOT apply here — R2 buys reach into the elite waves at the cost of variance and the sample size below pays that cost explicitly.",
+  "nRequired": 2990,
+  "arms": [
+    "control",
+    "vent-old",
+    "vent-new"
+  ],
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "familySize": 12,
+  "regime": {
+    "label": "R2",
+    "protocol": {
+      "spendDown": true,
+      "maxWaves": 10,
+      "humanElement": "FIRE"
+    },
+    "justification": "R2 was adopted in regime-r2-adoption on 18/18 gates: monotone on both mazes, every Watchtower ladder rung resolvable in BOTH directions, and 0% of control runs at the hallHpAuc ceiling. It is used here specifically because R1 could not answer this question. R1 stops at wave 8 and never sees the elites at 9-10, and R1's maze-A ceiling crushed the top ladder rung to +0.0011 — i.e. R1 was nearly blind to the defence getting BETTER, which is the only direction a successful retune can move. The control arm uses `partnerSpecial: WATER` (commit 79bba51), which buys the Water Geyser and DECLINES the fusion proposal, so the control holds BOTH 2x1 ingredients standing. Every previous fusion measurement in this project compared against a control holding only ONE ingredient, which is not the comparison spec §1 asks for.",
+    "scopeLimit": "THREE limits. (1) R2 trades terminal survival for reach: only 0-7% of runs end with the hall alive, so hallHpFrac, win rate and every other TERMINAL measure are floor-censored and are BARRED here. hallHpAuc is exempt as an integral over waves played. `wavesCleared` is secondary despite being nearer a terminal measure and any reading on it must be checked against its own ceiling share first. (2) The CROSS-POLICY GATE IS EMPTY — only scripted-v1 exists — so every verdict is provisional. This is especially live for a SLOW: a stationary scripted policy expresses a dwell-time effect about as well as any policy would, but it cannot reposition to exploit one, so a null here is weaker evidence against the mechanic than a null would be for raw damage. (3) The retune magnitudes are FIRST-PASS. This family tests the direction and the mechanism, not that 8 damage / factor 0.5 / 1500 ms is optimal; a PASS does not mean the numbers are final."
+  },
+  "positiveControl": {
+    "armId": "vent-old",
+    "override": "TOWER.STEAM_VENT.pulse.damage",
+    "expectedDirection": "vent-old carries the SHIPPED-BEFORE-RETUNE spec (confusion, scald 4) and must land BELOW vent-new on hallHpAuc on maze B, where the old vent was resolvably harmful. It is the instrument check: if the two arms cannot be separated at n=3000, this family cannot size a retune at all. It is also the honest baseline — 'better than the old vent' and 'good enough to keep' are different claims and this family reports both separately."
+  },
+  "decisionRule": "Three arms on the same seed set, all paired:\n\n  control   = both ingredients standing, UNFUSED (Firepit + Water Geyser)\n  vent-old  = the pre-retune Steam Vent (confusion, scald 4)\n  vent-new  = the retuned Steam Vent (strong slow, scald 8)\n\nThe A1.4(a) contribution floor as restated in Amendment D is `vent-new - control`: the fusion must contribute positively against the two structures it consumes.\n\nPASS: delta > 0 AND BH-adjusted q < 0.05 across the declared family of 12 AND the exact sign test agrees in direction AND the verdict survives hang-imputation at the cell minimum. Per Philip's 2026-08-04 ruling, PASSING ON EITHER MAZE IS SUFFICIENT — maze A is substantially easier and requiring both would force overtuning.\n\nFAIL: delta < 0 under those same gates on either maze with no PASS on the other. The retune did not fix the defect and the magnitudes go back for another pass, or the mechanic is wrong.\n\nUNRESOLVED: anything else. Not a pass, not a fail, and no further balance change is made on it.\n\nREPORTED SEPARATELY AND NOT PART OF THE PASS: `vent-new - vent-old` measures whether the retune IMPROVED the structure. A retune can improve the vent substantially and still leave it below its ingredients; conflating the two is how a partial fix gets recorded as a success.\n\nSPLIT-HALF IS DECLARED UNINFORMATIVE AND IS NOT A GATE. splitForMetric ranks the ARMS and with 3 arms it takes only four values, so a 0.50 fails a `> 0.5` gate on a four-value scale. Reported for the record only. Declared in advance because this gate is what blocked Muddy Bog in fusion-roster-v2.\n\nMONOTONICITY RULE (carried from metric-selection-v2): no arm may be disqualified on an ordering argument unless the offending adjacent pair is itself resolvable at BH-adjusted q < 0.05.",
+  "whatWouldRefute": "PRE-REGISTERED PREDICTION, committed before the run. I expect vent-new to beat vent-old resolvably on maze B, and I am GENUINELY UNSURE whether it clears the two-ingredient control — the bar rose twice at once (a second ingredient in the control, and a window extended into the elite waves), and the doubled scald was sized against the ONE-ingredient deficit of -0.487 measured in R1, not against this harder bar.\n\nThe named mechanism is dwell time: the slow should make the scald land more pulses per enemy. If that mechanism is real, `slowedSeconds` must be substantially positive in vent-new and near zero in vent-old, AND vent-new's structure-category damage must exceed twice vent-old's — twice being what the raw damage doubling alone would buy. A vent-new win WITHOUT that damage over-shoot would mean the slow is helping through some other route than its stated one, and the mechanism claim must be withdrawn even if the retune passes.\n\nThe family FAILS if vent-new is resolvably below control on both mazes: the retune did not fix the defect.\n\nThe family is UNINTERPRETABLE if vent-new and vent-old cannot be separated at n=3000 — that would mean neither the doubled damage nor the slow moved anything measurable, and the response is to question the instrument or the magnitudes rather than to declare the mechanic dead.\n\nA result where control beats BOTH vent arms on both mazes would say something larger than Steam Vent: that fusing is simply worse than holding two specials, which is a spec §1 problem for the whole roster and not a Steam Vent retune question.",
+  "registeredAt": "2026-08-15T23:10:00.000Z",
+  "notes": "WHY THIS IS THE FIRST REAL TEST OF SPEC §1. Two instrument defects blocked it and both are now fixed: the one-ingredient control (79bba51) and the ceiling-blind truncated window (edbb95d, R2). Every number in fusion-roster-v2 was taken against the wrong baseline in a window that ended before the elites arrived.\n\nHOW vent-old IS BUILT. The retune landed in 5759028, so the CURRENT balance table is the new vent. vent-old restores the pre-retune spec via balanceOverrides: pulse.damage 4, and the slow neutralised by slow.ms 0 (applySlow returns at ms <= 0, server/game/status.js:75-80). It cannot restore CONFUSION, because that code path no longer has a spec flag to dispatch on — so vent-old is precisely 'the old scald without the old confusion', which the decomposition measured as worth +0.013 less than the true old vent on maze B. That is inside the noise floor and is declared here rather than discovered later.\n\nSAMPLE SIZE. 1500 seeds x 2 postGaps = 3000 cells per arm per maze, against nRequired 2990. 3 arms x 2 mazes x 3000 = 18,000 runs.\n\nfamilySize 12 = 2 non-control arms x 2 mazes x 3 metrics.\n\nFRESH SEEDS. Seeds are deterministic (20260801 + i). This family runs 20290801 + i, disjoint from the fusion corpus (20260801+), the steam-vent replication (20270801+) and regime-r2-adoption (20280801+)."
+}

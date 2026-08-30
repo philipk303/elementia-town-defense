@@ -1,0 +1,15 @@
+{
+  "sweepId": "2026-08-15-fusion-roster-water-v2",
+  "familyId": "fusion-roster-water-v2",
+  "mazes": ["A", "B"],
+  "seeds": 450,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 8,
+    "humanElement": "WATER"
+  },
+  "arms": [
+    { "armId": "control", "protocol": { "fuse": false } },
+    { "armId": "blizzard", "protocol": { "fuse": true, "fuseWith": "WIND" } }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "generatedAt": "2026-08-03T06:12:10.500Z",
+  "siting": "funnel",
+  "mazes": {
+    "A": {
+      "STEAM_VENT": {
+        "human": "FIRE",
+        "partner": "WATER",
+        "hangs": {
+          "control": 0,
+          "wave1": 0,
+          "wave4": 0
+        },
+        "combo": {
+          "wave1Built": 144,
+          "wave1Mismatch": 0,
+          "wave4Built": 144,
+          "wave4Mismatch": 0
+        },
+        "wave1": {
+          "effect": 0.17277777777777903,
+          "t": 0.9582933231050065,
+          "signs": {
+            "better": 41,
+            "worse": 22,
+            "tied": 81
+          },
+          "imputed": {
+            "effect": 0.17277777777777903,
+            "t": 0.9582933231050065
+          },
+          "splitHalf": {
+            "half1": 0.2785555555555561,
+            "half2": 0.06700000000000106,
+            "agree": true
+          }
+        },
+        "wave4": {
+          "effect": 0.43540277777777714,
+          "t": 2.5425551072879906,
+          "signs": {
+            "better": 59,
+            "worse": 21,
+            "tied": 64
+          },
+          "imputed": {
+            "effect": 0.43540277777777714,
+            "t": 2.5425551072879906
+          },
+          "splitHalf": {
+            "half1": 0.5708055555555562,
+            "half2": 0.29999999999999893,
+            "agree": true
+          }
+        },
+        "controlMean": 7.5135,
+        "wave1Mean": 7.686277777777779,
+        "wave4Mean": 7.948902777777777
+      }
+    },
+    "B": {
+      "STEAM_VENT": {
+        "human": "FIRE",
+        "partner": "WATER",
+        "hangs": {
+          "control": 0,
+          "wave1": 0,
+          "wave4": 0
+        },
+        "combo": {
+          "wave1Built": 144,
+          "wave1Mismatch": 0,
+          "wave4Built": 144,
+          "wave4Mismatch": 0
+        },
+        "wave1": {
+          "effect": 0.41666666666666696,
+          "t": 2.0490343494471785,
+          "signs": {
+            "better": 46,
+            "worse": 24,
+            "tied": 74
+          },
+          "imputed": {
+            "effect": 0.41666666666666696,
+            "t": 2.0490343494471785
+          },
+          "splitHalf": {
+            "half1": 0.43055555555555536,
+            "half2": 0.4027777777777777,
+            "agree": true
+          }
+        },
+        "wave4": {
+          "effect": 0.4513888888888893,
+          "t": 2.234699854156931,
+          "signs": {
+            "better": 62,
+            "worse": 29,
+            "tied": 53
+          },
+          "imputed": {
+            "effect": 0.4513888888888893,
+            "t": 2.234699854156931
+          },
+          "splitHalf": {
+            "half1": 0.5555555555555554,
+            "half2": 0.3472222222222223,
+            "agree": true
+          }
+        },
+        "controlMean": 6.798611111111111,
+        "wave1Mean": 7.215277777777778,
+        "wave4Mean": 7.25
+      }
+    }
+  }
+}

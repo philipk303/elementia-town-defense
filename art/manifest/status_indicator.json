@@ -1,0 +1,43 @@
+{
+  "id": "status_indicator",
+  "category": "shared_presentation",
+  "runtime_id": "status_indicator",
+  "display_alias": "Status indicator",
+  "footprint_tiles": null,
+  "origin": {
+    "value": "entity-centered",
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "root",
+    "freeze",
+    "burn",
+    "confusion",
+    "downed",
+    "reviving",
+    "dead"
+  ],
+  "source": {
+    "status": "planned",
+    "reference_path": null,
+    "prompt_edit_lineage": null
+  },
+  "pillow": {
+    "status": "not_applicable",
+    "output": null,
+    "contract": "procedural client geometry"
+  },
+  "runtime": {
+    "status": "integrated",
+    "image_key": null,
+    "gameplay_integrated": true,
+    "note": "GameScene.js tints/strokes entity dots per status flag: root/freeze (blue), confusion (violet), burn (orange, added 2026-08-13 -- FLAG.BURN existed server-side but had no client visual until this pass), downed/reviving (player dot alpha+stroke), dead (dot hidden + overlay text). No art asset -- procedural, as speced."
+  },
+  "qa": {
+    "status": "production_validated",
+    "evidence": "GameScene.js enemy/player render loops (search 'FLAG.BURN', 'PLAYER_FLAG.DOWNED')",
+    "gate": "status readability -- confirmed by observation; each status has a visually distinct color"
+  }
+}

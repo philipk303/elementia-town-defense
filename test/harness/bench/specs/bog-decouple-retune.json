@@ -1,0 +1,37 @@
+{
+  "sweepId": "2026-08-28-bog-decouple-retune",
+  "familyId": "bog-decouple-retune",
+  "mazes": ["A", "B"],
+  "seeds": 750,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "humanElement": "EARTH",
+    "defence": "WATCHTOWER",
+    "defenceCap": null,
+    "legacySiting": false,
+    "specialSiting": "funnel",
+    "freeSpecial": true,
+    "fuse": true,
+    "fuseWith": "WATER",
+    "fuseWave": 4
+  },
+  "arms": [
+    { "armId": "bog-unfused", "protocol": { "fuse": false, "partnerSpecial": "WATER" } },
+    { "armId": "bog-dmg1", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 1 } },
+    { "armId": "bog-dmg2", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 2 } },
+    { "armId": "bog-dmg3", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 3 } },
+    { "armId": "bog-dmg4", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 4 } },
+    { "armId": "bog-dmg6", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 6 } },
+    { "armId": "bog-dmg8", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 8 } },
+    { "armId": "bog-dmg12", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 12 } },
+    { "armId": "bog-dmg16", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 16 } },
+    { "armId": "bog-dmg20", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 20 } },
+    { "armId": "bog-dmg24", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 24 } },
+    { "armId": "bog-dmg28", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 28 } },
+    { "armId": "bog-dmg32", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 32 } },
+    { "armId": "bog-dmg25", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 25 } },
+    { "armId": "bog-dmg26", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 26 } },
+    { "armId": "bog-dmg27", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 27 } }
+  ]
+}

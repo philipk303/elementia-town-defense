@@ -1,0 +1,51 @@
+{
+  "id": "snare_post",
+  "category": "generic_or_economy_structure",
+  "runtime_id": "SNARE_POST",
+  "display_alias": "Snare Post",
+  "footprint_tiles": {
+    "w": 1,
+    "h": 1,
+    "walkable": true
+  },
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "baseline_y": 60
+    },
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "idle",
+    "active"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/snare-post/snare-post-concept-v1.png",
+    "source_directory": "art/source/snare-post",
+    "prompt_edit_lineage": [
+      "GPT Image draft approved 2026-08-09",
+      "art/source/snare-post/prompt.md"
+    ],
+    "frame_count": 2
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/snare_post.png + client/public/art/snare_post.json",
+    "frame_count": 2,
+    "contract": "2 untrimmed 64x64 RGBA frames with 2px atlas gutter, frame names renamed from the delivered idle/pulse to the generic idle/active vocabulary StructureAnimator expects"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "image_key": "snare_post",
+    "gameplay_integrated": true,
+    "trigger": "StructureAnimator cycleSeq-bump ACTIVE window (static family, no phase machine): server/game/structureBehaviors/aura.js now bumps cycleSeq every cadenceMs pulse tick, which also (newly) fires the existing snare_pulse activation SFX"
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/snare-post-production-qa.md",
+    "gate": "manual Phaser playtest confirmation of the idle/active pulse readability still open; the cycleSeq bump that drives it is a small gameplay-code change made alongside the art wiring, not separately balance-reviewed"
+  }
+}

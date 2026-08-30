@@ -1,0 +1,50 @@
+{
+  "familyId": "metric-selection-v2",
+  "question": "In a measurement regime demonstrated to be sensitive to defence strength, which outcome metric gives the smallest minimum detectable effect, and what is the smallest injected DEFENCE-strength change any metric can recover?",
+  "primaryMetric": "score",
+  "secondaryMetrics": [
+    "wavesCleared",
+    "hallHpFrac",
+    "enemySeconds",
+    "structuresLostTotal",
+    "closestApproachPxMin",
+    "hallHpAuc"
+  ],
+  "mde": 0.5,
+  "alpha": 0.05,
+  "power": 0.8,
+  "sigmaSource": "score sigma = 1.16 (maze A) / 1.51 (maze B), measured on the R1 regime at n=144/cell in the 2026-08-15 dose-recheck sweep. This SUPERSEDES the 1.439 used in metric-selection-v1, which was measured in the floor-censored regime where score was identically wavesCleared.",
+  "nRequired": 143,
+  "arms": [
+    "control",
+    "wt-x0.67",
+    "wt-x1.33",
+    "wt-x1.67",
+    "wt-x2"
+  ],
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "familySize": 56,
+  "regime": {
+    "label": "R1",
+    "protocol": {
+      "spendDown": true,
+      "maxWaves": 8
+    },
+    "justification": "Selected on SENSITIVITY, not on the survival band. The v1 regime (maxWaves 10, spendDown false) is insensitive to defence strength across a 16x Watchtower damage range, which is why all 2880 v1 runs lost and score degenerated to wavesCleared. R1 gives control survival 46.9% (A) / 44.8% (B) AND a score response to a clean 2x Watchtower buff of +0.47 (A) / +0.54 (B), uncensored at both ends. Three rival regimes were rejected for ceiling or floor censoring. See docs/reviews/2026-08-15-regime-calibration.md sections 7-8.",
+    "scopeLimit": "maxWaves 8 means WAVES 9 AND 10 ARE NEVER MEASURED. That is where the elites concentrate (2x eliteGoblin + 2x eliteOrc at wave 10, plus eliteOrc/eliteTroll at wave 9). Any structure whose value shows only against late elites is INVISIBLE to this family. No verdict from this corpus may be generalised to the full 10-wave game. Declared up front, not discovered afterwards."
+  },
+  "decisionRule": "This family produces TWO outputs, both gated.\n\n(1) INSTRUMENT VALIDATION. For each candidate metric, find the smallest injected Watchtower-damage change whose paired delta against control is significant at BH-adjusted q<0.05 across the family of 56, agrees in the exact sign test, survives hang-imputation at the cell minimum, and has split-half rho > 0.5. That change is the metric's demonstrated resolution. A metric that recovers NO dose is disqualified regardless of its sigma.\n\n(2) METRIC ADOPTION. Among metrics that pass (1), adopt the one with the smallest paired-sigma MDE at n=144, PROVIDED it orders the ladder monotonically (Spearman rho = 1.0). Unlike v1, that monotonicity requirement is LEGITIMATE here for TWO reasons. First, the ladder dial has been empirically demonstrated monotone on both mazes in this regime (dmg 3 -> 6 raises score on A and B), rather than merely assumed monotone by construction. Second, and this is the defect that voided v1s adoption arm: monotonicity MUST NOT be assessed on point estimates alone. v1 required Spearman rho = 1.0 over rungs of 0.05-0.2 against a paired SE of ~0.1, i.e. it ranked five means that were not pairwise separable, and disqualified metrics for failing to order noise. RULE: a metric may only be disqualified for non-monotonicity if the OFFENDING ADJACENT PAIR is itself resolvable at BH-adjusted q<0.05. An unresolvable inversion is reported as unresolved, never as a disqualification.\n\nIf no candidate beats score on MDE while preserving ordering, the finding is 'score stands' and the response is to raise n, not to change metric.",
+  "whatWouldRefute": "(1) fails if no metric recovers even the 2x Watchtower change at the corrected q — the harness would then be unable to detect a change to the single structure the A1.4 power unit is anchored on. (2) fails if score already has the lowest MDE among ordering-preserving candidates, or if the lowest-MDE candidate scrambles the ladder.",
+  "positiveControl": {
+    "armId": "wt-ladder",
+    "override": "TOWER.WATCHTOWER.damage",
+    "expectedDirection": "increasing damage increases score, monotonically, on both mazes"
+  },
+  "registeredAt": "2026-08-15T00:00:00.000Z",
+  "notes": "WHY THE POSITIVE CONTROL CHANGED FROM GOBLIN HP TO WATCHTOWER DAMAGE. metric-selection-v1 used a goblin-HP dose ladder and asserted it was 'monotone, unambiguous, one-directional' in difficulty by construction. That premise does not survive testing, though NOT in the way an earlier draft claimed.\n  - v1 regime, maze B: the reversal (dose-13 +0.18, dose-15 +0.22) was nominally significant (t 2.01/2.50, sign p 0.026/0.0027) but did NOT survive the declared BH family of 64 (q ~ 0.17), consistent with v1's own table reporting that score recovered no dose. It was suggestive, never established.\n  - R1 regime, maze B: those same cells REVERSE SIGN (-0.18, -0.37) and the ladder becomes cleanly monotone and resolvable at the top (dose-30 t -4.19, sign p <0.0001). The reversal was an artifact of the floor-censored regime, not a game mechanism.\n  - R1 regime, maze A: the ladder produces NO detectable effect at any dose (all |t|<1; dose-30 sign test 31 up / 31 down, p=1.00) even at 2.5x goblin HP.\nGoblin HP is therefore rejected as the positive control because it is UNRESOLVABLE on maze A, not because it reverses. The separate and more durable finding is that v1 assessed monotonicity on point estimates whose rungs were never separable; see the RULE added to decisionRule.\n\nWatchtower damage is monotone and sensitive on both mazes in R1 and is the dial the A1.4 power unit is already anchored on, which makes it the correct positive control. Damage 3 is shipped; the ladder spans 2 (x0.67) to 6 (x2). The DOWNWARD rung is deliberate — a positive control that only pushes one way cannot distinguish a metric that tracks defence strength from one that saturates.\n\nSAMPLE SIZE. 144 seeds x 2 postGaps = 288 cells per arm per maze. 5 arms x 2 mazes x 288 = 2880 runs, ~30 s on the v2 runner.\n\nWHY hallHpFrac IS STILL A CANDIDATE. In the v1 regime it was identically 0.000 and therefore degenerate. In R1 it is non-zero in 44-47% of runs, so score is no longer identically wavesCleared and the tie-breaker term carries information for the first time.\n\nclearMargin is NOT carried over from v1: the stored data still defines no censoring model. Dropped explicitly rather than silently.\n\nNo balance change ships from this family. It measures the instrument, not the game.",
+  "amendedAt": "2026-08-15T12:00:00.000Z",
+  "amendmentNote": "AMENDED BEFORE ANY ANALYSIS WAS RUN against this family. The original draft justified switching the positive control by claiming the goblin-HP ladder was non-monotone on BOTH mazes. Re-tested with a paired t and an exact sign test, the maze-A \"reversal\" is noise (every dose |t|<1; dose-30 sign test 31 up / 31 down, p=1.00) and the claim was a rank ordering read off five unseparated means. The DECISION is unchanged and the reasoning is corrected below. No analysis had been performed when this amendment was made, so nothing here is post-hoc."
+}

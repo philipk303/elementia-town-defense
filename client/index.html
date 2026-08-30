@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>Elementia Town Defense</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: #0a0e14; overflow: hidden; font-family: monospace; color: #dfe8f0; }
+      /* touch-action: none is load-bearing for the virtual sticks: without it
+         a thumb drag on the canvas is a page scroll / pull-to-refresh gesture
+         and the sticks fight the browser instead of moving the character. */
+      /* --ep-dock is set by the build palette to its own height. Reserving it
+         here means the canvas is FIT into the space ABOVE the palette, so the
+         palette can never cover part of the board (which would silently eat
+         build/sell clicks on the bottom rows, where the Hall is). */
+      #game { width: 100vw; height: calc(100vh - var(--ep-dock, 0px)); touch-action: none; overscroll-behavior: none;
+        -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+        -webkit-tap-highlight-color: transparent; }
+      #game canvas { touch-action: none; }
+
+      /* Minimal Phase-1 lobby overlay (full UI is a later phase). */
+      #lobby {
+        position: fixed; inset: 0; z-index: 100; display: flex;
+        flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+        background: #0a0e14;
+      }
+      #lobby.hidden { display: none; }
+      #lobby h1 { font-size: 28px; letter-spacing: 2px; }
+      #lobby .row { display: flex; gap: 8px; align-items: center; }
+      #lobby button, #lobby input, #lobby select {
+        font-family: monospace; font-size: 15px; padding: 8px 12px;
+        background: #16202c; color: #dfe8f0; border: 1px solid #2b3a4a; border-radius: 6px;
+      }
+      #lobby button { cursor: pointer; }
+      #lobby button:hover { background: #1e2c3a; }
+      #lobby .muted { color: #6b7d8f; font-size: 13px; }
+      #lobby #roomInfo { color: #e0b34c; min-height: 22px; }
+      #lobby #error { color: #e05c5c; min-height: 20px; }
+    </style>
+  </head>
+  <body>
+    <div id="game"></div>
+
+    <div id="lobby">
+      <h1>Elementia Town Defense</h1>
+      <div class="muted">Town defense — build, fuse, and hold the hall through the wave</div>
+
+      <div class="row">
+        <input id="name" placeholder="Your name" maxlength="20" />
+      </div>
+
+      <div class="row">
+        <select id="timing" title="Build-phase timing style">
+          <option value="timer-ready">Timer + early start</option>
+          <option value="fixed">Fixed timer</option>
+          <option value="ready">Ready-up</option>
+        </select>
+        <label class="muted"><input type="checkbox" id="ff" /> Friendly fire</label>
+      </div>
+
+      <div class="row">
+        <button id="createBtn">Create room</button>
+        <span class="muted">or</span>
+        <input id="joinCode" placeholder="ROOM" maxlength="5" style="width:6em;text-transform:uppercase" />
+        <button id="joinBtn">Join</button>
+      </div>
+
+      <div id="roomInfo"></div>
+      <button id="startBtn" style="display:none">Start match</button>
+      <div id="error"></div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+{
+  "id": "hero_water_atlas",
+  "category": "hero_atlas",
+  "runtime_id": "chibi_water",
+  "display_alias": "Water hero",
+  "footprint_tiles": null,
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "baseline_y": 56
+    },
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [
+    "down",
+    "up",
+    "left",
+    "right"
+  ],
+  "states": [
+    "idle",
+    "run",
+    "attack",
+    "cast",
+    "hurt",
+    "death"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/calibration/water-reference-v1.png",
+    "source_directories": [
+      "art/source/water-production"
+    ],
+    "raw_scale_drift_directory": "art/source/water-production-raw-scale-drift",
+    "normalization_metadata": "art/source/water-production/source-normalization.json",
+    "prompt_edit_lineage": [
+      "art/source/calibration/water-reference-v1.png",
+      "art/source/water-production/prompt-recipe.md",
+      "art/source/water-production"
+    ],
+    "frame_count": 80,
+    "raw_sources_preserved": true
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/chibi_water.png + client/public/art/chibi_water.json",
+    "frame_count": 80,
+    "scale": 0.0402,
+    "contract": "80 untrimmed 64x64 RGBA frames, shared baseline 56, 2px atlas gutters"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "atlas_key": "chibi_water",
+    "preview_page": "client/water-preview.html",
+    "gameplay_integrated": true
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/water-production-qa.md",
+    "gate": "manual Phaser playtest confirmation of idle/run/hurt/death/special readability still open"
+  }
+}

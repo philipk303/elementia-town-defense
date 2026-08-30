@@ -1,0 +1,28 @@
+{
+  "sweepId": "2026-08-15-steam-vent-mechanism",
+  "familyId": "steam-vent-mechanism",
+  "mazes": ["A", "B"],
+  "seeds": 450,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 8,
+    "humanElement": "FIRE"
+  },
+  "arms": [
+    { "armId": "control", "protocol": { "fuse": false } },
+    {
+      "armId": "vent-inert",
+      "protocol": { "fuse": true, "fuseWith": "WATER" },
+      "balanceOverrides": {
+        "TOWER.STEAM_VENT.confuse.ms": 0,
+        "TOWER.STEAM_VENT.pulse.damage": 0
+      }
+    },
+    {
+      "armId": "vent-scald",
+      "protocol": { "fuse": true, "fuseWith": "WATER" },
+      "balanceOverrides": { "TOWER.STEAM_VENT.confuse.ms": 0 }
+    },
+    { "armId": "vent-full", "protocol": { "fuse": true, "fuseWith": "WATER" } }
+  ]
+}

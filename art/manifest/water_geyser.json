@@ -1,0 +1,56 @@
+{
+  "id": "water_geyser",
+  "category": "elemental_structure",
+  "runtime_id": "WATER_SPECIAL",
+  "display_alias": "Water Geyser",
+  "footprint_tiles": {
+    "w": 2,
+    "h": 1,
+    "walkable": true,
+    "rotates_to": {
+      "w": 1,
+      "h": 2
+    }
+  },
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "baseline_y": 32
+    },
+    "status": "production_validated"
+  },
+  "orientation": "horizontal_or_vertical",
+  "directions": [
+    "horizontal",
+    "vertical"
+  ],
+  "states": [
+    "idle",
+    "compress",
+    "launch"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/water-geyser/water-geyser-concept-v2.png",
+    "source_directory": "art/source/water-geyser",
+    "prompt_edit_lineage": [
+      "art/source/water-geyser/water-geyser-concept-v2.png"
+    ],
+    "frame_count": 20
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/water_special.png + client/public/art/water_special.json",
+    "frame_count": 20,
+    "contract": "20 directional fixed-size RGBA frames"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "image_key": "water_special"
+  },
+  "qa": {
+    "status": "production_validated",
+    "evidence": "docs/assets/water-geyser-production-qa.md",
+    "gate": "activation readability"
+  }
+}

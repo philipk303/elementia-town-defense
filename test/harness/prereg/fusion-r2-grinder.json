@@ -1,0 +1,37 @@
+{
+  "familyId": "fusion-r2-grinder",
+  "question": "Measured on hallHpAuc in the R2 regime against a two-ingredient control, does Grinder clear the Amendment D contribution floor — does it outperform the two structures (EARTH free special + WIND partner special) it consumes?",
+  "primaryMetric": "hallHpAuc",
+  "secondaryMetrics": [
+    "score",
+    "wavesCleared"
+  ],
+  "mde": 0.1,
+  "alpha": 0.05,
+  "power": 0.8,
+  "sigmaSource": "hallHpAuc paired delta sd measured in the R2 regime by the registered regime-r2-adoption family (24,000 runs, n=3000/cell, 18/18 gates PASS): ~0.87 (maze A) / ~1.41 (maze B) across the three Watchtower ladder rungs. Maze B is the binding constraint. Reused identically by steam-vent-retune, which measured the same regime under the same two-ingredient-control design.",
+  "nRequired": 2990,
+  "arms": [
+    "control",
+    "grinder"
+  ],
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "familySize": 36,
+  "regime": {
+    "label": "R2",
+    "protocol": {
+      "spendDown": true,
+      "maxWaves": 10,
+      "humanElement": "EARTH"
+    },
+    "justification": "R2 was adopted in regime-r2-adoption on 18/18 gates and used by steam-vent-retune for the same reason it is used here: R1 stops at wave 8 and never sees the elites at 9-10, and R1's maze-A ceiling crushed the top Watchtower-ladder rung to +0.0011 — nearly blind to the defence getting BETTER, the only direction a successful fusion can move it. The control arm uses partnerSpecial: WIND (commit 79bba51), which buys the partner's free special at the fusion's own anchor tile and DECLINES the fusion proposal, so the control holds BOTH ingredients standing. Every fusion-roster-v2 number was taken against a control holding only the human's own free special — one ingredient, not two — which is not the comparison spec §1 / Amendment D asks for.",
+    "scopeLimit": "THREE limits, carried unchanged from steam-vent-retune and regime-r2-adoption. (1) R2 trades terminal survival for reach: only 0-7% of runs end with the hall alive, so hallHpFrac, win rate and every other TERMINAL measure are floor-censored and BARRED here; hallHpAuc is exempt as an integral over waves played, and wavesCleared is secondary despite being nearer a terminal measure. (2) The CROSS-POLICY GATE IS EMPTY — only scripted-v1 exists — so every verdict here is provisional on it. (3) humanElement confounds any cross-family comparison: this family measures ONLY whether the named fusion beats ITS OWN control, never a ranking between fusions in different families, because the human class itself differs across families."
+  },
+  "decisionRule": "Paired delta, grinder minus control, on hallHpAuc, per maze.\n\nPASS (clears the Amendment D contribution floor): delta > 0 AND BH-adjusted q < 0.05 across the declared family of 36 AND the exact sign test agrees in direction AND the verdict survives hang-imputation at the cell minimum. Per Philip's 2026-08-04 ruling, PASSING ON EITHER MAZE IS SUFFICIENT — maze A is substantially easier than maze B and requiring both would force overtuning.\n\nFAIL (retune target): delta < 0 under those same gates on either maze, with no PASS on the other. A fusion resolvably worse than the two structures it eats is a balance defect to fix before playtesting.\n\nUNRESOLVED: anything else. Not a pass, not a fail; no balance change follows from an unresolved cell.\n\nSPLIT-HALF IS DECLARED UNINFORMATIVE AND IS NOT A GATE, exactly as in steam-vent-retune: with 2 arms splitForMetric ranks a two-value scale. Reported for the record only.\n\nMONOTONICITY RULE: not applicable — this family has only one non-control arm, so there is no ordering to disqualify on.\n\nCROSS-POLICY GATE NOT MET: only scripted-v1 exists. Every verdict from this family is PROVISIONAL on that gate, declared here rather than discovered later.",
+  "whatWouldRefute": "A delta whose BH-adjusted q exceeds 0.05 on both mazes refutes a PASS claim for Grinder. A resolvably negative delta refutes the design premise that it is worth the two structures it consumes. If both control and fusion arms come back unresolvable against each other on both mazes at n=3000, that refutes the claim that hallHpAuc at this n can resolve a single-fusion trade in R2 at all, and the response is to raise n rather than declare the fusion balanced.",
+  "registeredAt": "2026-08-16T05:30:00.000Z",
+  "notes": "Sixth of the roster-retake families; run alongside magma-trap, muddy-bog, grinder and blizzard under the same design. Steam Vent is NOT re-run here — it already has a registered R2, two-ingredient-control family (steam-vent-retune, plus the scald/slow decomposition in steam-vent-scald-dial and steam-vent-slow-dial) and needs nothing this session.\n\nWHY ONE FAMILY PER FUSION, NOT PER HUMAN ELEMENT. analyze.mjs keys the control arm on the literal armId \"control\", and each fusion in a given human-element family (e.g. EARTH: Magma Trap/FIRE, Muddy Bog/WATER, Grinder/WIND) needs a control with a DIFFERENT partnerSpecial to hold its own two ingredients. They cannot share one store's single control arm, so the roster is now six single-fusion families instead of three multi-arm families (the fusion-roster-v2 shape, which used a one-ingredient control shared across a human element's whole line).\n\nfamilySize is declared as 36 = 6 fusions x 2 mazes x 3 metrics, the FULL roster width, even though this family itself runs only 18000 tests-worth of cells across 2 arms. This deliberately conservative padding is carried from fusion-roster-v2: it stops the roster question from silently narrowing its own multiplicity correction by being split across many small families.\n\nSAMPLE SIZE. 1500 seeds x 2 postGaps = 3000 cells per arm per maze, against nRequired 2990 for MDE 0.10 on maze B. 2 arms x 2 mazes x 3000 = 12000 runs, roughly 4 minutes at the measured ~6min/18000-run rate.\n\nEVERY DELTA IS EXPECTED TO MOVE DOWN relative to fusion-roster-v2's corresponding number, stated here so it is not read as confirmation afterwards: the control got stronger by one whole structure (partnerSpecial) and the window now reaches the elite waves. Steam Vent is the calibration point — it moved from -0.137 (old, one-ingredient control) to -0.309 (correct control, before retune) to -0.015 (correct control, retuned). The open question this sweep answers is which of the remaining five fusions still clear the floor under the corrected instrument, not whether the numbers go down (they should).\n\nNo balance change ships directly from this family. It identifies which fusions are resolvably below their two-ingredient cost; any retune is a separate, separately-registered decision."
+}

@@ -1,0 +1,2836 @@
+{
+  "schema_version": 1,
+  "authority": "production audio ledger",
+  "status": "in_progress",
+  "runtime_owner": "client/src/audio.js (Howler)",
+  "source_policy": {
+    "allowed_licenses": [
+      "CC0",
+      "public_domain",
+      "CC-BY"
+    ],
+    "rejected_licenses": [
+      "non_commercial",
+      "share_alike",
+      "personal_use_only",
+      "ambiguous",
+      "missing"
+    ],
+    "planned_provenance": {
+      "source_url": null,
+      "creator": null,
+      "license": null,
+      "attribution_text": null,
+      "download_date": null,
+      "original_filename": null,
+      "modifications": [],
+      "approval_status": "not_started"
+    }
+  },
+  "processing_profiles": {
+    "music": {
+      "status": "planned",
+      "format": "mp3",
+      "channels": "stereo",
+      "steps": [
+        "ffprobe",
+        "trim",
+        "dc_offset_check",
+        "click_fades",
+        "category_normalize",
+        "loop_verify",
+        "measure"
+      ],
+      "runtime_root": "client/public/audio/music/"
+    },
+    "stinger": {
+      "status": "planned",
+      "format": "ogg",
+      "channels": "stereo",
+      "steps": [
+        "ffprobe",
+        "trim",
+        "dc_offset_check",
+        "click_fades",
+        "category_normalize",
+        "measure"
+      ],
+      "runtime_root": "client/public/audio/sfx/"
+    },
+    "sfx": {
+      "status": "planned",
+      "format": "ogg",
+      "channels": "mono",
+      "steps": [
+        "ffprobe",
+        "trim",
+        "dc_offset_check",
+        "click_fades",
+        "layer",
+        "category_normalize",
+        "measure"
+      ],
+      "runtime_root": "client/public/audio/sfx/"
+    }
+  },
+  "settings_presets": {
+    "music_loop": {
+      "priority": "music",
+      "base_volume": null,
+      "voice_cap": 1,
+      "family_rate_limit": "not_applicable",
+      "spatial": "centered_non_spatial",
+      "duck": "phase_stingers_may_duck",
+      "loop": "seamless_loop",
+      "loading": "current_phase_on_demand"
+    },
+    "music_one_shot": {
+      "priority": "critical",
+      "base_volume": null,
+      "voice_cap": 1,
+      "family_rate_limit": "not_applicable",
+      "spatial": "centered_non_spatial",
+      "duck": "none",
+      "loop": "one_shot",
+      "loading": "on_demand"
+    },
+    "phase": {
+      "priority": "critical",
+      "base_volume": null,
+      "voice_cap": 1,
+      "family_rate_limit": "semantic_family",
+      "spatial": "centered_non_spatial",
+      "duck": "ducks_music_when_specified",
+      "loop": "one_shot",
+      "loading": "essential_after_unlock"
+    },
+    "ui": {
+      "priority": "ui",
+      "base_volume": null,
+      "voice_cap": 1,
+      "family_rate_limit": "semantic_family",
+      "spatial": "centered_non_spatial",
+      "duck": "none",
+      "loop": "one_shot",
+      "loading": "essential_after_unlock"
+    },
+    "world_routine": {
+      "priority": "routine",
+      "base_volume": null,
+      "voice_cap": null,
+      "family_rate_limit": "semantic_family",
+      "spatial": "world_pan_and_capped_attenuation",
+      "duck": "none",
+      "loop": "one_shot",
+      "loading": "core_combat_before_first_fight"
+    },
+    "world_critical": {
+      "priority": "critical",
+      "base_volume": null,
+      "voice_cap": null,
+      "family_rate_limit": "semantic_family",
+      "spatial": "world_pan_and_capped_attenuation",
+      "duck": "none",
+      "loop": "one_shot",
+      "loading": "core_combat_before_first_fight"
+    },
+    "structure_loop": {
+      "priority": "structure",
+      "base_volume": null,
+      "voice_cap": 4,
+      "family_rate_limit": "semantic_family",
+      "spatial": "world_pan_and_capped_attenuation",
+      "duck": "none",
+      "loop": "owned_loop",
+      "loading": "fusion_or_structure_on_demand"
+    },
+    "structure_one_shot": {
+      "priority": "structure",
+      "base_volume": null,
+      "voice_cap": 4,
+      "family_rate_limit": "semantic_family",
+      "spatial": "world_pan_and_capped_attenuation",
+      "duck": "none",
+      "loop": "one_shot",
+      "loading": "fusion_or_structure_on_demand"
+    }
+  },
+  "budgets": {
+    "initial_audio_mb_max": 3,
+    "total_shipped_audio_mb_max": 10,
+    "complete_initial_payload_mb_max": 8,
+    "combat_voices_max": 12,
+    "structure_voices_max": 4,
+    "music_tracks_during_crossfade_max": 2,
+    "monthly_egress_planning_ceiling_gb_at_1000_uncached_loads": 10
+  },
+  "categories": {
+    "music": 9,
+    "phase_and_progression": 12,
+    "ui_and_construction": 9,
+    "character_and_combat": 23,
+    "structure": 24
+  },
+  "assets": [
+    {
+      "id": "build_calm",
+      "category": "music",
+      "runtime_id": "build_calm",
+      "runtime_file": "audio/music/build_calm.mp3",
+      "event": "build waves 1-3",
+      "family": "progressive_build_music",
+      "profile": "music",
+      "settings": "music_loop",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "Google Lyria 3 (lyria-3-pro-preview), AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the Google Gemini API, not a third-party licensed work. Governed by Google's Gemini API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-10",
+        "original_filename": "build_calm_lyria3.mp3",
+        "raw_path": "audio/raw/music/build_calm_lyria3.mp3",
+        "modifications": [
+          "Generated via Google Gemini API, model lyria-3-pro-preview, 2026-08-10.",
+          "Prompt: Warm storybook fantasy tower-defense build-phase theme for a game called Elementia. Instrumentation: plucked bamboo/koto-like strings, soft wooden flute melody, gentle hand percussion, restrained ambient pads, East Asian-inspired instrumental color used tastefully (not ceremonial), no vocals, continuous loopable arrangement around 2 minutes. Waves 1-3 arrangement: sparse and peaceful, minimal percussion, hopeful and calm mood, slow tempo around 80 BPM.",
+          "Google Lyria 3 has no seed/continuation/audio-conditioning input -- each of the 4 build-tier tracks was generated independently from a consistent text prompt (same instrumentation, tempo, and thematic language), not from a shared seed or audio continuation. They are best-effort stylistically-matched companions, NOT a literal single composition re-arranged 4 ways as the pipeline plan originally envisioned. Flagged for a human listen-through to judge whether they cohere well enough as a set."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_go_wire_them_in"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_music.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/music/build_calm.mp3",
+        "bitrate": "64k stereo mp3, -16 LUFS loudnorm, 15ms click-prevention fades",
+        "loop_seam_rms_delta_db": 48.9,
+        "loop_seam_caveat": "Lyria has no loop-point authoring; this is a raw-RMS start/end level delta, not a verified seamless loop. Expect an audible seam on Howler's loop repeat until a real loop-point edit or crossfade-on-repeat is done."
+      },
+      "integration_note": "MusicDirector.reconcileFromPhase, buildTierForWave(wave<=3) during build/waveEnd/lobby phases"
+    },
+    {
+      "id": "build_light",
+      "category": "music",
+      "runtime_id": "build_light",
+      "runtime_file": "audio/music/build_light.mp3",
+      "event": "build waves 4-6",
+      "family": "progressive_build_music",
+      "profile": "music",
+      "settings": "music_loop",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "Google Lyria 3 (lyria-3-pro-preview), AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the Google Gemini API, not a third-party licensed work. Governed by Google's Gemini API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-10",
+        "original_filename": "build_light_lyria3.mp3",
+        "raw_path": "audio/raw/music/build_light_lyria3.mp3",
+        "modifications": [
+          "Generated via Google Gemini API, model lyria-3-pro-preview, 2026-08-10.",
+          "Prompt: Warm storybook fantasy tower-defense build-phase theme for a game called Elementia, same musical identity as a calm build theme: plucked bamboo/koto-like strings, soft wooden flute melody, East Asian-inspired instrumental color used tastefully, no vocals, loopable around 2 minutes, tempo around 80 BPM. Waves 4-6 arrangement: add light wooden percussion and a second harmony layer, slightly more presence, still peaceful and hopeful, not battle music.",
+          "Google Lyria 3 has no seed/continuation/audio-conditioning input -- each of the 4 build-tier tracks was generated independently from a consistent text prompt (same instrumentation, tempo, and thematic language), not from a shared seed or audio continuation. They are best-effort stylistically-matched companions, NOT a literal single composition re-arranged 4 ways as the pipeline plan originally envisioned. Flagged for a human listen-through to judge whether they cohere well enough as a set."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_go_wire_them_in"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_music.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/music/build_light.mp3",
+        "bitrate": "64k stereo mp3, -16 LUFS loudnorm, 15ms click-prevention fades",
+        "loop_seam_rms_delta_db": 49.6,
+        "loop_seam_caveat": "Lyria has no loop-point authoring; this is a raw-RMS start/end level delta, not a verified seamless loop. Expect an audible seam on Howler's loop repeat until a real loop-point edit or crossfade-on-repeat is done."
+      },
+      "integration_note": "MusicDirector.reconcileFromPhase, buildTierForWave(4<=wave<=6)"
+    },
+    {
+      "id": "build_tense",
+      "category": "music",
+      "runtime_id": "build_tense",
+      "runtime_file": "audio/music/build_tense.mp3",
+      "event": "build waves 7-9",
+      "family": "progressive_build_music",
+      "profile": "music",
+      "settings": "music_loop",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "Google Lyria 3 (lyria-3-pro-preview), AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the Google Gemini API, not a third-party licensed work. Governed by Google's Gemini API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-10",
+        "original_filename": "build_tense_lyria3.mp3",
+        "raw_path": "audio/raw/music/build_tense_lyria3.mp3",
+        "modifications": [
+          "Generated via Google Gemini API, model lyria-3-pro-preview, 2026-08-10.",
+          "Prompt: Warm storybook fantasy tower-defense build-phase theme for a game called Elementia, same musical identity as a calm build theme: plucked bamboo/koto-like strings, soft wooden flute melody, East Asian-inspired instrumental color used tastefully, no vocals, loopable around 2 minutes, tempo around 80 BPM. Wave 10 arrangement: fullest version with layered percussion and harmony, dramatic anticipatory climax before the fight, still calmer and warmer than battle music, not harsh.",
+          "Google Lyria 3 has no seed/continuation/audio-conditioning input -- each of the 4 build-tier tracks was generated independently from a consistent text prompt (same instrumentation, tempo, and thematic language), not from a shared seed or audio continuation. They are best-effort stylistically-matched companions, NOT a literal single composition re-arranged 4 ways as the pipeline plan originally envisioned. Flagged for a human listen-through to judge whether they cohere well enough as a set.",
+          "2026-08-10 user listen: the originally-generated build_final track actually sounded less intense than build_tense -- swapped which raw file feeds which wave tier so wave 10 gets the more escalated arrangement. The model/prompt lines above are what actually produced THIS entry's audio."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_go_wire_them_in"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_music.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/music/build_tense.mp3",
+        "bitrate": "64k stereo mp3, -16 LUFS loudnorm, 15ms click-prevention fades",
+        "loop_seam_rms_delta_db": 36.3,
+        "loop_seam_caveat": "Lyria has no loop-point authoring; this is a raw-RMS start/end level delta, not a verified seamless loop. Expect an audible seam on Howler's loop repeat until a real loop-point edit or crossfade-on-repeat is done."
+      },
+      "integration_note": "MusicDirector.reconcileFromPhase, buildTierForWave(7<=wave<=9)"
+    },
+    {
+      "id": "build_final",
+      "category": "music",
+      "runtime_id": "build_final",
+      "runtime_file": "audio/music/build_final.mp3",
+      "event": "build wave 10",
+      "family": "progressive_build_music",
+      "profile": "music",
+      "settings": "music_loop",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "Google Lyria 3 (lyria-3-pro-preview), AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the Google Gemini API, not a third-party licensed work. Governed by Google's Gemini API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-10",
+        "original_filename": "build_final_lyria3.mp3",
+        "raw_path": "audio/raw/music/build_final_lyria3.mp3",
+        "modifications": [
+          "Generated via Google Gemini API, model lyria-3-pro-preview, 2026-08-10.",
+          "Prompt: Warm storybook fantasy tower-defense build-phase theme for a game called Elementia, same musical identity as a calm build theme: plucked bamboo/koto-like strings, soft wooden flute melody, East Asian-inspired instrumental color used tastefully, no vocals, loopable around 2 minutes, tempo around 80 BPM. Waves 7-9 arrangement: stronger layered percussion, subtle harmonic tension, minor-key coloring creeping in, more urgency but still restrained, not battle music.",
+          "Google Lyria 3 has no seed/continuation/audio-conditioning input -- each of the 4 build-tier tracks was generated independently from a consistent text prompt (same instrumentation, tempo, and thematic language), not from a shared seed or audio continuation. They are best-effort stylistically-matched companions, NOT a literal single composition re-arranged 4 ways as the pipeline plan originally envisioned. Flagged for a human listen-through to judge whether they cohere well enough as a set.",
+          "2026-08-10 user listen: the originally-generated build_final track actually sounded less intense than build_tense -- swapped which raw file feeds which wave tier so wave 10 gets the more escalated arrangement. The model/prompt lines above are what actually produced THIS entry's audio."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_go_wire_them_in"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_music.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/music/build_final.mp3",
+        "bitrate": "64k stereo mp3, -16 LUFS loudnorm, 15ms click-prevention fades",
+        "loop_seam_rms_delta_db": 35.6,
+        "loop_seam_caveat": "Lyria has no loop-point authoring; this is a raw-RMS start/end level delta, not a verified seamless loop. Expect an audible seam on Howler's loop repeat until a real loop-point edit or crossfade-on-repeat is done."
+      },
+      "integration_note": "MusicDirector.reconcileFromPhase, buildTierForWave(wave>=10)"
+    },
+    {
+      "id": "battle_base",
+      "category": "music",
+      "runtime_id": "battle_base",
+      "runtime_file": "audio/music/battle_base.mp3",
+      "event": "battle music base intensity",
+      "family": "battle_music",
+      "profile": "music",
+      "settings": "music_loop",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "Google Lyria 3 (lyria-3-pro-preview), AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the Google Gemini API, not a third-party licensed work. Governed by Google's Gemini API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-10",
+        "original_filename": "battle_base_lyria3.mp3",
+        "raw_path": "audio/raw/music/battle_base_lyria3.mp3",
+        "modifications": [
+          "Generated via Google Gemini API, model lyria-3-pro-preview, 2026-08-10.",
+          "Prompt: Warm storybook fantasy tower-defense battle-phase theme for a game called Elementia, base/normal fight intensity, the calmer half of a two-tier crossfade pair (a more intense late-wave version exists separately). Instrumentation: driving wooden and stone percussion at moderate intensity, restrained elemental energy (fire, wind, water, earth), East Asian-inspired instrumental color used tastefully, moderate tempo around 100 BPM, no harsh distortion or metal sounds, no vocals, dynamic and readable under sound effects, loopable arrangement around 2 minutes."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_go_wire_them_in"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_music.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/music/battle_base.mp3",
+        "bitrate": "64k stereo mp3, -16 LUFS loudnorm, 15ms click-prevention fades",
+        "loop_seam_rms_delta_db": 67.7,
+        "loop_seam_caveat": "Lyria has no loop-point authoring; this is a raw-RMS start/end level delta, not a verified seamless loop. Expect an audible seam on Howler's loop repeat until a real loop-point edit or crossfade-on-repeat is done."
+      },
+      "integration_note": "MusicDirector.reconcileFromPhase, fight phase wave < BATTLE_INTENSE_FROM_WAVE(8)"
+    },
+    {
+      "id": "battle_intense",
+      "category": "music",
+      "runtime_id": "battle_intense",
+      "runtime_file": "audio/music/battle_intense.mp3",
+      "event": "battle music intense crossfade",
+      "family": "battle_music",
+      "profile": "music",
+      "settings": "music_loop",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "Google Lyria 3 (lyria-3-pro-preview), AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the Google Gemini API, not a third-party licensed work. Governed by Google's Gemini API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-10",
+        "original_filename": "battle_intense_lyria3.mp3",
+        "raw_path": "audio/raw/music/battle_intense_lyria3.mp3",
+        "modifications": [
+          "Generated via Google Gemini API, model lyria-3-pro-preview, 2026-08-10.",
+          "Prompt: Warm storybook fantasy tower-defense battle-phase theme for a game called Elementia, high-pressure late-wave crossfade target. Driving wooden and stone percussion, urgent but restrained elemental energy (fire, wind, water, earth), East Asian-inspired instrumental color used tastefully, moderate-fast tempo around 110-120 BPM, no harsh distortion or metal sounds, no vocals, dynamic and readable under sound effects, loopable around 2 minutes."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_go_wire_them_in"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_music.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/music/battle_intense.mp3",
+        "bitrate": "64k stereo mp3, -16 LUFS loudnorm, 15ms click-prevention fades",
+        "loop_seam_rms_delta_db": 51.7,
+        "loop_seam_caveat": "Lyria has no loop-point authoring; this is a raw-RMS start/end level delta, not a verified seamless loop. Expect an audible seam on Howler's loop repeat until a real loop-point edit or crossfade-on-repeat is done."
+      },
+      "integration_note": "MusicDirector.reconcileFromPhase, fight phase wave >= BATTLE_INTENSE_FROM_WAVE(8)"
+    },
+    {
+      "id": "menu_theme",
+      "category": "music",
+      "runtime_id": "menu_theme",
+      "runtime_file": "audio/music/menu_theme.ogg",
+      "event": "menu and postgame music",
+      "family": "menu_music",
+      "profile": "music",
+      "settings": "music_loop",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "Google Lyria 3 (lyria-3-pro-preview), AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the Google Gemini API, not a third-party licensed work. Governed by Google's Gemini API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-10",
+        "original_filename": "menu_theme_lyria3.mp3",
+        "raw_path": "audio/raw/music/menu_theme_lyria3.mp3",
+        "modifications": [
+          "Generated via Google Gemini API, model lyria-3-pro-preview, 2026-08-10.",
+          "Prompt: Warm storybook fantasy tower-defense menu theme for a game called Elementia. Calm, welcoming, gentle plucked bamboo/koto-like strings and a soft wooden flute melody, East Asian-inspired instrumental color used tastefully, very light or no percussion, no vocals, peaceful and inviting seamless loop, simple placeholder-quality arrangement, around 2 minutes."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_go_wire_them_in"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_music.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/music/menu_theme.mp3",
+        "bitrate": "64k stereo mp3, -16 LUFS loudnorm, 15ms click-prevention fades",
+        "loop_seam_rms_delta_db": 51.7,
+        "loop_seam_caveat": "Lyria has no loop-point authoring; this is a raw-RMS start/end level delta, not a verified seamless loop. Expect an audible seam on Howler's loop repeat until a real loop-point edit or crossfade-on-repeat is done."
+      },
+      "integration_note": "MusicDirector.setScene('menu'|'postgame')"
+    },
+    {
+      "id": "victory_final",
+      "category": "music",
+      "runtime_id": "victory_final",
+      "runtime_file": "audio/music/victory_final.mp3",
+      "event": "final victory",
+      "family": "final_outcome",
+      "profile": "music",
+      "settings": "music_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "Google Lyria 3 (lyria-3-clip-preview), AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the Google Gemini API, not a third-party licensed work. Governed by Google's Gemini API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-10",
+        "original_filename": "victory_final_lyria3.mp3",
+        "raw_path": "audio/raw/music/victory_final_lyria3.mp3",
+        "modifications": [
+          "Generated via Google Gemini API, model lyria-3-clip-preview, 2026-08-10.",
+          "Prompt: Short triumphant victory fanfare for a warm storybook fantasy tower-defense game called Elementia. Bright, joyful, restrained East Asian-inspired instrumental color (bells, plucked strings, wood flute), non-looping celebratory cue, no vocals, warm and heroic but not bombastic or harsh.",
+          "Raw clip-preview output is a fixed 30s; tools/audio/process_music.py trims one-shot stingers down to ~12s."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_go_wire_them_in"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_music.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/music/victory_final.mp3",
+        "bitrate": "64k stereo mp3, -16 LUFS loudnorm, 15ms click-prevention fades",
+        "loop_seam_rms_delta_db": 51,
+        "loop_seam_caveat": "one-shot stinger, not looped; full ~30.7s clip-preview length kept (2026-08-10 user listen: an earlier 12s trim cut off too abruptly)."
+      },
+      "integration_note": "MusicDirector.playOutcome('victory'), called from GameScene's GAME_END handler"
+    },
+    {
+      "id": "defeat_final",
+      "category": "music",
+      "runtime_id": "defeat_final",
+      "runtime_file": "audio/music/defeat_final.mp3",
+      "event": "final defeat",
+      "family": "final_outcome",
+      "profile": "music",
+      "settings": "music_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "Google Lyria 3 (lyria-3-clip-preview), AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the Google Gemini API, not a third-party licensed work. Governed by Google's Gemini API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-10",
+        "original_filename": "defeat_final_lyria3.mp3",
+        "raw_path": "audio/raw/music/defeat_final_lyria3.mp3",
+        "modifications": [
+          "Generated via Google Gemini API, model lyria-3-clip-preview, 2026-08-10.",
+          "Prompt: Short somber defeat cue for a warm storybook fantasy tower-defense game called Elementia. Gentle, melancholic, restrained East Asian-inspired instrumental color (soft strings, low wooden flute), non-looping cue, no vocals, sad and quiet but not harsh or horror-toned.",
+          "Raw clip-preview output is a fixed 30s; tools/audio/process_music.py trims one-shot stingers down to ~12s."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_go_wire_them_in"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_music.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/music/defeat_final.mp3",
+        "bitrate": "64k stereo mp3, -16 LUFS loudnorm, 15ms click-prevention fades",
+        "loop_seam_rms_delta_db": 11.5,
+        "loop_seam_caveat": "one-shot stinger, not looped; full ~30.7s clip-preview length kept (2026-08-10 user listen: an earlier 12s trim cut off too abruptly)."
+      },
+      "integration_note": "MusicDirector.playOutcome('defeat'), called from GameScene's GAME_END handler"
+    },
+    {
+      "id": "build_locked",
+      "category": "phase_and_progression",
+      "runtime_id": "build_locked",
+      "runtime_file": "audio/sfx/build_locked.ogg",
+      "event": "build locked in",
+      "family": "phase_stinger",
+      "profile": "stinger",
+      "settings": "phase",
+      "duck_rule": "duck_build_music",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/qubodup/sounds/822567/",
+        "creator": "qubodup",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-15",
+        "original_filename": "Small Wood Piece Sound",
+        "raw_path": "audio/raw/build_locked_fs822567.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the fs815493 pick per Philip's direction 2026-08-15 — wanted a feudal Asian (Japan/China) theme across the whole cue set, not generic Western UI sounds. A small dry wood-on-wood click, in the family of temple/theatre wood percussion."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js PHASE_CHANGE handler, leavingBuild edge (build phase ends).",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/build_locked.ogg"
+      }
+    },
+    {
+      "id": "attack_phase_started",
+      "category": "phase_and_progression",
+      "runtime_id": "attack_phase_started",
+      "runtime_file": "audio/sfx/attack_phase_started.ogg",
+      "event": "attack phase starts",
+      "family": "phase_stinger",
+      "profile": "stinger",
+      "settings": "phase",
+      "duck_rule": "duck_music_during_attack_start",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/ajaysm/sounds/222361/",
+        "creator": "ajaysm",
+        "license": "CC BY 4.0",
+        "attribution_text": "\"xiaoluo_65\" by ajaysm (freesound.org), licensed CC BY 4.0.",
+        "download_date": "2026-08-15",
+        "original_filename": "xiaoluo_65",
+        "raw_path": "audio/raw/attack_phase_started_fs222361.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader original file).",
+          "Replaces the fs468999 'fight.wav' announcer-voice pick per Philip's direction 2026-08-15 — wanted a gong for attack-phase-start instead. A xiaoluo (small Beijing-opera gong, uploader tags: beijing-opera, china, chinese, gong) — traditionally used in Chinese opera to punctuate action/combat scenes, on-theme with the rest of the cue set."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js PHASE_CHANGE handler, enteringFight edge (alongside wave_start).",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/attack_phase_started.ogg"
+      }
+    },
+    {
+      "id": "wave_cleared",
+      "category": "phase_and_progression",
+      "runtime_id": "wave_cleared",
+      "runtime_file": "audio/sfx/wave_cleared.ogg",
+      "event": "wave cleared",
+      "family": "phase_stinger",
+      "profile": "stinger",
+      "settings": "phase",
+      "duck_rule": "duck_battle_tail",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Jagadamba/sounds/257194/",
+        "creator": "Jagadamba",
+        "license": "CC BY 4.0",
+        "attribution_text": "\"Gong - percussion 04\" by Jagadamba (freesound.org), licensed CC BY 4.0.",
+        "download_date": "2026-08-15",
+        "original_filename": "Gong - percussion 04",
+        "raw_path": "audio/raw/wave_cleared_fs257194.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the fs717771 pick per Philip's direction 2026-08-15 — wanted a feudal Asian (Japan/China) theme across the whole cue set, not generic Western UI sounds. A struck Chinese gong (uploader tags: chinese, gong)."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js PHASE_CHANGE handler, enteringWaveEnd edge.",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/wave_cleared.ogg"
+      }
+    },
+    {
+      "id": "gate_warning",
+      "category": "phase_and_progression",
+      "runtime_id": "gate_warning",
+      "runtime_file": "audio/sfx/gate_warning.ogg",
+      "event": "gate warning",
+      "family": "progression",
+      "profile": "stinger",
+      "settings": "phase",
+      "duck_rule": "none",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Jagadamba/sounds/387717/",
+        "creator": "Jagadamba",
+        "license": "CC BY 4.0",
+        "attribution_text": "\"Metal hit\" by Jagadamba (freesound.org), licensed CC BY 4.0.",
+        "download_date": "2026-08-15",
+        "original_filename": "Metal hit",
+        "raw_path": "audio/raw/gate_warning_fs387717.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the fs607943 pick per Philip's direction 2026-08-15 — wanted a feudal Asian (Japan/China) theme across the whole cue set, not generic Western UI sounds. A short struck metal/bell hit, same East-Asian percussion set as wave_cleared's gong but distinct timbre."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js update(), hall-HP-bar block: hpFrac <= HALL_WARN_FRAC edge-detect (_hallWarnedLow).",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/gate_warning.ogg"
+      }
+    },
+    {
+      "id": "wave_start",
+      "category": "phase_and_progression",
+      "runtime_id": "wave_start",
+      "runtime_file": "audio/sfx/wave_start.ogg",
+      "event": "wave start (build -> fight transition)",
+      "family": "phase_stinger",
+      "profile": "stinger",
+      "settings": "phase",
+      "duck_rule": "duck_music_during_attack_start",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "ElevenLabs sound-generation API, AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the ElevenLabs sound-generation API, not a third-party licensed work. Governed by ElevenLabs' API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-23",
+        "original_filename": "wave_start_elevenlabs.mp3",
+        "raw_path": "audio/raw/wave_start_elevenlabs.mp3",
+        "modifications": [
+          "Generated via ElevenLabs sound-generation API (POST /v1/sound-generation), 2026-08-23.",
+          "Prompt: 'A short urgent alert stinger using a struck gong and taiko drum hit, feudal East Asian instrumentation, signals an enemy wave beginning in a tower defense game, dry, punchy' (duration_seconds=1.8, prompt_influence=0.35) -- matches the feudal-Asian gong/taiko palette established for attack_phase_started/wave_cleared/gate_warning, which fire alongside wave_start on the same build->fight transition."
+        ]
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js PHASE_CHANGE handler, enteringFight edge -- fires together with attack_phase_started.",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-23",
+        "output": "client/public/audio/sfx/wave_start.ogg"
+      }
+    },
+    {
+      "id": "victory",
+      "category": "phase_and_progression",
+      "runtime_id": "victory",
+      "runtime_file": "audio/sfx/victory.ogg",
+      "event": "match outcome: victory",
+      "family": "outcome",
+      "profile": "stinger",
+      "settings": "phase",
+      "duck_rule": "none",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "ElevenLabs sound-generation API, AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the ElevenLabs sound-generation API, not a third-party licensed work. Governed by ElevenLabs' API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-23",
+        "original_filename": "victory_elevenlabs.mp3",
+        "raw_path": "audio/raw/victory_elevenlabs.mp3",
+        "modifications": [
+          "Generated via ElevenLabs sound-generation API (POST /v1/sound-generation), 2026-08-23.",
+          "Prompt: 'A short triumphant victory fanfare using gong, erhu, and taiko drums, feudal East Asian instrumental palette, celebratory rising musical phrase, 2.5 seconds, game outcome stinger' (duration_seconds=2.5, prompt_influence=0.35)."
+        ]
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js match-end handler (p.outcome === 'won'); distinct from the victory_final music stinger played separately via audio.music.playOutcome.",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-23",
+        "output": "client/public/audio/sfx/victory.ogg"
+      }
+    },
+    {
+      "id": "defeat",
+      "category": "phase_and_progression",
+      "runtime_id": "defeat",
+      "runtime_file": "audio/sfx/defeat.ogg",
+      "event": "match outcome: defeat",
+      "family": "outcome",
+      "profile": "stinger",
+      "settings": "phase",
+      "duck_rule": "none",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "ElevenLabs sound-generation API, AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the ElevenLabs sound-generation API, not a third-party licensed work. Governed by ElevenLabs' API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-23",
+        "original_filename": "defeat_elevenlabs.mp3",
+        "raw_path": "audio/raw/defeat_elevenlabs.mp3",
+        "modifications": [
+          "Generated via ElevenLabs sound-generation API (POST /v1/sound-generation), 2026-08-23.",
+          "Prompt: 'A short somber defeat stinger using a low gong and a descending erhu phrase, feudal East Asian instrumentation, mournful falling musical phrase, 2.5 seconds, game outcome stinger' (duration_seconds=2.5, prompt_influence=0.35)."
+        ]
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js match-end handler (p.outcome !== 'won'); distinct from the defeat_final music stinger played separately via audio.music.playOutcome.",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-23",
+        "output": "client/public/audio/sfx/defeat.ogg"
+      }
+    },
+    {
+      "id": "level_up",
+      "category": "phase_and_progression",
+      "runtime_id": "level_up",
+      "runtime_file": "audio/sfx/level_up.ogg",
+      "event": "level up",
+      "family": "progression",
+      "profile": "stinger",
+      "settings": "phase",
+      "duck_rule": "none",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "ElevenLabs sound-generation API, AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the ElevenLabs sound-generation API, not a third-party licensed work. Governed by ElevenLabs' API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-23",
+        "original_filename": "level_up_elevenlabs.mp3",
+        "raw_path": "audio/raw/level_up_elevenlabs.mp3",
+        "modifications": [
+          "Generated via ElevenLabs sound-generation API (POST /v1/sound-generation), 2026-08-23.",
+          "Prompt: 'A short triumphant level-up fanfare stinger using bamboo flute and koto pluck, brief East Asian-inspired rising melodic phrase, 1.5 seconds, game UI reward sound' (duration_seconds=1.8, prompt_influence=0.35)."
+        ]
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js level-up handler.",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-23",
+        "output": "client/public/audio/sfx/level_up.ogg"
+      }
+    },
+    {
+      "id": "fusion_proposed",
+      "category": "phase_and_progression",
+      "runtime_id": "fusion_proposed",
+      "runtime_file": "audio/sfx/fusion_proposed.ogg",
+      "event": "fusion proposed",
+      "family": "fusion_ui",
+      "profile": "stinger",
+      "settings": "phase",
+      "duck_rule": "none",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Jagadamba/sounds/253766/",
+        "creator": "Jagadamba",
+        "license": "CC BY 4.0",
+        "attribution_text": "\"Monochord 02\" by Jagadamba (freesound.org), licensed CC BY 4.0.",
+        "download_date": "2026-08-15",
+        "original_filename": "Monochord 02",
+        "raw_path": "audio/raw/fusion_proposed_fs253766.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the fs422515 pick per Philip's direction 2026-08-15 — wanted a feudal Asian (Japan/China) theme across the whole cue set, not generic Western UI sounds. A koto-tagged plucked string, fitting a magic/fusion notification."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js EVENTS.FUSION_PROPOSED handler (replaces the former generic ui_click there).",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/fusion_proposed.ogg"
+      }
+    },
+    {
+      "id": "fusion_accepted",
+      "category": "phase_and_progression",
+      "runtime_id": "fusion_accepted",
+      "runtime_file": "audio/sfx/fusion_accepted.ogg",
+      "event": "fusion accepted",
+      "family": "fusion_ui",
+      "profile": "stinger",
+      "settings": "phase",
+      "duck_rule": "none",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/PercussionFiend/sounds/66220/",
+        "creator": "PercussionFiend",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-15",
+        "original_filename": "bamboo1",
+        "raw_path": "audio/raw/fusion_accepted_fs66220.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the fs625174 pick per Philip's direction 2026-08-15 — wanted a feudal Asian (Japan/China) theme across the whole cue set, not generic Western UI sounds. A short bamboo wind-chime click."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js EVENTS.FUSION_UPDATED handler, on each new consentedId push.",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/fusion_accepted.ogg"
+      }
+    },
+    {
+      "id": "fusion_rejected_or_expired",
+      "category": "phase_and_progression",
+      "runtime_id": "fusion_rejected_or_expired",
+      "runtime_file": "audio/sfx/fusion_rejected_or_expired.ogg",
+      "event": "fusion rejected or expired",
+      "family": "fusion_ui",
+      "profile": "stinger",
+      "settings": "phase",
+      "duck_rule": "none",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/WantingChen/sounds/255832/",
+        "creator": "WantingChen",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-15",
+        "original_filename": "portamento_hpsModel (erhu)",
+        "raw_path": "audio/raw/fusion_rejected_or_expired_fs255832.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the fs411695 pick per Philip's direction 2026-08-15 — wanted a feudal Asian (Japan/China) theme across the whole cue set, not generic Western UI sounds. An erhu portamento slide-down analysis render — a discordant sliding tone fitting a decline."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js EVENTS.FUSION_RESOLVED handler, outcome !== 'fused' branch.",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/fusion_rejected_or_expired.ogg"
+      }
+    },
+    {
+      "id": "fusion_created",
+      "category": "phase_and_progression",
+      "runtime_id": "fusion_created",
+      "runtime_file": "audio/sfx/fusion_created.ogg",
+      "event": "fusion created",
+      "family": "fusion_ui",
+      "profile": "stinger",
+      "settings": "phase",
+      "duck_rule": "none",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Jagadamba/sounds/257189/",
+        "creator": "Jagadamba",
+        "license": "CC BY 4.0",
+        "attribution_text": "\"Gong - percussion 02\" by Jagadamba (freesound.org), licensed CC BY 4.0.",
+        "download_date": "2026-08-15",
+        "original_filename": "Gong - percussion 02",
+        "raw_path": "audio/raw/fusion_created_fs257189.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the fs524157 pick per Philip's direction 2026-08-15 — wanted a feudal Asian (Japan/China) theme across the whole cue set, not generic Western UI sounds. A longer struck gong swell, distinct sample from wave_cleared/gate_warning's Jagadamba picks."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js EVENTS.FUSION_RESOLVED handler, outcome === 'fused' branch.",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/fusion_created.ogg"
+      }
+    },
+    {
+      "id": "ui_click",
+      "category": "ui_and_construction",
+      "runtime_id": "ui_click",
+      "runtime_file": "audio/sfx/ui_click.ogg",
+      "event": "UI click",
+      "family": "ui",
+      "profile": "sfx",
+      "settings": "ui",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "ElevenLabs sound-generation API, AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the ElevenLabs sound-generation API, not a third-party licensed work. Governed by ElevenLabs' API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-23",
+        "original_filename": "ui_click_elevenlabs.mp3",
+        "raw_path": "audio/raw/ui_click_elevenlabs.mp3",
+        "modifications": [
+          "Generated via ElevenLabs sound-generation API (POST /v1/sound-generation), 2026-08-23.",
+          "Prompt: 'A very short crisp minimal UI click tick, clean single percussive tap, no tone, no reverb, interface sound effect' (duration_seconds=0.5, prompt_influence=0.35)."
+        ]
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js -- multiple UI interaction sites.",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-23",
+        "output": "client/public/audio/sfx/ui_click.ogg"
+      }
+    },
+    {
+      "id": "rotate_structure",
+      "category": "ui_and_construction",
+      "runtime_id": "rotate_structure",
+      "runtime_file": "audio/sfx/rotate_structure.ogg",
+      "event": "rotate structure",
+      "family": "construction_ui",
+      "profile": "sfx",
+      "settings": "ui",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/michorvath/sounds/386888/",
+        "creator": "michorvath",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-15",
+        "original_filename": "Bamboo hit",
+        "raw_path": "audio/raw/rotate_structure_fs386888.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the fs778442 pick per Philip's direction 2026-08-15 — wanted a feudal Asian (Japan/China) theme across the whole cue set, not generic Western UI sounds. A single bamboo-stalk hit."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js KeyR handler (replaces the former generic ui_click there).",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/rotate_structure.ogg"
+      }
+    },
+    {
+      "id": "change_output_direction",
+      "category": "ui_and_construction",
+      "runtime_id": "change_output_direction",
+      "runtime_file": "audio/sfx/change_output_direction.ogg",
+      "event": "change output direction",
+      "family": "construction_ui",
+      "profile": "sfx",
+      "settings": "ui",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Parking Sun/sounds/74285/",
+        "creator": "Parking Sun",
+        "license": "CC BY 3.0",
+        "attribution_text": "\"b3-bandung-angklung vib-1\" by Parking Sun (freesound.org), licensed CC BY 3.0.",
+        "download_date": "2026-08-15",
+        "original_filename": "b3-bandung-angklung vib-1",
+        "raw_path": "audio/raw/change_output_direction_fs74285.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the fs364200 pick per Philip's direction 2026-08-15 — wanted a feudal Asian (Japan/China) theme across the whole cue set, not generic Western UI sounds. A single note from a Sundanese angklung (bamboo rattle), pan-Asian bamboo percussion, distinct timbre from rotate_structure's bamboo hit."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js arrow-key handler for DIRECTIONAL_TYPES (replaces the former generic ui_click there).",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/change_output_direction.ogg"
+      }
+    },
+    {
+      "id": "placement_valid",
+      "category": "ui_and_construction",
+      "runtime_id": "placement_valid",
+      "runtime_file": "audio/sfx/placement_valid.ogg",
+      "event": "valid placement",
+      "family": "construction_ui",
+      "profile": "sfx",
+      "settings": "ui",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/NoisyRedFox/sounds/734276/",
+        "creator": "NoisyRedFox",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-15",
+        "original_filename": "WindChimes",
+        "raw_path": "audio/raw/placement_valid_fs734276.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the fs658431 pick per Philip's direction 2026-08-15 — wanted a feudal Asian (Japan/China) theme across the whole cue set, not generic Western UI sounds. A short wind-chime jangle."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js _drawPlacementGhost(), valid edge-detect (_placementValidPrev).",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/placement_valid.ogg"
+      }
+    },
+    {
+      "id": "placement_invalid",
+      "category": "ui_and_construction",
+      "runtime_id": "placement_invalid",
+      "runtime_file": "audio/sfx/placement_invalid.ogg",
+      "event": "invalid placement",
+      "family": "construction_ui",
+      "profile": "sfx",
+      "settings": "ui",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/WantingChen/sounds/255830/",
+        "creator": "WantingChen",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-15",
+        "original_filename": "portamento_hpsModel_sines (erhu)",
+        "raw_path": "audio/raw/placement_invalid_fs255830.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the fs419023 pick per Philip's direction 2026-08-15 — wanted a feudal Asian (Japan/China) theme across the whole cue set, not generic Western UI sounds. A sine-model render of the same erhu portamento source as fusion_rejected_or_expired, distinct enough in texture (pure sines vs the fuller hpsModel) to read as a separate cue."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js _drawPlacementGhost(), invalid edge-detect (_placementValidPrev).",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/placement_invalid.ogg"
+      }
+    },
+    {
+      "id": "build",
+      "category": "ui_and_construction",
+      "runtime_id": "build",
+      "runtime_file": "audio/sfx/build.ogg",
+      "event": "server-confirmed build",
+      "family": "construction_confirmed",
+      "profile": "sfx",
+      "settings": "ui",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "ElevenLabs sound-generation API, AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the ElevenLabs sound-generation API, not a third-party licensed work. Governed by ElevenLabs' API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-23",
+        "original_filename": "build_elevenlabs.mp3",
+        "raw_path": "audio/raw/build_elevenlabs.mp3",
+        "modifications": [
+          "Generated via ElevenLabs sound-generation API (POST /v1/sound-generation), 2026-08-23.",
+          "Prompt: 'A short solid wooden construction thunk, single satisfying low-pitched wood-and-stone placement hit, fantasy tower-defense build sound, dry, no reverb tail' (duration_seconds=0.6, prompt_influence=0.35)."
+        ]
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js structure-build confirmation handler.",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-23",
+        "output": "client/public/audio/sfx/build.ogg"
+      }
+    },
+    {
+      "id": "sell",
+      "category": "ui_and_construction",
+      "runtime_id": "sell",
+      "runtime_file": "audio/sfx/sell.ogg",
+      "event": "server-confirmed sell",
+      "family": "construction_confirmed",
+      "profile": "sfx",
+      "settings": "ui",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "ElevenLabs sound-generation API, AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the ElevenLabs sound-generation API, not a third-party licensed work. Governed by ElevenLabs' API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-23",
+        "original_filename": "sell_elevenlabs.mp3",
+        "raw_path": "audio/raw/sell_elevenlabs.mp3",
+        "modifications": [
+          "Generated via ElevenLabs sound-generation API (POST /v1/sound-generation), 2026-08-23.",
+          "Prompt: 'A short bright coin/chime refund sound, single pleasant ascending bell-like ting confirming a sale, fantasy UI sound, dry' (duration_seconds=0.8, prompt_influence=0.35)."
+        ]
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js structure-sell confirmation handler.",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-23",
+        "output": "client/public/audio/sfx/sell.ogg"
+      }
+    },
+    {
+      "id": "repair_start_loop",
+      "category": "ui_and_construction",
+      "runtime_id": "repair_start_loop",
+      "runtime_file": "audio/sfx/repair_start_loop.ogg",
+      "event": "repair start and loop",
+      "family": "repair",
+      "profile": "sfx",
+      "settings": "structure_loop",
+      "provenance": {
+        "status": "sourced",
+        "source": "freesound",
+        "source_id": 360894,
+        "source_url": "https://freesound.org/people/felix.blume/sounds/360894/",
+        "source_name": "Man hammering with a constant beat",
+        "creator": "felix.blume",
+        "license": "CC0 1.0",
+        "license_url": "http://creativecommons.org/publicdomain/zero/1.0/",
+        "download_date": "2026-08-15",
+        "raw_path": "audio/raw/repair_start_loop_fs360894.ogg",
+        "modifications": "HQ ogg preview, then cut to a beat-aligned 3.60s excerpt (source is 118.5s). Onset analysis put the hammering's beat period at ~0.60s; the cut is exactly 6 periods starting 20ms before a strike transient, so the loop wraps onto the next strike instead of drifting. This is the only asset in the ledger cut for LOOP alignment rather than just length - re-cutting it needs the same beat-integer discipline or the loop will audibly stutter at the seam."
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "not_recorded",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/repair_start_loop.ogg",
+        "profile": "sfx",
+        "channels": 1,
+        "duration_s": 3.6
+      },
+      "integration_note": "Sustained loop, NOT an fx one-shot. Declared in LOOP_SFX_NAMES (client/src/audio.js) so its Howl is built with loop:true, and driven by audio.setLoop('repair_start_loop', anyRepairing) once per frame in GameScene's structure loop, where anyRepairing is true if ANY structure's ds.repairMs > 0. State-driven rather than edge-driven: the server zeroes repairMs the tick a channel lapses, so a cancelled/finished repair stops the loop with no stop event."
+    },
+    {
+      "id": "repair_completed",
+      "category": "ui_and_construction",
+      "runtime_id": "repair_completed",
+      "runtime_file": "audio/sfx/repair_completed.ogg",
+      "event": "repair completed",
+      "family": "repair",
+      "profile": "sfx",
+      "settings": "ui",
+      "provenance": {
+        "status": "sourced",
+        "source": "freesound",
+        "source_id": 148849,
+        "source_url": "https://freesound.org/people/iluppai/sounds/148849/",
+        "source_name": "1ring",
+        "creator": "iluppai",
+        "license": "CC0 1.0",
+        "license_url": "http://creativecommons.org/publicdomain/zero/1.0/",
+        "download_date": "2026-08-15",
+        "raw_path": "audio/raw/repair_completed_fs148849.ogg",
+        "modifications": "HQ ogg preview, unmodified before the pipeline. Picked a bright SMALL bell deliberately: the obvious feudal-Asian choice was a Kyoto temple bell, but that timbre is already 'death' (fs609028) and a repair finishing must not read like a player dying."
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "not_recorded",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/repair_completed.ogg",
+        "profile": "sfx",
+        "channels": 1,
+        "duration_s": 2.19
+      },
+      "integration_note": "One-shot via FX_MAP['repair_done'] (client/src/audio.js). server/game/repair.js's tickRepairChannels pushes {type:'repair_done'} at the structure's footprint centre on the tick a channel completes."
+    },
+    {
+      "id": "earth_sweep",
+      "category": "character_and_combat",
+      "runtime_id": "earth_sweep",
+      "runtime_file": "audio/sfx/earth_sweep.ogg",
+      "event": "Earth basic release",
+      "family": "attack_release",
+      "profile": "sfx",
+      "settings": "world_routine",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/bolkmar/sounds/475133/",
+        "creator": "bolkmar",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "FX - Swoosh - Slow",
+        "raw_path": "audio/raw/earth_sweep_fs475133.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Generic heavy/slow whoosh, not earth-specific — best available CC0/CC-BY match; flag for re-listen, may need pitch-down or layering for earth character."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/earth_sweep.ogg"
+      },
+      "integration_note": "GameScene._playAtk, EARTH_CONE cast"
+    },
+    {
+      "id": "stone_impact",
+      "category": "character_and_combat",
+      "runtime_id": "stone_impact",
+      "runtime_file": "audio/sfx/stone_impact.ogg",
+      "event": "Earth basic impact",
+      "family": "impact",
+      "profile": "sfx",
+      "settings": "world_routine",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/aabbccddee123/sounds/469475/",
+        "creator": "aabbccddee123",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "067_Zorroesaplastado-002.wav",
+        "raw_path": "audio/raw/stone_impact_fs469475.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the 'Single Rock hit Dirt' pick per Philip's feedback 2026-08-02 — original measured mean -46.0dB/max -17.5dB (too quiet) and wanted a louder, quicker, more abrupt stone crash. This pick measures mean -16.3dB/max -5.2dB at 0.43s, made by dropping a rock on a soft surface."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/stone_impact.ogg"
+      },
+      "integration_note": "GameScene._spawnAttackFx sfxByState, earth_basic_fx impact frame"
+    },
+    {
+      "id": "water_palm",
+      "category": "character_and_combat",
+      "runtime_id": "water_palm",
+      "runtime_file": "audio/sfx/water_palm.ogg",
+      "event": "Water basic release",
+      "family": "attack_release",
+      "profile": "sfx",
+      "settings": "world_routine",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/velcronator/sounds/733890/",
+        "creator": "velcronator",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Whoosh 03",
+        "raw_path": "audio/raw/water_palm_fs733890.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Generic whoosh, not water-specific — best available match; flag for re-listen, may need layering with water texture."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/water_palm.ogg"
+      },
+      "integration_note": "GameScene._playAtk, WATER_REACH cast"
+    },
+    {
+      "id": "splash_impact",
+      "category": "character_and_combat",
+      "runtime_id": "splash_impact",
+      "runtime_file": "audio/sfx/splash_impact.ogg",
+      "event": "Water basic impact",
+      "family": "impact",
+      "profile": "sfx",
+      "settings": "world_routine",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Bird_man/sounds/316744/",
+        "creator": "Bird_man",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Big Splash.wav",
+        "raw_path": "audio/raw/splash_impact_fs316744.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the 'Water Impact Magic Spell' pick per Philip's direction 2026-08-02 — wanted a sudden, literal water-splash impact rather than a designed magic-cast sound. Field-recorded pool splash, EQ'd bigger.",
+          "Level checked: mean -20.9dB / max 0.0dB, strong signal."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/splash_impact.ogg"
+      },
+      "integration_note": "GameScene._spawnAttackFx sfxByState, water_basic_fx impact frame"
+    },
+    {
+      "id": "fire_saber_slash",
+      "category": "character_and_combat",
+      "runtime_id": "fire_saber_slash",
+      "runtime_file": "audio/sfx/fire_saber_slash.ogg",
+      "event": "Fire basic release",
+      "family": "attack_release",
+      "profile": "sfx",
+      "settings": "world_routine",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/SonoFxAudio/sounds/649361/",
+        "creator": "SonoFxAudio",
+        "license": "CC-BY 4.0",
+        "attribution_text": "\"Sword_Fire01.wav\" by SonoFxAudio (freesound.org), licensed CC-BY 4.0.",
+        "download_date": "2026-08-02",
+        "original_filename": "Sword_Fire01.wav",
+        "raw_path": "audio/raw/fire_saber_slash_fs649361.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "From an Elemental Swords SFX pack — direct thematic match."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/fire_saber_slash.ogg"
+      },
+      "integration_note": "GameScene._playAtk, FIRE_REACH cast"
+    },
+    {
+      "id": "flame_impact",
+      "category": "character_and_combat",
+      "runtime_id": "flame_impact",
+      "runtime_file": "audio/sfx/flame_impact.ogg",
+      "event": "Fire basic impact",
+      "family": "impact",
+      "profile": "sfx",
+      "settings": "world_routine",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Za-Games/sounds/539972/",
+        "creator": "Za-Games",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Fire Burst Flash",
+        "raw_path": "audio/raw/flame_impact_fs539972.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the 'Fireball Impact' pick per Philip's direction 2026-08-02 — wanted a more abrupt/sudden burning burst rather than a sustained impact. Shorter (0.76s vs 1.77s), uploader describes it as a quick flame burst for a magic attack.",
+          "Level checked: mean -17.0dB / max -3.0dB, healthy signal."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "processed_not_wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/flame_impact.ogg"
+      },
+      "integration_note": "Fire's basic FX is the static 'fireball' substitute sprite (no impact animation state to hook)"
+    },
+    {
+      "id": "wind_fan_throw",
+      "category": "character_and_combat",
+      "runtime_id": "wind_fan_throw",
+      "runtime_file": "audio/sfx/wind_fan_throw.ogg",
+      "event": "Wind basic release",
+      "family": "attack_release",
+      "profile": "sfx",
+      "settings": "world_routine",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/denao270/sounds/346373/",
+        "creator": "denao270",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Throwing / Whip Effect",
+        "raw_path": "audio/raw/wind_fan_throw_fs346373.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file)."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/wind_fan_throw.ogg"
+      },
+      "integration_note": "GameScene projectile render loop, FAN_BLADE spawn"
+    },
+    {
+      "id": "wind_fan_flight",
+      "category": "character_and_combat",
+      "runtime_id": "wind_fan_flight",
+      "runtime_file": "audio/sfx/wind_fan_flight.ogg",
+      "event": "Wind fan projectile flight",
+      "family": "projectile",
+      "profile": "sfx",
+      "settings": "world_routine",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/zapsplat.com/sounds/719638/",
+        "creator": "zapsplat.com",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Lasso rope being spun, spinning through air then throw",
+        "raw_path": "audio/raw/wind_fan_flight_fs719638.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the whistling 'Whirl.wav' pick per Philip's direction 2026-08-02 — wanted a weapon-twirling-in-midair character specifically, not a whistle-only tone. Recorded as a lasso rope spinning rapidly through the air before being thrown.",
+          "Level checked: mean -25.6dB / max -3.0dB, healthy signal."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "processed_not_wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/wind_fan_flight.ogg"
+      },
+      "integration_note": "would need a sustained sound that tracks a moving projectile; not built this pass"
+    },
+    {
+      "id": "wind_fan_impact",
+      "category": "character_and_combat",
+      "runtime_id": "wind_fan_impact",
+      "runtime_file": "audio/sfx/wind_fan_impact.ogg",
+      "event": "Wind fan impact or dissipation",
+      "family": "impact",
+      "profile": "sfx",
+      "settings": "world_routine",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/qubodup/sounds/714257/",
+        "creator": "qubodup",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Puff of Smoke",
+        "raw_path": "audio/raw/wind_fan_impact_fs714257.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Originally recorded as an RTS building-placement dissipation cue — fits 'impact or dissipation' event well."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/wind_fan_impact.ogg"
+      },
+      "integration_note": "GameScene projectile render loop, FAN_BLADE impact"
+    },
+    {
+      "id": "special_cast",
+      "category": "character_and_combat",
+      "runtime_id": "special_cast",
+      "runtime_file": "audio/sfx/special_cast.ogg",
+      "event": "first special cast",
+      "family": "special_cast",
+      "profile": "sfx",
+      "settings": "world_critical",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/qubodup/sounds/827662/",
+        "creator": "qubodup",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Joker Skill Effect",
+        "raw_path": "audio/raw/special_cast_fs827662.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Generic RPG ability activation cue."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/special_cast.ogg"
+      },
+      "integration_note": "GameScene consumeServerFx: FX_MAP.ability"
+    },
+    {
+      "id": "second_cast",
+      "category": "character_and_combat",
+      "runtime_id": "second_cast",
+      "runtime_file": "audio/sfx/second_cast.ogg",
+      "event": "second special cast",
+      "family": "special_cast",
+      "profile": "sfx",
+      "settings": "world_critical",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/colorsCrimsonTears/sounds/577965/",
+        "creator": "colorsCrimsonTears",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "rpgPowerup.wav",
+        "raw_path": "audio/raw/second_cast_fs577965.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Made to sound like a defense/attack-up buff spell — fits a second-charge ability cast."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/second_cast.ogg"
+      },
+      "integration_note": "GameScene consumeServerFx: FX_MAP.ability2"
+    },
+    {
+      "id": "enemy_hit",
+      "category": "character_and_combat",
+      "runtime_id": "enemy_hit",
+      "runtime_file": "audio/sfx/enemy_hit.ogg",
+      "event": "enemy hit variation family",
+      "family": "impact",
+      "profile": "sfx",
+      "settings": "world_routine",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/ihitokage/sounds/238435/",
+        "creator": "ihitokage",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "block3",
+        "raw_path": "audio/raw/enemy_hit_fs238435.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file)."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/enemy_hit.ogg"
+      },
+      "integration_note": "GameScene consumeServerFx: FX_MAP.dmg"
+    },
+    {
+      "id": "player_hurt",
+      "category": "character_and_combat",
+      "runtime_id": "player_hurt",
+      "runtime_file": "audio/sfx/player_hurt.ogg",
+      "event": "player hurt",
+      "family": "player_status",
+      "profile": "sfx",
+      "settings": "world_critical",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/CogFireStudios/sounds/547036/",
+        "creator": "CogFireStudios",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Hit Impact Sword 2",
+        "raw_path": "audio/raw/player_hurt_fs547036.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the generic body-punch pick per Philip's direction 2026-08-02 — wanted a wound/injury-style impact rather than a fist-punch thud. Uploader tags this a cut-flesh/gore game-hit sound.",
+          "Level checked: mean -27.0dB / max -6.2dB, healthy signal."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/player_hurt.ogg"
+      },
+      "integration_note": "GameScene consumeServerFx: FX_MAP.pdmg"
+    },
+    {
+      "id": "downed",
+      "category": "character_and_combat",
+      "runtime_id": "downed",
+      "runtime_file": "audio/sfx/downed.ogg",
+      "event": "player downed",
+      "family": "player_status",
+      "profile": "sfx",
+      "settings": "phase",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/hollandm/sounds/692828/",
+        "creator": "hollandm",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-15",
+        "original_filename": "Woodblock-soft.wav",
+        "raw_path": "audio/raw/downed_fs692828.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader original file).",
+          "Replaces the fs336894 ambulance-siren pick per Philip's direction 2026-08-15 — wanted a feudal-Asian-themed cue distinct from death's temple bell/gong. A soft single wooden-stick-on-woodblock hit, in the family of Japanese temple/theatre wood percussion."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/downed.ogg"
+      },
+      "integration_note": "GameScene consumeServerFx: FX_MAP.downed"
+    },
+    {
+      "id": "death",
+      "category": "character_and_combat",
+      "runtime_id": "death",
+      "runtime_file": "audio/sfx/death.ogg",
+      "event": "player death",
+      "family": "player_status",
+      "profile": "sfx",
+      "settings": "phase",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/colorsCrimsonTears/sounds/609028/",
+        "creator": "colorsCrimsonTears",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Fanfare 4 - Rpg",
+        "raw_path": "audio/raw/death_fs609028.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader original file).",
+          "Replaces the pixel 'Death Sound Pixel' pick per Philip's direction 2026-08-02 — wanted a melancholy death-knell tone fitting a lighthearted storybook character, opposite of the cheery respawn chime. Uploader describes this as a 'sombre fanfare for an rpg game', made specifically for that purpose.",
+          "Level checked: mean -23.8dB / max -9.9dB, healthy signal."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/death.ogg"
+      },
+      "integration_note": "GameScene consumeServerFx: FX_MAP.pdied"
+    },
+    {
+      "id": "revive",
+      "category": "character_and_combat",
+      "runtime_id": "revive",
+      "runtime_file": "audio/sfx/revive.ogg",
+      "event": "player revive",
+      "family": "player_status",
+      "profile": "sfx",
+      "settings": "phase",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/colorsCrimsonTears/sounds/562292/",
+        "creator": "colorsCrimsonTears",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Heal - Rpg",
+        "raw_path": "audio/raw/revive_fs562292.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Made to mimic casting a heal/cure spell in an RPG — direct match."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/revive.ogg"
+      },
+      "integration_note": "GameScene consumeServerFx: FX_MAP.revived"
+    },
+    {
+      "id": "respawn",
+      "category": "character_and_combat",
+      "runtime_id": "respawn",
+      "runtime_file": "audio/sfx/respawn.ogg",
+      "event": "player respawn",
+      "family": "player_status",
+      "profile": "sfx",
+      "settings": "phase",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/mokasza/sounds/810323/",
+        "creator": "mokasza",
+        "license": "CC-BY 4.0",
+        "attribution_text": "\"Bright Bell\" by mokasza (freesound.org), licensed CC-BY 4.0.",
+        "download_date": "2026-08-02",
+        "original_filename": "Bright Bell",
+        "raw_path": "audio/raw/respawn_fs810323.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces initial 'Teleport - Rpg' pick per Philip's direction 2026-08-02 (respawn should be a lighter/cheerier chime, not a warp/teleport effect).",
+          "Uploader discloses this clip was AI-generated (ElevenLabs) rather than a field recording; still validly CC-BY 4.0 licensed per source_policy."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/respawn.ogg"
+      },
+      "integration_note": "GameScene consumeServerFx: FX_MAP.respawn"
+    },
+    {
+      "id": "root",
+      "category": "character_and_combat",
+      "runtime_id": "root",
+      "runtime_file": "audio/sfx/root.ogg",
+      "event": "root onset",
+      "family": "control",
+      "profile": "sfx",
+      "settings": "world_critical",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Kreastricon62/sounds/327894/",
+        "creator": "Kreastricon62",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Bush Cut.wav",
+        "raw_path": "audio/raw/root_fs327894.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Generic foliage rustle/snap, not root-spell-specific — best available CC0/CC-BY match; flag for re-listen."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/root.ogg"
+      },
+      "integration_note": "abilities.js (Earth Fissure), towers.js (generic root effect), areaEntry.js (Muddy Bog) push fx type root on the 0->active transition (rootMs), wired to SFX_NAMES root in audio.js FX_MAP."
+    },
+    {
+      "id": "freeze",
+      "category": "character_and_combat",
+      "runtime_id": "freeze",
+      "runtime_file": "audio/sfx/freeze.ogg",
+      "event": "freeze onset",
+      "family": "control",
+      "profile": "sfx",
+      "settings": "world_critical",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Omiranda14/sounds/790463/",
+        "creator": "Omiranda14",
+        "license": "CC-BY 4.0",
+        "attribution_text": "\"SFX_Spell_Freeze_01\" by Omiranda14 (freesound.org), licensed CC-BY 4.0.",
+        "download_date": "2026-08-02",
+        "original_filename": "SFX_Spell_Freeze_01",
+        "raw_path": "audio/raw/freeze_fs790463.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Purpose-built ice-spell freeze SFX — direct match."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/freeze.ogg"
+      },
+      "integration_note": "towers.js (generic freeze effect), targetImpact.js (Blizzard) push fx type freeze on the 0->active transition (freezeMs), wired to SFX_NAMES freeze in audio.js FX_MAP."
+    },
+    {
+      "id": "burn_onset",
+      "category": "character_and_combat",
+      "runtime_id": "burn_onset",
+      "runtime_file": "audio/sfx/burn_onset.ogg",
+      "event": "burn onset",
+      "family": "control",
+      "profile": "sfx",
+      "settings": "world_critical",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Wastefield/sounds/691046/",
+        "creator": "Wastefield",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Matches 003 - Short",
+        "raw_path": "audio/raw/burn_onset_fs691046.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Short dry-match-catching-fire sound — good burn-onset proxy."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/burn_onset.ogg"
+      },
+      "integration_note": "abilities.js (Fire Flame Nova), towers.js (generic burn + Firepit continuous field), projectiles.js (Fireball AoE), entryTrigger.js (Volcano crossing + eruption) push fx type burn on the 0->active transition (burnMs), wired to SFX_NAMES burn_onset via audio.js FX_MAP burn->burn_onset."
+    },
+    {
+      "id": "heavy_impact",
+      "category": "character_and_combat",
+      "runtime_id": "heavy_impact",
+      "runtime_file": "audio/sfx/heavy_impact.ogg",
+      "event": "heavy impact",
+      "family": "heavy_payoff",
+      "profile": "sfx",
+      "settings": "world_critical",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Klerrp/sounds/114046/",
+        "creator": "Klerrp",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "kl_ex2.wav",
+        "raw_path": "audio/raw/heavy_impact_fs114046.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file)."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "processed_not_wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/heavy_impact.ogg"
+      },
+      "integration_note": "no clear single trigger identified this pass (event: 'heavy impact', family: heavy_payoff)"
+    },
+    {
+      "id": "projectile_explosion",
+      "category": "character_and_combat",
+      "runtime_id": "projectile_explosion",
+      "runtime_file": "audio/sfx/projectile_explosion.ogg",
+      "event": "projectile explosion",
+      "family": "heavy_payoff",
+      "profile": "sfx",
+      "settings": "world_critical",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/harrisonlace/sounds/757038/",
+        "creator": "harrisonlace",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "fx_explosion",
+        "raw_path": "audio/raw/projectile_explosion_fs757038.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file)."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/projectile_explosion.ogg"
+      },
+      "integration_note": "GameScene consumeServerFx: FX_MAP.boom"
+    },
+    {
+      "id": "projectile_shoot",
+      "category": "character_and_combat",
+      "runtime_id": "projectile_shoot",
+      "runtime_file": "audio/sfx/projectile_shoot.ogg",
+      "event": "projectile spawn (launch)",
+      "family": "ranged_attack",
+      "profile": "sfx",
+      "settings": "world_routine",
+      "provenance": {
+        "status": "sourced",
+        "source_url": null,
+        "creator": "ElevenLabs sound-generation API, AI-generated",
+        "license": "ai_generated_not_applicable",
+        "attribution_text": "No attribution required -- AI-generated via the ElevenLabs sound-generation API, not a third-party licensed work. Governed by ElevenLabs' API Terms of Service, not a Creative Commons license.",
+        "download_date": "2026-08-23",
+        "original_filename": "projectile_shoot_elevenlabs.mp3",
+        "raw_path": "audio/raw/projectile_shoot_elevenlabs.mp3",
+        "modifications": [
+          "Generated via ElevenLabs sound-generation API (POST /v1/sound-generation), 2026-08-23.",
+          "Prompt: 'A short quick whoosh of a magical projectile launching through air, sharp air-swoosh transient, no impact, fantasy game SFX, dry' (duration_seconds=0.6, prompt_influence=0.35)."
+        ]
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene consumeServerFx: FX_MAP.projSpawn",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-23",
+        "output": "client/public/audio/sfx/projectile_shoot.ogg"
+      }
+    },
+    {
+      "id": "watchtower_fire",
+      "category": "structure",
+      "runtime_id": "watchtower_fire",
+      "runtime_file": "audio/sfx/watchtower_fire.ogg",
+      "event": "Watchtower fire",
+      "family": "wood",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Ali_6868/sounds/384916/",
+        "creator": "Ali_6868",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Bow Release (Bow and Arrow) 2",
+        "raw_path": "audio/raw/watchtower_fire_fs384916.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Recorded as a bow-and-arrow release — direct match for a watchtower firing."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/watchtower_fire.ogg"
+      },
+      "integration_note": "GameScene STRUCTURE_ACTIVATION_SFX, cycleSeq bump"
+    },
+    {
+      "id": "snare_pulse",
+      "category": "structure",
+      "runtime_id": "snare_pulse",
+      "runtime_file": "audio/sfx/snare_pulse.ogg",
+      "event": "Snare Post pulse",
+      "family": "control",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/qubodup/sounds/752070/",
+        "creator": "qubodup",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Trap Springing Shut",
+        "raw_path": "audio/raw/snare_pulse_fs752070.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Booby-trap mechanism sound — direct thematic match."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/snare_pulse.ogg"
+      },
+      "integration_note": "GameScene STRUCTURE_ACTIVATION_SFX, cycleSeq bump"
+    },
+    {
+      "id": "firepit_ambience",
+      "category": "structure",
+      "runtime_id": "firepit_ambience",
+      "runtime_file": "audio/sfx/firepit_ambience.ogg",
+      "event": "Firepit ambience",
+      "family": "fire",
+      "profile": "sfx",
+      "settings": "structure_loop",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Patrick_Corra/sounds/500860/",
+        "creator": "Patrick_Corra",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Fire loop",
+        "raw_path": "audio/raw/firepit_ambience_fs500860.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces initial calm-crackling pick per Philip's direction 2026-08-02 (wanted more violent fire sounds for all firepit assets) — tagged 'blaze', more aggressive character."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/firepit_ambience.ogg"
+      },
+      "integration_note": "Sustained loop via the LOOP_SFX_NAMES/setLoop lifecycle added 2026-08-15 (client/src/audio.js). Driven by audio.setLoop('firepit_ambience', anyFirepit) once per frame in GameScene's structure loop, where anyFirepit is true if any FIRE_SPECIAL is present in structuresCache. Placement/destroy needs no explicit hook: a destroyed or sold Firepit stops appearing in the snapshot, which drops the flag. FIELD-WIDE, not per-structure - N firepits sound like one, which is the intended mix."
+    },
+    {
+      "id": "firepit_flare",
+      "category": "structure",
+      "runtime_id": "firepit_flare",
+      "runtime_file": "audio/sfx/firepit_flare.ogg",
+      "event": "Firepit flare",
+      "family": "fire",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Breviceps/sounds/447941/",
+        "creator": "Breviceps",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-15",
+        "original_filename": "Blast + Flamethrower cooldown",
+        "raw_path": "audio/raw/firepit_flare_fs447941.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the fs447732 'Gas-Lit Stove' pick per Philip's direction 2026-08-15 — the previous pick read as a small cigarette-lighter click, not violent flame. This is an actual blast/flamethrower ignition roar."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/firepit_flare.ogg"
+      },
+      "integration_note": "GameScene STRUCTURE_ACTIVATION_SFX, cycleSeq bump"
+    },
+    {
+      "id": "rock_trap_warning",
+      "category": "structure",
+      "runtime_id": "rock_trap_warning",
+      "runtime_file": "audio/sfx/rock_trap_warning.ogg",
+      "event": "Rock Trap warning",
+      "family": "telegraph",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/NearTheAtmoshphere/sounds/676988/",
+        "creator": "NearTheAtmoshphere",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "676988_2578040-hq.ogg",
+        "raw_path": "audio/raw/rock_trap_warning_fs676988.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original WAV — original download requires OAuth2, not configured this session)."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/rock_trap_warning.ogg"
+      },
+      "integration_note": "GameScene STRUCTURE_WARNING_SFX, targetImpact phase 0->1"
+    },
+    {
+      "id": "rock_trap_fall",
+      "category": "structure",
+      "runtime_id": "rock_trap_fall",
+      "runtime_file": "audio/sfx/rock_trap_fall.ogg",
+      "event": "Rock Trap fall",
+      "family": "stone",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/mbezzola/sounds/105281/",
+        "creator": "mbezzola",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "105281_537412-hq.ogg",
+        "raw_path": "audio/raw/rock_trap_fall_fs105281.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original WAV — original download requires OAuth2, not configured this session)."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/rock_trap_fall.ogg"
+      },
+      "integration_note": "GameScene STRUCTURE_ACTIVATION_SFX, cycleSeq bump"
+    },
+    {
+      "id": "rock_trap_impact",
+      "category": "structure",
+      "runtime_id": "rock_trap_impact",
+      "runtime_file": "audio/sfx/rock_trap_impact.ogg",
+      "event": "Rock Trap impact",
+      "family": "stone",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/magnuswaker/sounds/522099/",
+        "creator": "magnuswaker",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "522099_11537497-hq.ogg",
+        "raw_path": "audio/raw/rock_trap_impact_fs522099.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original WAV — original download requires OAuth2, not configured this session)."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/rock_trap_impact.ogg"
+      },
+      "integration_note": "GameScene STRUCTURE_ACTIVATION_SFX, cycleSeq bump"
+    },
+    {
+      "id": "water_geyser_charge",
+      "category": "structure",
+      "runtime_id": "water_geyser_charge",
+      "runtime_file": "audio/sfx/water_geyser_charge.ogg",
+      "event": "Water Geyser charge",
+      "family": "water",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/nsstudios/sounds/321109/",
+        "creator": "nsstudios",
+        "license": "CC-BY 4.0",
+        "attribution_text": "\"water boyling.wav\" by nsstudios (freesound.org), licensed CC-BY 4.0.",
+        "download_date": "2026-08-02",
+        "original_filename": "water boyling.wav",
+        "raw_path": "audio/raw/water_geyser_charge_fs321109.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Synthetic boiling-water buildup — good pressure-charge proxy."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "retired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/water_geyser_charge.ogg"
+      },
+      "integration_note": "RETIRED 2026-08-15: Water Geyser resolves its trigger the same tick it fires — no windup state exists to hook a charge sound to without inventing a new gameplay delay."
+    },
+    {
+      "id": "water_geyser_launch",
+      "category": "structure",
+      "runtime_id": "water_geyser_launch",
+      "runtime_file": "audio/sfx/water_geyser_launch.ogg",
+      "event": "Water Geyser launch",
+      "family": "water",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/genel/sounds/482953/",
+        "creator": "genel",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "splash_1.wav",
+        "raw_path": "audio/raw/water_geyser_launch_fs482953.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Recorded as a body splashing into a river — big energetic splash, good eruption proxy."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/water_geyser_launch.ogg"
+      },
+      "integration_note": "GameScene STRUCTURE_ACTIVATION_SFX, cycleSeq bump"
+    },
+    {
+      "id": "wind_vortex_suction",
+      "category": "structure",
+      "runtime_id": "wind_vortex_suction",
+      "runtime_file": "audio/sfx/wind_vortex_suction.ogg",
+      "event": "Wind Vortex suction",
+      "family": "wind",
+      "profile": "sfx",
+      "settings": "structure_loop",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Konamiuss/sounds/27738/",
+        "creator": "Konamiuss",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "001_A_013_2006_12_25.wav",
+        "raw_path": "audio/raw/wind_vortex_cut1500ms_fs27738.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the 'creepy.wav' pick per Philip's direction 2026-08-02 — wanted a more blustery, less horror-themed violent wind. CC0, uploader describes source directly as 'a loud windy-galey noise'.",
+          "Trimmed to a 1.5s window (4.0-5.5s of source, loudest segment: native mean -11.4dB/max 0.0dB) with 50ms/100ms fade in/out. Result: mean -9.7dB / max 0.0dB."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/wind_vortex_suction.ogg"
+      },
+      "integration_note": "Sustained loop via LOOP_SFX_NAMES/setLoop (client/src/audio.js). Driven by audio.setLoop('wind_vortex_suction', anyVortexSuction) in GameScene's structure loop, gated on a WIND_SPECIAL whose ds.phase === 0 (VORTEX_PHASE.SUCTION, server/game/structureBehaviors/cycle.js:37). This is the ONLY one of the five Tier-B 'charge' sounds with a real server-side telegraph window - Wind Vortex is a genuine phase machine with a suctionMs deadline, whereas Water Geyser/Volcano/Firestorm all resolve in the same tick they trigger."
+    },
+    {
+      "id": "wind_vortex_release",
+      "category": "structure",
+      "runtime_id": "wind_vortex_release",
+      "runtime_file": "audio/sfx/wind_vortex_release.ogg",
+      "event": "Wind Vortex release",
+      "family": "wind",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Konamiuss/sounds/27738/",
+        "creator": "Konamiuss",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "001_A_013_2006_12_25.wav",
+        "raw_path": "audio/raw/wind_vortex_cut1500ms_fs27738.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the 'creepy.wav' pick per Philip's direction 2026-08-02 — wanted a more blustery, less horror-themed violent wind. CC0, uploader describes source directly as 'a loud windy-galey noise'.",
+          "Trimmed to a 1.5s window (4.0-5.5s of source, loudest segment: native mean -11.4dB/max 0.0dB) with 50ms/100ms fade in/out. Result: mean -9.7dB / max 0.0dB."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/wind_vortex_release.ogg"
+      },
+      "integration_note": "GameScene STRUCTURE_ACTIVATION_SFX, cycleSeq bump"
+    },
+    {
+      "id": "steam_vent_pressure",
+      "category": "structure",
+      "runtime_id": "steam_vent_pressure",
+      "runtime_file": "audio/sfx/steam_vent_pressure.ogg",
+      "event": "Steam Vent pressure",
+      "family": "pressure",
+      "profile": "sfx",
+      "settings": "structure_loop",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/wubitog/sounds/234782/",
+        "creator": "wubitog",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Steam/hiss",
+        "raw_path": "audio/raw/steam_vent_pressure_fs234782.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Recorded as air-pressure release / steam hiss — direct match."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "processed_not_wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/steam_vent_pressure.ogg"
+      },
+      "integration_note": "Steam Vent not wired this pass"
+    },
+    {
+      "id": "steam_vent_confusion",
+      "category": "structure",
+      "runtime_id": "steam_vent_confusion",
+      "runtime_file": "audio/sfx/steam_vent_confusion.ogg",
+      "event": "Steam Vent confusion",
+      "family": "control",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/SukritSen/sounds/398077/",
+        "creator": "SukritSen",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Steam.wav",
+        "raw_path": "audio/raw/steam_vent_confusion_fs398077.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Generic hissing sound (soda bottle opening), not confusion-status-specific — best available match; flag for re-listen, may need pitch modulation to read as disorienting."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/steam_vent_confusion.ogg"
+      },
+      "integration_note": "scaldField.js (Steam Vent) pushes fx type scald on the 0->active transition (slowMs), wired to SFX_NAMES steam_vent_confusion via audio.js FX_MAP scald->steam_vent_confusion. RENAMED 2026-08-15: the vent applies a strong slow instead of confusion; the asset id is kept because the hiss suits scalding steam, only the trigger changed."
+    },
+    {
+      "id": "volcano_charge",
+      "category": "structure",
+      "runtime_id": "volcano_charge",
+      "runtime_file": "audio/sfx/volcano_charge.ogg",
+      "event": "Volcano charge",
+      "family": "telegraph",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/ATG142/sounds/145036/",
+        "creator": "ATG142",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "lava.wav",
+        "raw_path": "audio/raw/volcano_charge_fs145036.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Field recording of bubbling lava near a volcano in Hawaii — good rumble/charge proxy."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "retired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/volcano_charge.ogg"
+      },
+      "integration_note": "RETIRED 2026-08-15: MAGMA_TRAP resolves its eruption the same tick charge crosses threshold — no windup state exists to hook a charge sound to without inventing a new gameplay delay."
+    },
+    {
+      "id": "volcano_eruption",
+      "category": "structure",
+      "runtime_id": "volcano_eruption",
+      "runtime_file": "audio/sfx/volcano_eruption.ogg",
+      "event": "Volcano eruption",
+      "family": "heavy_payoff",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/smcameron/sounds/51429/",
+        "creator": "smcameron",
+        "license": "CC-BY 4.0",
+        "attribution_text": "\"volcano_eruption.wav\" by smcameron (freesound.org), licensed CC-BY 4.0.",
+        "download_date": "2026-08-02",
+        "original_filename": "volcano_eruption.wav",
+        "raw_path": "audio/raw/volcano_eruption_fs51429.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Purpose-made volcano eruption SFX — direct match."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/volcano_eruption.ogg"
+      },
+      "integration_note": "GameScene STRUCTURE_ACTIVATION_SFX, cycleSeq bump"
+    },
+    {
+      "id": "firestorm_charge",
+      "category": "structure",
+      "runtime_id": "firestorm_charge",
+      "runtime_file": "audio/sfx/firestorm_charge.ogg",
+      "event": "Firestorm charge",
+      "family": "telegraph",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/SilverIllusionist/sounds/472688/",
+        "creator": "SilverIllusionist",
+        "license": "CC-BY 4.0",
+        "attribution_text": "\"Fire Burst.wav\" by SilverIllusionist (freesound.org), licensed CC-BY 4.0.",
+        "download_date": "2026-08-02",
+        "original_filename": "Fire Burst.wav",
+        "raw_path": "audio/raw/firestorm_charge_fs472688.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Uploader tags list volcano/fire storm explicitly as intended uses — direct match."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "retired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/firestorm_charge.ogg"
+      },
+      "integration_note": "RETIRED 2026-08-15: FIRESTORM spawns all 8 bolts the same tick it leaves cooldown — no windup state exists to hook a charge sound to without inventing a new gameplay delay."
+    },
+    {
+      "id": "firestorm_volley",
+      "category": "structure",
+      "runtime_id": "firestorm_volley",
+      "runtime_file": "audio/sfx/firestorm_volley.ogg",
+      "event": "Firestorm aggregated volley",
+      "family": "heavy_payoff",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/martian/sounds/178886/",
+        "creator": "martian",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "red whoosh gladiator 04.wav",
+        "raw_path": "audio/raw/firestorm_volley_fs178886.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the soft 'Magical Whoosh' pick per Philip's direction 2026-08-02 — wanted fiery, fast-moving burning projectiles, not a soft energy-ball throw. Uploader tags it as an aggressive, fast fire/flame whoosh.",
+          "Level checked: mean -17.4dB / max -2.1dB, healthy signal."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/firestorm_volley.ogg"
+      },
+      "integration_note": "GameScene STRUCTURE_ACTIVATION_SFX, cycleSeq bump"
+    },
+    {
+      "id": "muddy_bog_entry",
+      "category": "structure",
+      "runtime_id": "muddy_bog_entry",
+      "runtime_file": "audio/sfx/muddy_bog_entry.ogg",
+      "event": "Muddy Bog entry",
+      "family": "water",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Bricklover/sounds/560953/",
+        "creator": "Bricklover",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Water Squelch",
+        "raw_path": "audio/raw/muddy_bog_entry_fs560953.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Tagged mud/swamp/water/wet — direct match."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "retired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/muddy_bog_entry.ogg"
+      },
+      "integration_note": "RETIRED 2026-08-15: redundant with muddy_bog_root, already wired to the identical per-crossing cycleSeq bump (areaEntry.js) — two sounds on one event is worse, not better."
+    },
+    {
+      "id": "muddy_bog_root",
+      "category": "structure",
+      "runtime_id": "muddy_bog_root",
+      "runtime_file": "audio/sfx/muddy_bog_root.ogg",
+      "event": "Muddy Bog root",
+      "family": "control",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Clagnar/sounds/557647/",
+        "creator": "Clagnar",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Schlorp",
+        "raw_path": "audio/raw/muddy_bog_root_fs557647.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the reused snare_pulse clip per Philip's direction 2026-08-02 — should sound like bubbling quicksand, not a trap mechanism. Recorded as water bubbling through wet coffee grounds; tagged swamp/ooze/goop/suck.",
+          "Level checked: mean -23.5dB / max -0.8dB, healthy signal."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/muddy_bog_root.ogg"
+      },
+      "integration_note": "GameScene STRUCTURE_ACTIVATION_SFX, cycleSeq bump"
+    },
+    {
+      "id": "blizzard_warning",
+      "category": "structure",
+      "runtime_id": "blizzard_warning",
+      "runtime_file": "audio/sfx/blizzard_warning.ogg",
+      "event": "Blizzard warning",
+      "family": "telegraph",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/egomassive/sounds/536776/",
+        "creator": "egomassive",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Wind.ogg",
+        "raw_path": "audio/raw/blizzard_warning_fs536776.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces initial 'Wind Howl.wav' pick (Dentrabert, id 673323) per Philip's feedback 2026-08-02 — original measured mean -59.1dB/max -44.7dB (too quiet, near-silent at native gain). This pick measures mean -14.7dB/max -0.5dB, a usable signal level without excessive makeup gain."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/blizzard_warning.ogg"
+      },
+      "integration_note": "GameScene STRUCTURE_WARNING_SFX, targetImpact phase 0->1"
+    },
+    {
+      "id": "blizzard_impact",
+      "category": "structure",
+      "runtime_id": "blizzard_impact",
+      "runtime_file": "audio/sfx/blizzard_impact.ogg",
+      "event": "Blizzard impact",
+      "family": "ice",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/InMotionAudio/sounds/719973/",
+        "creator": "InMotionAudio",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "ICEBrk_Break04_InMotionAudio_FREESampleSunday",
+        "raw_path": "audio/raw/blizzard_impact_fs719973.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file)."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/blizzard_impact.ogg"
+      },
+      "integration_note": "GameScene STRUCTURE_ACTIVATION_SFX, cycleSeq bump"
+    },
+    {
+      "id": "grinder_intake",
+      "category": "structure",
+      "runtime_id": "grinder_intake",
+      "runtime_file": "audio/sfx/grinder_intake.ogg",
+      "event": "Grinder intake",
+      "family": "mechanical",
+      "profile": "sfx",
+      "settings": "structure_loop",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Joao_Janz/sounds/477626/",
+        "creator": "Joao_Janz",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-02",
+        "original_filename": "Plastic Grind Mechanism 1_1",
+        "raw_path": "audio/raw/grinder_intake_fs477626.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file)."
+        ],
+        "approval_status": "approved_by_user_2026-08-10_no_formal_listen_pass"
+      },
+      "processing_status": "processed",
+      "integration_status": "processed_not_wired",
+      "qa_status": "unreviewed",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-10",
+        "output": "client/public/audio/sfx/grinder_intake.ogg"
+      },
+      "integration_note": "GRINDER's cycle/grind phase semantics for 'intake' not investigated this pass"
+    },
+    {
+      "id": "grinder_crush",
+      "category": "structure",
+      "runtime_id": "grinder_crush",
+      "runtime_file": "audio/sfx/grinder_crush.ogg",
+      "event": "Grinder crush",
+      "family": "heavy_payoff",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Logicogonist/sounds/801832/",
+        "creator": "Logicogonist",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-15",
+        "original_filename": "taiko tom 3",
+        "raw_path": "audio/raw/grinder_crush_fs801832.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the fs148072 pick per Philip's direction 2026-08-15 — wanted a feudal Asian (Japan/China) theme across the whole cue set, not generic Western UI sounds. A taiko tom hit (uploader tags: Asia, China, Japan)."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js STRUCTURE_ACTIVATION_SFX['GRINDER'], cycleSeq bump (paired with grinder_release — same doCrush() call, no distinct server signal).",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/grinder_crush.ogg"
+      }
+    },
+    {
+      "id": "grinder_release",
+      "category": "structure",
+      "runtime_id": "grinder_release",
+      "runtime_file": "audio/sfx/grinder_release.ogg",
+      "event": "Grinder release",
+      "family": "mechanical",
+      "profile": "sfx",
+      "settings": "structure_one_shot",
+      "provenance": {
+        "status": "sourced",
+        "source_url": "https://freesound.org/people/Logicogonist/sounds/799186/",
+        "creator": "Logicogonist",
+        "license": "CC0 1.0",
+        "attribution_text": "No attribution required (CC0 1.0 Universal).",
+        "download_date": "2026-08-15",
+        "original_filename": "gongcrash 2 short",
+        "raw_path": "audio/raw/grinder_release_fs799186.ogg",
+        "modifications": [
+          "Downloaded via Freesound API preview-hq-ogg (192kbps derivative, not the uploader's original file).",
+          "Replaces the fs362625 pick per Philip's direction 2026-08-15 — wanted a feudal Asian (Japan/China) theme across the whole cue set, not generic Western UI sounds. A short gong crash, distinct from the other Gong picks (different uploader/sample)."
+        ],
+        "approval_status": "not_started"
+      },
+      "processing_status": "processed",
+      "integration_status": "wired",
+      "qa_status": "unreviewed",
+      "integration_note": "GameScene.js STRUCTURE_ACTIVATION_SFX['GRINDER'], cycleSeq bump (paired with grinder_crush — same doCrush() call, no distinct server signal).",
+      "processing": {
+        "tool": "tools/audio/process_sfx.py",
+        "date": "2026-08-15",
+        "output": "client/public/audio/sfx/grinder_release.ogg"
+      }
+    }
+  ]
+}

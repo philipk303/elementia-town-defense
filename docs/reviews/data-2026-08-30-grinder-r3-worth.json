@@ -1,0 +1,682 @@
+{
+  "storePath": "C:\\dev\\Elementia-Town-Defense\\test\\harness\\store\\2026-08-30-grinder-r3-worth.jsonl.gz",
+  "inputRecords": 12800,
+  "recordsAfterDedupe": 12800,
+  "corruption": [],
+  "families": [
+    {
+      "familyId": "grinder-r3-worth",
+      "registration": {
+        "status": "valid",
+        "path": "C:\\dev\\Elementia-Town-Defense\\test\\harness\\prereg\\grinder-r3-worth.json",
+        "prereg": {
+          "familyId": "grinder-r3-worth",
+          "question": "Measured on hallHpAuc in the R2 regime against a two-ingredient control, does the RETUNED Grinder (root capture at the core plus continuous contact damage across the suction field) clear the Amendment D contribution floor — does it outperform the two structures (EARTH free special + WIND partner special) it consumes?",
+          "primaryMetric": "hallHpAuc",
+          "secondaryMetrics": [
+            "score",
+            "wavesCleared"
+          ],
+          "mde": 0.1,
+          "alpha": 0.05,
+          "power": 0.8,
+          "sigmaSource": "hallHpAuc paired delta sd measured in the R2 regime by the registered regime-r2-adoption family (24,000 runs, n=3000/cell, 18/18 gates PASS): ~0.87 (maze A) / ~1.41 (maze B). Maze B is the binding constraint. Identical source and values to fusion-r2-grinder, deliberately: the regime and the control design are unchanged from that family, only the structure under test has been retuned, so re-deriving sigma from the retuned corpus would be sizing the test on the data it is about to analyse.",
+          "nRequired": 3121,
+          "arms": [
+            "control",
+            "grinder-full"
+          ],
+          "mazes": [
+            "A",
+            "B"
+          ],
+          "familySize": 12,
+          "regime": {
+            "label": "R2",
+            "protocol": {
+              "spendDown": true,
+              "maxWaves": 10,
+              "humanElement": "EARTH"
+            },
+            "justification": "R2 carried unchanged from fusion-r2-grinder and regime-r2-adoption, for the same reasons: R1 stops at wave 8 and never sees the elites at 9-10, and R1's maze-A ceiling crushed the top Watchtower-ladder rung to +0.0011, nearly blind to the defence getting BETTER — the only direction a successful fusion can move it. The control arm uses partnerSpecial: WIND, which buys the partner special at the fusion's own anchor tile and DECLINES the fusion proposal, so the control holds BOTH ingredients standing. Holding the regime fixed is what makes this family comparable to fusion-r2-grinder's pre-retune reading.",
+            "scopeLimit": "FOUR limits. (1) R2 trades terminal survival for reach: only 0-7% of runs end with the hall alive, so hallHpFrac, win rate and every other TERMINAL measure are floor-censored and BARRED here; hallHpAuc is exempt as an integral over waves played, and wavesCleared is secondary despite being nearer a terminal measure. (2) The CROSS-POLICY GATE IS EMPTY — only scripted-v1 exists — so every verdict here is provisional on it. (3) humanElement confounds any cross-family comparison: this family measures ONLY whether Grinder beats ITS OWN control, never a ranking against fusions in other families. (4) This family CANNOT attribute the result between the two mechanics it ships together (root capture and contact damage); that decomposition is the separately registered grinder-r3-root family, and no attribution claim may be read out of this one."
+          },
+          "decisionRule": "Paired delta, grinder-full minus control, on hallHpAuc, per maze.\n\nPASS (clears the Amendment D contribution floor): delta > 0 AND BH-adjusted q < 0.05 across the declared family of 12 AND the exact sign test agrees in direction AND the verdict survives hang-imputation at the cell minimum. Per Philip's 2026-08-04 ruling, PASSING ON EITHER MAZE IS SUFFICIENT — maze A is substantially easier than maze B and requiring both would force overtuning.\n\nFAIL (retune target): delta < 0 under those same gates on either maze, with no PASS on the other.\n\nUNRESOLVED: anything else. Not a pass, not a fail; no balance change follows from an unresolved cell.\n\nSPLIT-HALF IS DECLARED UNINFORMATIVE AND IS NOT A GATE, exactly as in fusion-r2-grinder and steam-vent-retune: with 2 arms splitForMetric ranks a two-value scale. Reported for the record only.\n\nMONOTONICITY RULE: not applicable — one non-control arm, so there is no ordering to disqualify on.\n\nCROSS-POLICY GATE NOT MET: only scripted-v1 exists. Every verdict from this family is PROVISIONAL on that gate, declared here rather than discovered later.",
+          "whatWouldRefute": "A delta whose BH-adjusted q exceeds 0.05 on both mazes refutes a PASS claim for the retuned Grinder. A resolvably negative delta on either maze, with no PASS on the other, refutes the design premise that the retune made it worth the two structures it consumes, and the 2026-08-29 changes (rootMs/rootRadiusPx/contactDps/contactRadiusPx) would be the retune target. If both arms come back unresolvable against each other on both mazes at n>=3121, that refutes the claim that hallHpAuc at this n can resolve a single-fusion trade in R2, and the response is to raise n rather than to declare the fusion balanced.",
+          "registeredAt": "2026-08-30T07:02:20.000Z",
+          "notes": "WHY THIS FAMILY EXISTS. fusion-r2-grinder (registered 2026-08-16) asked this question of the OLD mechanic. The 2026-08-29 retune added root capture at the core (grind.rootMs 2000, grind.rootRadiusPx 55) and continuous contact damage across the suction field (grind.contactDps 20, grind.contactRadiusPx 160). Running new records against the old prereg would compare a retuned structure to a question asked about a different one, so a new familyId is required rather than a re-run.\n\nWHY IT IS BEING RUN AT ALL. Every 2026-08-29 measurement was an ad-hoc probe at n=144 against this project's own standard of n~3000. At the measured sigmas the unadjusted detection floor at n=144 is ~0.203 (maze A) and ~0.329 (maze B); the observed maze-A effect was +0.201, sitting EXACTLY on its own floor, i.e. structurally unresolvable regardless of whether it is real. Maze B (+0.786) cleared its floor and is expected to survive here; maze A is the open question this family exists to settle. See docs/reviews/2026-08-29-grinder-rootms-and-power.md.\n\nEXPECTATION, STATED IN ADVANCE so it cannot be read as confirmation afterwards: maze B is expected to PASS. Maze A is genuinely open — the point estimate is positive but was never resolvable, and an UNRESOLVED or even a FAIL on maze A is a live outcome.\n\nfamilySize is declared as 12 = 2 families x 2 mazes x 3 metrics, spanning BOTH r3 families registered together this session (grinder-r3-worth and grinder-r3-root). Each family alone would be 6. The deliberately conservative padding is carried from fusion-r2-grinder's reasoning: it stops one session's question from silently narrowing its own multiplicity correction by being split across several small families.\n\nSAMPLE SIZE. 1600 seeds x 2 postGaps = 3200 cells per arm per maze, against nRequired 3121 computed by stats.js requiredN(1.41, 0.10). fusion-r2-grinder declared 2990 from a marginally smaller sigma; 3121 is recomputed here from the stated 1.41 and is the more conservative of the two.\n\nNo balance change ships directly from this family. A FAIL identifies a retune target; any retune is a separate, separately-registered decision."
+        },
+        "errors": [],
+        "earliestStartedAt": "2026-08-30T14:04:45.669Z"
+      },
+      "prereg": {
+        "familyId": "grinder-r3-worth",
+        "question": "Measured on hallHpAuc in the R2 regime against a two-ingredient control, does the RETUNED Grinder (root capture at the core plus continuous contact damage across the suction field) clear the Amendment D contribution floor — does it outperform the two structures (EARTH free special + WIND partner special) it consumes?",
+        "primaryMetric": "hallHpAuc",
+        "secondaryMetrics": [
+          "score",
+          "wavesCleared"
+        ],
+        "mde": 0.1,
+        "alpha": 0.05,
+        "power": 0.8,
+        "sigmaSource": "hallHpAuc paired delta sd measured in the R2 regime by the registered regime-r2-adoption family (24,000 runs, n=3000/cell, 18/18 gates PASS): ~0.87 (maze A) / ~1.41 (maze B). Maze B is the binding constraint. Identical source and values to fusion-r2-grinder, deliberately: the regime and the control design are unchanged from that family, only the structure under test has been retuned, so re-deriving sigma from the retuned corpus would be sizing the test on the data it is about to analyse.",
+        "nRequired": 3121,
+        "arms": [
+          "control",
+          "grinder-full"
+        ],
+        "mazes": [
+          "A",
+          "B"
+        ],
+        "familySize": 12,
+        "regime": {
+          "label": "R2",
+          "protocol": {
+            "spendDown": true,
+            "maxWaves": 10,
+            "humanElement": "EARTH"
+          },
+          "justification": "R2 carried unchanged from fusion-r2-grinder and regime-r2-adoption, for the same reasons: R1 stops at wave 8 and never sees the elites at 9-10, and R1's maze-A ceiling crushed the top Watchtower-ladder rung to +0.0011, nearly blind to the defence getting BETTER — the only direction a successful fusion can move it. The control arm uses partnerSpecial: WIND, which buys the partner special at the fusion's own anchor tile and DECLINES the fusion proposal, so the control holds BOTH ingredients standing. Holding the regime fixed is what makes this family comparable to fusion-r2-grinder's pre-retune reading.",
+          "scopeLimit": "FOUR limits. (1) R2 trades terminal survival for reach: only 0-7% of runs end with the hall alive, so hallHpFrac, win rate and every other TERMINAL measure are floor-censored and BARRED here; hallHpAuc is exempt as an integral over waves played, and wavesCleared is secondary despite being nearer a terminal measure. (2) The CROSS-POLICY GATE IS EMPTY — only scripted-v1 exists — so every verdict here is provisional on it. (3) humanElement confounds any cross-family comparison: this family measures ONLY whether Grinder beats ITS OWN control, never a ranking against fusions in other families. (4) This family CANNOT attribute the result between the two mechanics it ships together (root capture and contact damage); that decomposition is the separately registered grinder-r3-root family, and no attribution claim may be read out of this one."
+        },
+        "decisionRule": "Paired delta, grinder-full minus control, on hallHpAuc, per maze.\n\nPASS (clears the Amendment D contribution floor): delta > 0 AND BH-adjusted q < 0.05 across the declared family of 12 AND the exact sign test agrees in direction AND the verdict survives hang-imputation at the cell minimum. Per Philip's 2026-08-04 ruling, PASSING ON EITHER MAZE IS SUFFICIENT — maze A is substantially easier than maze B and requiring both would force overtuning.\n\nFAIL (retune target): delta < 0 under those same gates on either maze, with no PASS on the other.\n\nUNRESOLVED: anything else. Not a pass, not a fail; no balance change follows from an unresolved cell.\n\nSPLIT-HALF IS DECLARED UNINFORMATIVE AND IS NOT A GATE, exactly as in fusion-r2-grinder and steam-vent-retune: with 2 arms splitForMetric ranks a two-value scale. Reported for the record only.\n\nMONOTONICITY RULE: not applicable — one non-control arm, so there is no ordering to disqualify on.\n\nCROSS-POLICY GATE NOT MET: only scripted-v1 exists. Every verdict from this family is PROVISIONAL on that gate, declared here rather than discovered later.",
+        "whatWouldRefute": "A delta whose BH-adjusted q exceeds 0.05 on both mazes refutes a PASS claim for the retuned Grinder. A resolvably negative delta on either maze, with no PASS on the other, refutes the design premise that the retune made it worth the two structures it consumes, and the 2026-08-29 changes (rootMs/rootRadiusPx/contactDps/contactRadiusPx) would be the retune target. If both arms come back unresolvable against each other on both mazes at n>=3121, that refutes the claim that hallHpAuc at this n can resolve a single-fusion trade in R2, and the response is to raise n rather than to declare the fusion balanced.",
+        "registeredAt": "2026-08-30T07:02:20.000Z",
+        "notes": "WHY THIS FAMILY EXISTS. fusion-r2-grinder (registered 2026-08-16) asked this question of the OLD mechanic. The 2026-08-29 retune added root capture at the core (grind.rootMs 2000, grind.rootRadiusPx 55) and continuous contact damage across the suction field (grind.contactDps 20, grind.contactRadiusPx 160). Running new records against the old prereg would compare a retuned structure to a question asked about a different one, so a new familyId is required rather than a re-run.\n\nWHY IT IS BEING RUN AT ALL. Every 2026-08-29 measurement was an ad-hoc probe at n=144 against this project's own standard of n~3000. At the measured sigmas the unadjusted detection floor at n=144 is ~0.203 (maze A) and ~0.329 (maze B); the observed maze-A effect was +0.201, sitting EXACTLY on its own floor, i.e. structurally unresolvable regardless of whether it is real. Maze B (+0.786) cleared its floor and is expected to survive here; maze A is the open question this family exists to settle. See docs/reviews/2026-08-29-grinder-rootms-and-power.md.\n\nEXPECTATION, STATED IN ADVANCE so it cannot be read as confirmation afterwards: maze B is expected to PASS. Maze A is genuinely open — the point estimate is positive but was never resolvable, and an UNRESOLVED or even a FAIL on maze A is a live outcome.\n\nfamilySize is declared as 12 = 2 families x 2 mazes x 3 metrics, spanning BOTH r3 families registered together this session (grinder-r3-worth and grinder-r3-root). Each family alone would be 6. The deliberately conservative padding is carried from fusion-r2-grinder's reasoning: it stops one session's question from silently narrowing its own multiplicity correction by being split across several small families.\n\nSAMPLE SIZE. 1600 seeds x 2 postGaps = 3200 cells per arm per maze, against nRequired 3121 computed by stats.js requiredN(1.41, 0.10). fusion-r2-grinder declared 2990 from a marginally smaller sigma; 3121 is recomputed here from the stated 1.41 and is the more conservative of the two.\n\nNo balance change ships directly from this family. A FAIL identifies a retune target; any retune is a separate, separately-registered decision."
+      },
+      "records": 12800,
+      "refused": false,
+      "mixed": false,
+      "verdictAllowed": true,
+      "familyCorruption": [],
+      "cellDrift": [],
+      "versionSummary": {
+        "gitShas": [
+          "ce58758"
+        ],
+        "balanceHashes": [
+          "0e782fa1952f7033b3d67e61410e5ee2ab064e9e"
+        ],
+        "dirty": false
+      },
+      "bands": [
+        {
+          "label": "git ce58758 | balance 0e782fa1952f7033b3d67e61410e5ee2ab064e9e | clean",
+          "records": 12800,
+          "descriptives": [
+            {
+              "metric": "hallHpAuc",
+              "maze": "A",
+              "armId": "control",
+              "n": 3200,
+              "mean": 7.8488506249999626,
+              "sd": 0.6648700579795513,
+              "ceilingShare": 0,
+              "floorShare": 0.0003125,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "A",
+              "armId": "grinder-full",
+              "n": 3200,
+              "mean": 7.992653749999954,
+              "sd": 1.1997315343063928,
+              "ceilingShare": 0.064375,
+              "floorShare": 0,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "B",
+              "armId": "control",
+              "n": 3200,
+              "mean": 6.660429999999995,
+              "sd": 1.469463226242539,
+              "ceilingShare": 0,
+              "floorShare": 0.0021875,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "B",
+              "armId": "grinder-full",
+              "n": 3200,
+              "mean": 7.472119999999995,
+              "sd": 1.0171354762421367,
+              "ceilingShare": 0.005625,
+              "floorShare": 0,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "score",
+              "maze": "A",
+              "armId": "control",
+              "n": 3200,
+              "mean": 7.4909375,
+              "sd": 0.7036139433491825,
+              "ceilingShare": 0,
+              "floorShare": 0.0065625,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "score",
+              "maze": "A",
+              "armId": "grinder-full",
+              "n": 3200,
+              "mean": 7.725359999999996,
+              "sd": 1.4354672653388205,
+              "ceilingShare": 0.064375,
+              "floorShare": 0.0103125,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "score",
+              "maze": "B",
+              "armId": "control",
+              "n": 3200,
+              "mean": 6.4728125,
+              "sd": 1.6202102263940217,
+              "ceilingShare": 0.0425,
+              "floorShare": 0.0021875,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "score",
+              "maze": "B",
+              "armId": "grinder-full",
+              "n": 3200,
+              "mean": 7.0840625,
+              "sd": 1.062060962378667,
+              "ceilingShare": 0.05375,
+              "floorShare": 0,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "A",
+              "armId": "control",
+              "n": 3200,
+              "mean": 7.4909375,
+              "sd": 0.7036139433491825,
+              "ceilingShare": 0,
+              "floorShare": 0.0065625,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "A",
+              "armId": "grinder-full",
+              "n": 3200,
+              "mean": 7.655,
+              "sd": 1.291412471164158,
+              "ceilingShare": 0.079375,
+              "floorShare": 0.0103125,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "B",
+              "armId": "control",
+              "n": 3200,
+              "mean": 6.4728125,
+              "sd": 1.6202102263940217,
+              "ceilingShare": 0.0425,
+              "floorShare": 0.0021875,
+              "hangs": 0,
+              "total": 3200
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "B",
+              "armId": "grinder-full",
+              "n": 3200,
+              "mean": 7.0840625,
+              "sd": 1.062060962378667,
+              "ceilingShare": 0.05375,
+              "floorShare": 0,
+              "hangs": 0,
+              "total": 3200
+            }
+          ],
+          "comparisons": [
+            {
+              "metric": "hallHpAuc",
+              "maze": "A",
+              "armId": "grinder-full",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.8488506249999626,
+                "sd": 0.6648700579795513,
+                "ceilingShare": 0,
+                "floorShare": 0.0003125,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.992653749999954,
+                "sd": 1.1997315343063928,
+                "ceilingShare": 0.064375,
+                "floorShare": 0,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.14380312500000014,
+                "sd": 1.1172160665170152,
+                "se": 0.01974977641711856,
+                "t": 7.281253314612493,
+                "p": 4.1435559052511117e-13,
+                "ci": {
+                  "lo": 0.10507604687499993,
+                  "hi": 0.18295884374999943
+                },
+                "q": 8.287111810502223e-13
+              },
+              "sign": {
+                "better": 1562,
+                "worse": 1302,
+                "n": 2864,
+                "p": 0.0000012801630863440637
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.14380312500000014,
+                "sd": 1.1172160665170152,
+                "t": 7.281253314612493,
+                "p": 4.1435559052511117e-13,
+                "q": 8.287111810502223e-13
+              },
+              "achievedMde": 0.0553306773635531,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": true,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "hallHpAuc",
+              "maze": "B",
+              "armId": "grinder-full",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 6.660429999999995,
+                "sd": 1.469463226242539,
+                "ceilingShare": 0,
+                "floorShare": 0.0021875,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.472119999999995,
+                "sd": 1.0171354762421367,
+                "ceilingShare": 0.005625,
+                "floorShare": 0,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.8116899999999996,
+                "sd": 1.3501047750294868,
+                "se": 0.023866706043392204,
+                "t": 34.00930143121808,
+                "p": 1.1085983784224742e-216,
+                "ci": {
+                  "lo": 0.7652219062499992,
+                  "hi": 0.857806750000001
+                },
+                "q": 1.330318054106969e-215
+              },
+              "sign": {
+                "better": 1758,
+                "worse": 518,
+                "n": 2276,
+                "p": 5.832855590188604e-157
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.8116899999999996,
+                "sd": 1.3501047750294868,
+                "t": 34.00930143121808,
+                "p": 1.1085983784224742e-216,
+                "q": 1.330318054106969e-215
+              },
+              "achievedMde": 0.06686460565057695,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": true,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "score",
+              "maze": "A",
+              "armId": "grinder-full",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.4909375,
+                "sd": 0.7036139433491825,
+                "ceilingShare": 0,
+                "floorShare": 0.0065625,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.725359999999996,
+                "sd": 1.4354672653388205,
+                "ceilingShare": 0.064375,
+                "floorShare": 0.0103125,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.2344225,
+                "sd": 1.3442726743720688,
+                "se": 0.023763608095306636,
+                "t": 9.864768812034859,
+                "p": 1.240559305189083e-22,
+                "ci": {
+                  "lo": 0.18797573437500006,
+                  "hi": 0.28156043750000004
+                },
+                "q": 3.721677915567249e-22
+              },
+              "sign": {
+                "better": 1216,
+                "worse": 951,
+                "n": 2167,
+                "p": 1.362576473244141e-8
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.2344225,
+                "sd": 1.3442726743720688,
+                "t": 9.864768812034859,
+                "p": 1.240559305189083e-22,
+                "q": 3.721677915567249e-22
+              },
+              "achievedMde": 0.06657576798568964,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "score",
+              "maze": "B",
+              "armId": "grinder-full",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 6.4728125,
+                "sd": 1.6202102263940217,
+                "ceilingShare": 0.0425,
+                "floorShare": 0.0021875,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.0840625,
+                "sd": 1.062060962378667,
+                "ceilingShare": 0.05375,
+                "floorShare": 0,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.61125,
+                "sd": 1.486249888428389,
+                "se": 0.026273434366136588,
+                "t": 23.26494479107118,
+                "p": 9.608251243009696e-111,
+                "ci": {
+                  "lo": 0.55875,
+                  "hi": 0.6640625
+                },
+                "q": 3.843300497203879e-110
+              },
+              "sign": {
+                "better": 1222,
+                "worse": 535,
+                "n": 1757,
+                "p": 8.905779482619472e-62
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.61125,
+                "sd": 1.486249888428389,
+                "t": 23.26494479107118,
+                "p": 9.608251243009696e-111,
+                "q": 3.843300497203879e-110
+              },
+              "achievedMde": 0.07360725961865278,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "A",
+              "armId": "grinder-full",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 7.4909375,
+                "sd": 0.7036139433491825,
+                "ceilingShare": 0,
+                "floorShare": 0.0065625,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.655,
+                "sd": 1.291412471164158,
+                "ceilingShare": 0.079375,
+                "floorShare": 0.0103125,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.1640625,
+                "sd": 1.2209573503443107,
+                "se": 0.021583680549200533,
+                "t": 7.601229068694539,
+                "p": 3.829778373810485e-14,
+                "ci": {
+                  "lo": 0.1218671875,
+                  "hi": 0.20625
+                },
+                "q": 9.191468097145165e-14
+              },
+              "sign": {
+                "better": 1216,
+                "worse": 951,
+                "n": 2167,
+                "p": 1.362576473244141e-8
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.1640625,
+                "sd": 1.2209573503443107,
+                "t": 7.601229068694539,
+                "p": 3.829778373810485e-14,
+                "q": 9.191468097145165e-14
+              },
+              "achievedMde": 0.06046851567143197,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            },
+            {
+              "metric": "wavesCleared",
+              "maze": "B",
+              "armId": "grinder-full",
+              "status": "registered",
+              "reasons": [],
+              "control": {
+                "n": 3200,
+                "mean": 6.4728125,
+                "sd": 1.6202102263940217,
+                "ceilingShare": 0.0425,
+                "floorShare": 0.0021875,
+                "hangs": 0,
+                "total": 3200
+              },
+              "arm": {
+                "n": 3200,
+                "mean": 7.0840625,
+                "sd": 1.062060962378667,
+                "ceilingShare": 0.05375,
+                "floorShare": 0,
+                "hangs": 0,
+                "total": 3200
+              },
+              "coverage": {
+                "equal": true,
+                "controlOnly": [],
+                "armOnly": []
+              },
+              "pairingN": 3200,
+              "delta": {
+                "mean": 0.61125,
+                "sd": 1.486249888428389,
+                "se": 0.026273434366136588,
+                "t": 23.26494479107118,
+                "p": 9.608251243009696e-111,
+                "ci": {
+                  "lo": 0.5603125,
+                  "hi": 0.6634375
+                },
+                "q": 3.843300497203879e-110
+              },
+              "sign": {
+                "better": 1222,
+                "worse": 535,
+                "n": 1757,
+                "p": 8.905779482619472e-62
+              },
+              "splitHalfRho": 1,
+              "imputed": {
+                "mean": 0.61125,
+                "sd": 1.486249888428389,
+                "t": 23.26494479107118,
+                "p": 9.608251243009696e-111,
+                "q": 3.843300497203879e-110
+              },
+              "achievedMde": 0.07360725961865278,
+              "declaredMde": 0.1,
+              "primaryUnderpowered": false,
+              "ceilingHigh": false,
+              "floorHigh": false,
+              "derivedFromWaves": false,
+              "gates": {
+                "bhQ": true,
+                "signAgreement": true,
+                "splitHalf": true,
+                "hangSurvival": true
+              },
+              "verdict": true
+            }
+          ],
+          "unavailableMetrics": [],
+          "actualTests": 6
+        }
+      ]
+    }
+  ]
+}

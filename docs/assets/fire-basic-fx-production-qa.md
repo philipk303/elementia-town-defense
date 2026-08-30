@@ -1,0 +1,13 @@
+# Fire basic FX production QA — 2026-08-13
+
+- Asset: `fire_saber_extension_effect` / `fire_saber_extension`, Fire hero basic-attack effect.
+- Generated sources: `art/source/fire-basic-fx/fire-saber-extension-concept-v1.png` and `fire-saber-impact-concept-v1.png`; generation recipe is preserved beside them.
+- Source-derived frames: `art/source/fire-basic-fx/frames/`; six `extend` frames and four `impact` frames.
+- Runtime package: `client/public/art/fire_saber_extension.png` and `client/public/art/fire_saber_extension.json`.
+- Contract: exactly ten centered, untrimmed 64 x 64 RGBA frames in a 658 x 64 atlas with 2 px gutters. The effect is authored facing right and centered for actor-facing rotation to down, up, left, and right at integration time.
+- Focused validation observed: `C:\Users\phili\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe -m unittest test.art.fire_basic_fx_pipeline_test` exited 0 — 1 test run, 1 passed.
+- Build validation observed: `npm run build` exited 0 — Vite 5.4.21 transformed 80 modules and completed the production build; only the existing chunk-size warning was emitted.
+- Full-suite validation observed: `npm test` exited 1 — 691 tests total, 688 passed, 2 skipped, and 1 failed. The sole failure was `test/art/manifestFragments.test.js` reporting that `art/manifest/fire_saber_extension_effect.json` differs from generated `art/assets-manifest.json`. This aggregate drift is mandated on the asset branch: dispatch instructions explicitly prohibit editing the aggregate or running `npm run build:manifest`. Claude Code must run `npm run build:manifest` after merging the fragment, then rerun `npm test`.
+- Visual review: both generated concepts were inspected at source resolution. The packaged atlas was inspected at native resolution; the orange/gold, white-core flame saber extends monotonically, the radial impact reaches a clear peak then contracts, silhouettes are complete, and no magenta fringe or crop is visible.
+- Runtime state: not registered. `client/src/assets/manifest.js`, `client/src/scenes/Preload.js`, and gameplay/rendering code are intentionally untouched; the current `fireball` substitute remains until target-branch integration.
+- Remaining integration QA: the current loader ignores custom atlas metadata, so authored-right orientation does not rotate automatically. Claude Code must implement sprite rotation for actor-facing down/up/left/right, add a focused automated test for all four mappings, and confirm contact placement/readability in a manual Phaser combat playtest before clearing the ledger's planned runtime status.

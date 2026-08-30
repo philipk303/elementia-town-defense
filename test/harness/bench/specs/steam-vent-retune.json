@@ -1,0 +1,29 @@
+{
+  "sweepId": "2026-08-15-steam-vent-retune",
+  "familyId": "steam-vent-retune",
+  "mazes": ["A", "B"],
+  "seeds": 1500,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "humanElement": "FIRE"
+  },
+  "arms": [
+    {
+      "armId": "control",
+      "protocol": { "fuse": false, "partnerSpecial": "WATER" }
+    },
+    {
+      "armId": "vent-old",
+      "protocol": { "fuse": true, "fuseWith": "WATER" },
+      "balanceOverrides": {
+        "TOWER.STEAM_VENT.pulse.damage": 4,
+        "TOWER.STEAM_VENT.slow.ms": 0
+      }
+    },
+    {
+      "armId": "vent-new",
+      "protocol": { "fuse": true, "fuseWith": "WATER" }
+    }
+  ]
+}

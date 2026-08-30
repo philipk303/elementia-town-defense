@@ -1,0 +1,39 @@
+{
+  "id": "fireball",
+  "category": "projectile",
+  "runtime_id": "fireball",
+  "display_alias": "Fireball",
+  "footprint_tiles": null,
+  "origin": {
+    "value": "sprite-centered, 22x18 opaque limit on a 24x24 canvas",
+    "status": "production_validated"
+  },
+  "orientation": "velocity",
+  "directions": [
+    "velocity_aligned"
+  ],
+  "states": [
+    "static"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/fireball-gpt-image-chromakey.png"
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/fireball.png",
+    "contract": "static 24x24 untrimmed RGBA, no atlas JSON (single-frame projectile)",
+    "verified": "24x24 RGBA, all 4 corners alpha=0, 185 opaque pixels, matches docs/art/fireball-asset-record.md's SHA-256 a7f45f48f...c4add"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "image_key": "fireball",
+    "gameplay_integrated": true,
+    "trigger": "GameScene projectile render loop: FIREBALL type renders the static fireball sprite instead of the orange-circle fallback; no flight/impact animation (single static frame, per its asset record)"
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/art/fireball-asset-record.md",
+    "gate": "manual Phaser playtest confirmation still open"
+  }
+}

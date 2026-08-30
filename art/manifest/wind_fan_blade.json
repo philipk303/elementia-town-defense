@@ -1,0 +1,52 @@
+{
+  "id": "wind_fan_blade",
+  "category": "projectile",
+  "runtime_id": "wind_fan_blade",
+  "display_alias": "Wind fan blade",
+  "footprint_tiles": null,
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "status": "production_validated"
+  },
+  "orientation": "velocity",
+  "directions": [
+    "velocity_aligned"
+  ],
+  "states": [
+    "flight",
+    "impact",
+    "dissipation"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/calibration/wind.png",
+    "source_directory": "art/source/wind-basic-fx",
+    "prompt_edit_lineage": [
+      "art/source/wind-basic-fx"
+    ],
+    "frame_count": 10,
+    "shared_with": "wind_basic_effect"
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/wind_basic_fx.png + client/public/art/wind_basic_fx.json",
+    "frame_count": 10,
+    "contract": "10 centered, untrimmed 64x64 RGBA frames with 2px atlas gutters",
+    "shared_with": "wind_basic_effect"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "atlas_key": "wind_basic_fx",
+    "preview_page": "client/wind-preview.html",
+    "gameplay_integrated": true,
+    "trigger": "GameScene projectile render loop: FAN_BLADE plays wind_basic_fx_flight while live, wind_basic_fx_impact then wind_basic_fx_dissipation on removal"
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/wind-production-qa.md",
+    "gate": "manual Phaser playtest confirmation of in-combat readability still open"
+  }
+}

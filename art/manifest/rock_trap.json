@@ -1,0 +1,60 @@
+{
+  "id": "rock_trap",
+  "category": "elemental_structure",
+  "runtime_id": "EARTH_SPECIAL",
+  "display_alias": "Rock Trap",
+  "footprint_tiles": {
+    "w": 2,
+    "h": 1,
+    "walkable": true,
+    "rotates_to": {
+      "w": 1,
+      "h": 2
+    }
+  },
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "baseline_y": 28
+    },
+    "status": "production_validated"
+  },
+  "orientation": "horizontal_or_vertical",
+  "directions": [
+    "horizontal",
+    "vertical"
+  ],
+  "states": [
+    "idle",
+    "warning",
+    "fall",
+    "impact"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/rock-trap/earth_special_idle.png",
+    "source_directory": "art/source/rock-trap",
+    "prompt_edit_lineage": [
+      "art/source/rock-trap/earth_special_idle.png"
+    ],
+    "frame_count": 11
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/earth_special.png + client/public/art/earth_special.json; client/public/art/rock_trap_fx.png + client/public/art/rock_trap_fx.json",
+    "frame_count": 11,
+    "contract": "3 launcher frames plus 8 target-point warning, fall, and impact frames"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "image_key": "earth_special",
+    "effect_atlas_key": "rock_trap_fx",
+    "gameplay_integrated": true,
+    "trigger": "GameScene structure loop: rock_trap_fx_impact_down one-shot at (ds.tx, ds.ty) on every EARTH_SPECIAL cycleSeq bump"
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/rock-trap-production-qa.md",
+    "gate": "manual Phaser playtest confirmation of target-point timing/readability still open; rock_trap_fx.json ships only a single impact_down state (8 frames), not the separate warning/fall/impact split this entry's description implies"
+  }
+}

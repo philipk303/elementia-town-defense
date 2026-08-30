@@ -1,0 +1,56 @@
+{
+  "id": "water_palm_effect",
+  "category": "hero_attack_effect",
+  "runtime_id": "water_palm",
+  "display_alias": "Water palm",
+  "footprint_tiles": null,
+  "origin": {
+    "value": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "status": "production_validated"
+  },
+  "orientation": "actor_facing",
+  "directions": [
+    "down",
+    "up",
+    "left",
+    "right"
+  ],
+  "states": [
+    "release",
+    "impact",
+    "dissipation"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "reference_path": "art/source/calibration/water-reference-v1.png",
+    "source_directory": "art/source/water-basic-fx",
+    "prompt_edit_lineage": [
+      "art/source/water-production/attack_down_01.png",
+      "art/source/water-basic-fx/prompt-recipe.md",
+      "art/source/water-basic-fx"
+    ],
+    "frame_count": 10
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/water_basic_fx.png + client/public/art/water_basic_fx.json",
+    "frame_count": 10,
+    "contract": "10 centered, untrimmed 64x64 RGBA frames with 2px atlas gutters"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "atlas_key": "water_basic_fx",
+    "hero_atlas_key": "chibi_water",
+    "preview_page": "client/water-preview.html",
+    "gameplay_integrated": true,
+    "trigger": "GameScene._playAtk on WATER_REACH atk events, flight->impact->dissipation one-shot at the reach point"
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/water-production-qa.md",
+    "gate": "manual Phaser playtest confirmation of in-combat readability still open"
+  }
+}

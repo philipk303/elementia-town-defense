@@ -1,0 +1,22 @@
+{
+  "sweepId": "2026-08-28-bog-oldgate-dmg28-check",
+  "familyId": "bog-oldgate-dmg28-check",
+  "mazes": ["A", "B"],
+  "seeds": 750,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "humanElement": "EARTH",
+    "defence": "WATCHTOWER",
+    "defenceCap": null,
+    "legacySiting": false,
+    "specialSiting": "funnel",
+    "freeSpecial": true,
+    "fuse": true,
+    "fuseWith": "WATER",
+    "fuseWave": 4
+  },
+  "arms": [
+    { "armId": "bog-dmg28-oldgate", "balanceOverrides": { "TOWER.MUDDY_BOG.pulse.damage": 28 } }
+  ]
+}

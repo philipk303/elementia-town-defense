@@ -1,0 +1,21 @@
+{
+  "sweepId": "2026-08-30-grinder-r3-worth",
+  "familyId": "grinder-r3-worth",
+  "mazes": ["A", "B"],
+  "seeds": 1600,
+  "protocol": {
+    "spendDown": true,
+    "maxWaves": 10,
+    "humanElement": "EARTH"
+  },
+  "arms": [
+    {
+      "armId": "control",
+      "protocol": { "fuse": false, "partnerSpecial": "WIND" }
+    },
+    {
+      "armId": "grinder-full",
+      "protocol": { "fuse": true, "fuseWith": "WIND" }
+    }
+  ]
+}

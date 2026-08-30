@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elementia Town Defense — starting…</title>
+<style>
+  body {
+    margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 14px;
+    background: #10141c; color: #fff; font-family: monospace; text-align: center;
+  }
+  h1 { font-size: 40px; margin: 0; letter-spacing: 3px; }
+  .sub { color: #7a8a99; font-size: 15px; }
+  #status { color: #e0b34c; font-size: 16px; min-height: 24px; max-width: 34em; padding: 0 16px; }
+  #elapsed { color: #55636f; font-size: 14px; min-height: 20px; }
+</style>
+</head>
+<body>
+  <h1>Elementia Town Defense</h1>
+  <div class="sub">Co-op elemental town defense — 10 waves</div>
+  <div id="status" role="status" aria-live="polite"></div>
+  <div id="elapsed" aria-hidden="true"></div>
+<script>
+// Wake shell. Deployed as an always-on static site so it loads instantly while
+// the free-tier game server cold-starts (~30-60 s). Polls /healthz and forwards
+// to the game the moment the server is up.
+(function () {
+  var DEFAULT_ORIGIN = 'https://elementia-town-defense.onrender.com'
+
+  // ?server= override, whitelisted so the shell can't be an open redirector:
+  // localhost/127.0.0.1 (any port, http) for tests, *.onrender.com (https).
+  function resolveTarget() {
+    var raw = new URLSearchParams(location.search).get('server')
+    if (!raw) return DEFAULT_ORIGIN
+    try {
+      var u = new URL(raw)
+      var localhost = u.protocol === 'http:' &&
+        (u.hostname === 'localhost' || u.hostname === '127.0.0.1')
+      var render = u.protocol === 'https:' && /\.onrender\.com$/.test(u.hostname)
+      if (localhost || render) return u.origin
+    } catch (e) { /* malformed URL -> default */ }
+    return DEFAULT_ORIGIN
+  }
+
+  var target    = resolveTarget()
+  var statusEl  = document.getElementById('status')
+  var elapsedEl = document.getElementById('elapsed')
+  var startMs = Date.now()
+  var done    = false
+
+  window.__shellTarget = target
+  window.__shellState  = 'checking'   // 'checking' | 'waking' | 'redirecting'
+
+  function go() {
+    if (done) return
+    done = true
+    window.__shellState = 'redirecting'
+    statusEl.textContent = 'Server is up — loading the game…'
+    location.replace(target)
+  }
+
+  // One probe. Render holds cold-start requests at its proxy, so a single fetch
+  // may hang ~30-60 s and then succeed — that is the happy path. Non-2xx and
+  // rejections both mean "not ready yet".
+  function probe() {
+    if (done) return
+    fetch(target + '/healthz', { cache: 'no-store' })
+      .then(function (res) { res.ok ? go() : setTimeout(probe, 3000) })
+      .catch(function ()   { setTimeout(probe, 3000) })
+  }
+
+  setTimeout(function () {
+    if (done) return
+    window.__shellState = 'waking'
+    statusEl.textContent =
+      'Waking the game server — usually under a minute on the free tier.'
+    var iv = setInterval(function () {
+      if (done) { clearInterval(iv); return }
+      var s = Math.round((Date.now() - startMs) / 1000)
+      elapsedEl.textContent = s + 's elapsed'
+      if (s >= 120) {
+        statusEl.textContent =
+          'Taking longer than usual — still trying. Leave this page open.'
+      }
+    }, 1000)
+  }, 2000)
+
+  probe()
+})()
+</script>
+</body>
+</html>

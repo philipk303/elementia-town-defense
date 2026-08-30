@@ -1,0 +1,37 @@
+{
+  "familyId": "grinder-r3-root",
+  "question": "Measured on hallHpAuc in the R2 regime, does the Grinder's 2s root capture add value ON TOP OF contact damage alone — i.e. is the rooted Grinder resolvably better than the identical Grinder with grind.rootMs 0?",
+  "primaryMetric": "hallHpAuc",
+  "secondaryMetrics": [
+    "score",
+    "wavesCleared"
+  ],
+  "mde": 0.1,
+  "alpha": 0.05,
+  "power": 0.8,
+  "sigmaSource": "hallHpAuc paired delta sd measured in the R2 regime by the registered regime-r2-adoption family (24,000 runs, n=3000/cell, 18/18 gates PASS): ~0.87 (maze A) / ~1.41 (maze B). Maze B is the binding constraint. Reused identically by fusion-r2-grinder, steam-vent-retune and the sibling grinder-r3-worth family. Note this sigma was measured for a FUSION-vs-CONTROL contrast; both arms here are the same fusion differing in one dial, whose paired sd is likely SMALLER, so sizing on it is conservative.",
+  "nRequired": 3121,
+  "arms": [
+    "control",
+    "grinder-rooted"
+  ],
+  "mazes": [
+    "A",
+    "B"
+  ],
+  "familySize": 12,
+  "regime": {
+    "label": "R2",
+    "protocol": {
+      "spendDown": true,
+      "maxWaves": 10,
+      "humanElement": "EARTH"
+    },
+    "justification": "R2 carried unchanged from grinder-r3-worth and regime-r2-adoption so the two r3 families are directly comparable. Same reasons: R1 stops at wave 8 and never sees the elites at 9-10, and R1's maze-A ceiling was nearly blind to the defence getting better, the only direction a successful mechanic can move it.",
+    "scopeLimit": "FOUR limits. (1) THE CONTROL ARM HERE IS NOT THE TWO-INGREDIENT CONTROL. It is the Grinder itself with grind.rootMs 0 — a fused structure with contact damage and no root. A verdict from this family says nothing about whether the Grinder is worth its ingredients; that is grinder-r3-worth. Anyone quoting a delta from this family must quote it as 'root vs no-root', never as 'Grinder vs control'. (2) R2's terminal measures are floor-censored and BARRED; hallHpAuc is exempt as an integral over waves played. (3) The CROSS-POLICY GATE IS EMPTY — only scripted-v1 exists — so every verdict here is provisional on it. (4) This family isolates rootMs at its shipped 2000 only; it is not a duration ladder and cannot speak to the shape of the dose-response."
+  },
+  "decisionRule": "Paired delta, grinder-rooted minus control (where control = the same fusion with grind.rootMs 0), on hallHpAuc, per maze.\n\nPASS (the root earns its place): delta > 0 AND BH-adjusted q < 0.05 across the declared family of 12 AND the exact sign test agrees in direction AND the verdict survives hang-imputation at the cell minimum. Passing on EITHER maze is sufficient, consistent with the sibling family and Philip's 2026-08-04 ruling.\n\nFAIL (the root is dead weight or harmful): delta < 0 under those same gates on either maze with no PASS on the other. A FAIL is actionable: it means grind.rootMs should be reconsidered, since the contact damage would be carrying the structure alone.\n\nUNRESOLVED: anything else — and unlike a fusion-worth question, UNRESOLVED here is itself informative, because it would mean a shipped mechanic cannot be shown to do anything at the project's own standard n.\n\nSPLIT-HALF IS DECLARED UNINFORMATIVE AND IS NOT A GATE: with 2 arms splitForMetric ranks a two-value scale. Reported for the record only.\n\nMONOTONICITY RULE: not applicable — one non-control arm, no ordering to disqualify on.\n\nCROSS-POLICY GATE NOT MET: only scripted-v1 exists; every verdict here is PROVISIONAL on that gate.",
+  "whatWouldRefute": "A delta whose BH-adjusted q exceeds 0.05 on both mazes refutes the claim that the root capture contributes anything measurable on top of contact damage, and would mean the 2026-08-29 write-ups overstated it. A resolvably negative delta refutes the mechanic outright and makes grind.rootMs a removal candidate. Because the ad-hoc n=144 estimate of this very contrast was +0.094 (maze A) and +0.048 (maze B), both far below that n's detection floor, a null here is a genuinely expected outcome and must not be explained away.",
+  "registeredAt": "2026-08-30T07:02:20.000Z",
+  "notes": "WHY THIS FAMILY EXISTS. The 2026-08-29 session shipped TWO mechanics together — root capture and contact damage — and the review docs credited the root with part of the improvement. The n=144 decomposition put the root's marginal contribution at +0.094 (maze A) and +0.048 (maze B) against detection floors of ~0.203 and ~0.329: both unresolvable, so that credit was not evidence. This family tests it directly at the project's own standard n instead of inferring it from a difference of two vs-control deltas.\n\nEXPECTATION, STATED IN ADVANCE: honestly uncertain, leaning null. The point estimates are small and positive on both mazes but were far below the floor that produced them. A PASS would vindicate the mechanic; an UNRESOLVED or FAIL would mean contact damage is doing the work and the root is decoration, which is a live and acceptable outcome.\n\nARM NAMING. The rootMs-0 arm is named 'control' because analyze.mjs keys the control arm on that literal string; it is NOT the two-ingredient control. The scopeLimit above states this at length because a delta from this family quoted without that context would read as a much stronger claim than it is.\n\nfamilySize 12 spans BOTH r3 families registered together this session (grinder-r3-worth and grinder-r3-root), 2 x 2 mazes x 3 metrics. Each family alone would be 6; the padding is deliberate and matches fusion-r2-grinder's reasoning about not narrowing a session's multiplicity correction by splitting it across small families.\n\nSAMPLE SIZE. 1600 seeds x 2 postGaps = 3200 cells per arm per maze, against nRequired 3121 from stats.js requiredN(1.41, 0.10)."
+}

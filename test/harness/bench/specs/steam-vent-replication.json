@@ -1,0 +1,11 @@
+{
+  "sweepId": "2026-08-15-steam-vent-replication",
+  "familyId": "steam-vent-replication",
+  "mazes": ["A", "B"],
+  "seeds": 450,
+  "protocol": { "spendDown": true, "maxWaves": 8, "humanElement": "FIRE" },
+  "arms": [
+    { "armId": "control", "protocol": { "fuse": false } },
+    { "armId": "vent-full", "protocol": { "fuse": true, "fuseWith": "WATER" } }
+  ]
+}

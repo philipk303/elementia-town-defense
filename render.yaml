@@ -1,0 +1,27 @@
+services:
+  # Game server: Express + Socket.io, serves client/dist. Needs a persistent
+  # process (websockets) — must be a Web Service, never a Static Site.
+  - type: web
+    name: elementia-town-defense
+    runtime: node
+    plan: free
+    # --include=dev: npm skips devDependencies (vite, the build tool) when
+    # NODE_ENV=production, which also applies during the build step. Without
+    # this flag the build fails: "vite: not found".
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+
+  # Wake shell: always-on static page (free static sites never spin down).
+  # Loads instantly while the free-tier web service cold-starts, polls
+  # /healthz, forwards to the game when it's up. Share THIS service's URL.
+  - type: web
+    name: elementia-shell
+    runtime: static
+    buildCommand: echo "static shell - no build"
+    staticPublishPath: shell

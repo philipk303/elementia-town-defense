@@ -1,0 +1,39 @@
+{
+  "id": "charge_indicator",
+  "category": "shared_presentation",
+  "runtime_id": "charge_indicator",
+  "display_alias": "Charge indicator",
+  "footprint_tiles": null,
+  "origin": {
+    "value": "screen-space, bottom-center (local player only)",
+    "status": "production_validated"
+  },
+  "orientation": "none",
+  "directions": [],
+  "states": [
+    "uncharged",
+    "charging",
+    "charged"
+  ],
+  "source": {
+    "status": "planned",
+    "reference_path": null,
+    "prompt_edit_lineage": null
+  },
+  "pillow": {
+    "status": "not_applicable",
+    "output": null,
+    "contract": "procedural client geometry"
+  },
+  "runtime": {
+    "status": "integrated",
+    "image_key": null,
+    "gameplay_integrated": true,
+    "note": "Shares the cooldown_indicator implementation (client/src/render/abilityBar.js). This fragment's three states map onto slotState(): 'uncharged' = cooling, 'charging' = the final 25% of the cooldown (accented warm so a cast can be timed without reading numbers), 'charged' = ready. Fill decays by local frame time between the 20 Hz emits so it moves at display rate."
+  },
+  "qa": {
+    "status": "production_validated",
+    "evidence": "test/client/abilityBar.test.js -- slotState/slotFill boundary tests cover all three states and the charge-window edge",
+    "gate": "state timing readability -- OPEN: same as cooldown_indicator, the live in-browser read has NOT been performed"
+  }
+}

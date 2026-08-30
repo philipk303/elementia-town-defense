@@ -1,0 +1,74 @@
+{
+  "frames": {
+    "idle_down_0.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 32
+      }
+    },
+    "launch_down_0.png": {
+      "frame": {
+        "x": 64,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 32
+      }
+    },
+    "recovery_down_0.png": {
+      "frame": {
+        "x": 128,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 32
+      }
+    }
+  },
+  "meta": {
+    "app": "rock-trap-pillow",
+    "image": "earth_special.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 192,
+      "h": 32
+    },
+    "scale": "1"
+  }
+}

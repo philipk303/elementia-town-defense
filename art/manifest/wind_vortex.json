@@ -1,0 +1,61 @@
+{
+  "id": "wind_vortex",
+  "category": "elemental_structure",
+  "runtime_id": "WIND_SPECIAL",
+  "display_alias": "Wind Vortex",
+  "footprint_tiles": {
+    "w": 2,
+    "h": 1,
+    "walkable": true,
+    "rotates_to": {
+      "w": 1,
+      "h": 2
+    }
+  },
+  "origin": {
+    "value": null,
+    "status": "calibration_pending"
+  },
+  "orientation": "horizontal_or_vertical",
+  "directions": [
+    "N",
+    "E",
+    "S",
+    "W"
+  ],
+  "states": [
+    "idle",
+    "telegraph",
+    "active",
+    "charged",
+    "recovery"
+  ],
+  "source": {
+    "status": "production_source_complete",
+    "source_directory": "art/source/wind-vortex",
+    "prompt_edit_lineage": [
+      "art/source/wind-vortex/wind-vortex-concept-v1.png",
+      "art/source/wind-vortex/wind-vortex-gpt-image-chromakey.png",
+      "art/source/wind-vortex/frames"
+    ],
+    "frame_count": 20,
+    "note": "supersedes an earlier incomplete wind_special.png single-image attempt (codex/asset-wiring-prep commit 3aa7be2), corrected by commit 55c7f33"
+  },
+  "pillow": {
+    "status": "production_converted",
+    "output": "client/public/art/wind_vortex.png + client/public/art/wind_vortex.json",
+    "frame_count": 20,
+    "contract": "20 untrimmed 64x64 RGBA directional frames (idle/telegraph/active/charged/recovery x N/E/S/W), 2px atlas gutters"
+  },
+  "runtime": {
+    "status": "gameplay_integrated",
+    "image_key": "wind_special",
+    "gameplay_integrated": true,
+    "note": "manifest.js registers runtime key 'wind_special' (matches structureArtKey('WIND_SPECIAL')) pointing at the wind_vortex.png/.json files -- key and filename are intentionally different"
+  },
+  "qa": {
+    "status": "gameplay_registered",
+    "evidence": "docs/assets/wind-vortex-production-qa.md",
+    "gate": "manual Phaser playtest confirmation still open"
+  }
+}
