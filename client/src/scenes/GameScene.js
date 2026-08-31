@@ -305,6 +305,24 @@ export default class GameScene extends Phaser.Scene {
       g.strokeRect(hall.gx * TILE_SIZE, hall.gy * TILE_SIZE, hall.w * TILE_SIZE, hall.h * TILE_SIZE)
       return g
     })
+    // The Hall sprite was previously never sized at ALL. That only looked
+    // right because hall.png happens to be exactly 2x2 tiles — swap in art of
+    // any other resolution and it would silently render at the wrong scale.
+    // Size it like placed structures, so its VISIBLE content fills the 2x2 it
+    // occupies (the art carries 22% empty margin across its width).
+    //
+    // Guarded on setDisplaySize rather than styleable(): the Hall's fallback
+    // is a Graphics, which — unlike the Rectangle used for structures — has
+    // neither setStrokeStyle NOR setDisplaySize, so styleable() cannot tell it
+    // apart from a Sprite here.
+    if (typeof this.hallSprite.setDisplaySize === 'function' && this.hallSprite.frame) {
+      const hallDisp = structureDisplayRect(
+        'hall', hall.w * TILE_SIZE, hall.h * TILE_SIZE,
+        this.hallSprite.frame.width, this.hallSprite.frame.height,
+      )
+      this.hallSprite.setDisplaySize(hallDisp.width, hallDisp.height)
+      this.hallSprite.setPosition(hallCx, hallCy + hallDisp.offsetY)
+    }
     if (!styleable(this.hallSprite)) {
       this.add.text(hallCx, hallCy, 'HALL', {
         fontFamily: 'monospace', fontSize: '12px', color: '#cfe4ff',
@@ -2201,7 +2219,7 @@ export default class GameScene extends Phaser.Scene {
       // structureVisuals.js). `frame` is absent on fallback rectangles, which
       // then keep the plain footprint rect they have always had.
       const frame = entry.rect.frame
-      const disp = structureDisplayRect(s.type, dispW, dispH, frame?.width, frame?.height)
+      const disp = structureDisplayRect(structureArtKey(s.type), dispW, dispH, frame?.width, frame?.height)
       entry.rect.setPosition(cx, cy + disp.offsetY)
       entry.rect.setDisplaySize(disp.width, disp.height)
       // Painter's order for the overhang: art taller than its footprint rises
