@@ -8,7 +8,7 @@
 // The renderer fits this box — not the frame — to the footprint, so authored
 // margin is not rendered as blank tile, and the box's bottom edge is the
 // structure's ground line.
-export const STRUCTURE_CONTENT_BOX = {
+export const CONTENT_BOX = {
   hall: { x: 7, y: 2, w: 50, h: 60, frameW: 64, frameH: 64 },
   barricade: { x: 0, y: 1, w: 32, h: 29, frameW: 32, frameH: 32 },
   snare_post: { x: 6, y: 2, w: 51, h: 58, frameW: 64, frameH: 64 },
@@ -25,4 +25,11 @@ export const STRUCTURE_CONTENT_BOX = {
   blizzard: { x: 2, y: 5, w: 60, h: 54, frameW: 64, frameH: 64 },
   steam_vent: { x: 12, y: 9, w: 104, h: 112, frameW: 128, frameH: 128 },
   grinder: { x: 2, y: 7, w: 124, h: 114, frameW: 128, frameH: 128 },
+  goblin: { x: 1, y: 0, w: 22, h: 24, frameW: 24, frameH: 24 },
+  orc: { x: 2, y: 1, w: 23, h: 26, frameW: 28, frameH: 28 },
+  troll: { x: 3, y: 0, w: 25, h: 32, frameW: 32, frameH: 32 },
+  chibi_earth: { x: 10, y: 12, w: 43, h: 45, frameW: 64, frameH: 64 },
+  chibi_fire: { x: 13, y: 14, w: 38, h: 43, frameW: 64, frameH: 64 },
+  chibi_water: { x: 19, y: 17, w: 25, h: 40, frameW: 64, frameH: 64 },
+  chibi_wind: { x: 15, y: 13, w: 33, h: 44, frameW: 64, frameH: 64 },
 }

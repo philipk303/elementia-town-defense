@@ -37,6 +37,7 @@ import {
 } from '../input/touchControls.js'
 import { CharacterAnimator, StructureAnimator, ATTACK_KIND_ELEMENT } from '../render/AnimationController.js'
 import { structureDisplayRect } from '../render/structureVisuals.js'
+import { actorDisplayScale } from '../render/actorVisuals.js'
 import { EffectPool } from '../render/EffectPool.js'
 import { ELEMENT_ATLAS_KEY, structureArtKey, enemyArtKey } from '../assets/manifest.js'
 import { createBuildPalette, typeAvailability } from '../ui/buildPalette.js'
@@ -2053,6 +2054,14 @@ export default class GameScene extends Phaser.Scene {
         const label = this.add.text(pl.x, pl.y - 22, info?.displayName ?? '', {
           fontFamily: 'monospace', fontSize: '11px', color: '#c9d6e2',
         }).setOrigin(0.5)
+        // Normalise the art to the collision body. The four chibi atlases were
+        // authored at unrelated sizes — idle content 43/38/33/25px wide for
+        // earth/fire/wind/water — against ONE shared PLAYER_RADIUS, so Earth
+        // rendered 1.7x the width of Water for no gameplay reason. Set once at
+        // creation: unlike enemies, nothing else rescales a player sprite.
+        if (!styleable(dot)) {
+          dot.setScale(actorDisplayScale(ELEMENT_ATLAS_KEY[info?.element], CONFIG.PLAYER_RADIUS * 2))
+        }
         entry = { dot, label, px: pl.x, py: pl.y, hp: pl.hp }
         this.playerGfx.set(pl.id, entry)
       }
@@ -2335,7 +2344,13 @@ export default class GameScene extends Phaser.Scene {
         // Same elite ratio as the shape branch (base.r+3 relative to base.r,
         // not a flat 1.4x) so troll/orc/goblin elites scale consistently
         // whichever render path is active. Aggro/root/freeze convey via tint.
-        entry.dot.setScale(elite ? (base.r + 3) / base.r : 1)
+        //
+        // Multiplied by the actor's normalising scale: the art was authored at
+        // sizes unrelated to base.r, so at native scale goblin/orc/troll drew
+        // 22/23/25px for hitboxes of 14/18/24 — a 1.7x gameplay difference
+        // rendered as 1.14x, making a troll look barely bigger than a goblin.
+        const norm = actorDisplayScale(enemyArtKey(en.type), base.r * 2)
+        entry.dot.setScale(norm * (elite ? (base.r + 3) / base.r : 1))
         if (elite) entry.dot.setTint(0xffe08a)
         else if (en.flags & FLAG.AGGRO) entry.dot.setTint(0xff5555)
         else if (en.flags & (FLAG.ROOT | FLAG.FREEZE)) entry.dot.setTint(0x9fd1e8)

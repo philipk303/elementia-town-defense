@@ -2,7 +2,15 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 
 import { structureDisplayRect } from '../../client/src/render/structureVisuals.js'
-import { STRUCTURE_CONTENT_BOX } from '../../client/src/render/structureContentBoxes.js'
+import { CONTENT_BOX } from '../../client/src/render/contentBoxes.js'
+
+// contentBoxes.js covers actors too (scaled by actorVisuals.js against their
+// collision radius, not fitted to a footprint), so the sweeps below take only
+// the keys this module is actually responsible for.
+const ACTOR_KEYS = new Set(['goblin', 'orc', 'troll', 'chibi_earth', 'chibi_fire', 'chibi_water', 'chibi_wind'])
+const STRUCTURE_CONTENT_BOX = Object.fromEntries(
+  Object.entries(CONTENT_BOX).filter(([k]) => !ACTOR_KEYS.has(k)),
+)
 
 // Where the art's visible content lands, given the returned rect. Sprites keep
 // Phaser's centred origin, so these are measured from the footprint's centre.

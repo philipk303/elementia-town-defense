@@ -39,7 +39,7 @@
 // One size per structure either way: the box never varies frame to frame, so
 // the sprite cannot pulse or hop as the animation advances.
 
-import { STRUCTURE_CONTENT_BOX } from './structureContentBoxes.js'
+import { CONTENT_BOX } from './contentBoxes.js'
 
 /**
  * @param {string} artKey          texture key, e.g. structureArtKey(type) or 'hall'
@@ -59,7 +59,7 @@ export function structureDisplayRect(artKey, footprintWidth, footprintHeight, ar
   }
   // Unmeasured art falls back to treating the whole frame as content, which is
   // the aspect-correct fit and never the old crush.
-  const box = STRUCTURE_CONTENT_BOX[artKey] ?? { x: 0, y: 0, w: artWidth, h: artHeight }
+  const box = CONTENT_BOX[artKey] ?? { x: 0, y: 0, w: artWidth, h: artHeight }
   // Guard against a box measured against a different-sized frame (art replaced
   // without re-running the measure script): fall back rather than mis-scale.
   const usable = box.w > 0 && box.h > 0 && box.x + box.w <= artWidth && box.y + box.h <= artHeight
