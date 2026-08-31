@@ -490,12 +490,17 @@ export default class GameScene extends Phaser.Scene {
 
     // --- input ---
     const KC = Phaser.Input.Keyboard.KeyCodes
+    // enableCapture=false: these letters have no native browser action, but
+    // Phaser's default capture calls preventDefault() on them window-wide,
+    // which blocks typing w/a/s/d/q/e/f into any HTML input (e.g. the lobby's
+    // "Your name" field) even while that field has focus. Disabling capture
+    // stops that without affecting in-game key state.
     this.keys = {
-      w: this.input.keyboard.addKey(KC.W), a: this.input.keyboard.addKey(KC.A),
-      s: this.input.keyboard.addKey(KC.S), d: this.input.keyboard.addKey(KC.D),
-      special: this.input.keyboard.addKey(KC.Q),
-      second:  this.input.keyboard.addKey(KC.E),
-      repair:  this.input.keyboard.addKey(KC.F),
+      w: this.input.keyboard.addKey(KC.W, false), a: this.input.keyboard.addKey(KC.A, false),
+      s: this.input.keyboard.addKey(KC.S, false), d: this.input.keyboard.addKey(KC.D, false),
+      special: this.input.keyboard.addKey(KC.Q, false),
+      second:  this.input.keyboard.addKey(KC.E, false),
+      repair:  this.input.keyboard.addKey(KC.F, false),
     }
 
     // 1-9 hotbar → BUILDABLE_TYPES (build-phase placeholder UI until Phase 7).
