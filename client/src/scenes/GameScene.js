@@ -36,7 +36,7 @@ import {
   TOUCH_MIN_TARGET_CSS_PX,
 } from '../input/touchControls.js'
 import { CharacterAnimator, StructureAnimator, ATTACK_KIND_ELEMENT } from '../render/AnimationController.js'
-import { structureDisplaySize } from '../render/structureVisuals.js'
+import { structureDisplayRect } from '../render/structureVisuals.js'
 import { EffectPool } from '../render/EffectPool.js'
 import { ELEMENT_ATLAS_KEY, structureArtKey, enemyArtKey } from '../assets/manifest.js'
 import { createBuildPalette, typeAvailability } from '../ui/buildPalette.js'
@@ -2197,13 +2197,20 @@ export default class GameScene extends Phaser.Scene {
       // no new wire field, and the phase deadlines stay server-owned.
       entry.anim.update(ds, now)
       entry.anim.syncSprite(entry.rect, this._hasAnim)
-      entry.rect.setPosition(cx, cy)
-      const displaySize = structureDisplaySize(s.type, dispW, dispH, entry.anim.state)
-      entry.rect.setDisplaySize(displaySize.width, displaySize.height)
-      // The Geyser source holds its pool at y=56 on the 64px canvas. Keep
-      // that waterline centered over the footprint while its active plume
-      // overhangs vertically; fallback rectangles retain Phaser's default.
-      if (s.type === 'WATER_SPECIAL' && !styleable(entry.rect)) entry.rect.setOrigin(0.5, 56 / 64)
+      // Fit the art to the footprint WITHOUT crushing its aspect ratio (see
+      // structureVisuals.js). `frame` is absent on fallback rectangles, which
+      // then keep the plain footprint rect they have always had.
+      const frame = entry.rect.frame
+      const disp = structureDisplayRect(s.type, dispW, dispH, frame?.width, frame?.height)
+      entry.rect.setPosition(cx, cy + disp.offsetY)
+      entry.rect.setDisplaySize(disp.width, disp.height)
+      // Painter's order for the overhang: art taller than its footprint rises
+      // into the tiles ABOVE it, which are farther from the viewer, so a
+      // structure must draw over anything with a smaller gy. Sort by the
+      // FOOTPRINT's bottom edge, not the sprite's shifted centre — the centre
+      // moves with art height and would order two neighbours backwards.
+      entry.rect.sortY = cy + dispH / 2
+      entry.hpBar.sortY = entry.rect.sortY + 0.5  // just above its own structure
       // Walkable structures (spec §2: enemies walk over them, they never
       // route-block) read as traversable via reduced opacity; blocking
       // structures (Barricade/Watchtower/eco) stay fully opaque.
@@ -2211,8 +2218,12 @@ export default class GameScene extends Phaser.Scene {
       entry.hpBar.clear()
       const maxHp = BALANCE.STRUCTURES[s.type]?.hp ?? hp
       const barW = Math.max(28, dispW)
-      entry.hpBar.fillStyle(0x22303f, 1).fillRect(cx - barW / 2, cy - dispH / 2 - 6, barW, 3)
-      entry.hpBar.fillStyle(0xc9a227, 1).fillRect(cx - barW / 2, cy - dispH / 2 - 6, barW * Math.min(1, hp / (maxHp || 1)), 3)
+      // Bars sit above whichever is taller, the footprint or the art rising
+      // out of it — otherwise aspect-correct tall art (tower, geyser) is drawn
+      // straight through its own hp bar.
+      const barTop = Math.min(cy - dispH / 2, cy + disp.offsetY - disp.height / 2)
+      entry.hpBar.fillStyle(0x22303f, 1).fillRect(cx - barW / 2, barTop - 6, barW, 3)
+      entry.hpBar.fillStyle(0xc9a227, 1).fillRect(cx - barW / 2, barTop - 6, barW * Math.min(1, hp / (maxHp || 1)), 3)
       // Repair channel: a second bar directly above the hp bar, drawn only
       // while a channel is live. Server resets repairMs to 0 the tick a
       // channel lapses, so "no bar" needs no client-side timeout of its own.
@@ -2229,8 +2240,8 @@ export default class GameScene extends Phaser.Scene {
       // just-placed vortex as sucking, so the record has to actually exist.
       if (s.type === 'WIND_SPECIAL' && fightNow && ds && (ds.phase | 0) === 0) anyVortexSuction = true
       if (repairMs > 0) {
-        entry.hpBar.fillStyle(0x22303f, 1).fillRect(cx - barW / 2, cy - dispH / 2 - 11, barW, 3)
-        entry.hpBar.fillStyle(0x5fd0e0, 1).fillRect(cx - barW / 2, cy - dispH / 2 - 11,
+        entry.hpBar.fillStyle(0x22303f, 1).fillRect(cx - barW / 2, barTop - 11, barW, 3)
+        entry.hpBar.fillStyle(0x5fd0e0, 1).fillRect(cx - barW / 2, barTop - 11,
           barW * Math.min(1, repairMs / (BALANCE.REPAIR?.CHANNEL_MS || 3000)), 3)
       }
 
@@ -2251,6 +2262,12 @@ export default class GameScene extends Phaser.Scene {
         this.structureGfx.delete(id)
       }
     }
+    // Apply the painter's order set above. A Container renders its children in
+    // array order and does NOT sort on its own, so without this a structure
+    // whose art overhangs upward could be drawn behind a neighbour it should
+    // occlude — the order was previously just whatever order structures
+    // happened to be created in.
+    this.structureLayer.sort('sortY')
     // Sustained sounds, driven off state rather than edges: a destroyed or
     // sold structure simply stops appearing in structuresCache, which drops
     // the flag and stops the loop with no destroy-side hook needed.
