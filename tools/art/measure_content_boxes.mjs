@@ -90,12 +90,13 @@ function decodeRGBA(file) {
   return { w, h, px: out, stride }
 }
 
-// Every frame rect in the sheet. Atlas JSON if registered, else the whole image.
-function frameRects(jsonRel, img) {
-  if (!jsonRel) return [{ x: 0, y: 0, w: img.w, h: img.h }]
+// Every frame in the sheet as { name, rect }. Atlas JSON if registered, else
+// the whole image as a single unnamed frame.
+function frameEntries(jsonRel, img) {
+  if (!jsonRel) return [{ name: '', rect: { x: 0, y: 0, w: img.w, h: img.h } }]
   const j = JSON.parse(fs.readFileSync(path.join(ROOT, 'client/public', jsonRel), 'utf8'))
-  const frames = Array.isArray(j.frames) ? j.frames : Object.values(j.frames)
-  return frames.map(f => f.frame)
+  if (Array.isArray(j.frames)) return j.frames.map((f, i) => ({ name: f.filename ?? `#${i}`, rect: f.frame }))
+  return Object.entries(j.frames).map(([name, f]) => ({ name, rect: f.frame }))
 }
 
 function unionContentBox(img, rects) {
@@ -127,12 +128,27 @@ for (const key of KEYS) {
   const png = path.join(ROOT, 'client/public', reg.png)
   if (!fs.existsSync(png)) { report.push(`${key.padEnd(15)} SKIPPED — missing ${reg.png}`); continue }
   const img = decodeRGBA(png)
-  const rects = frameRects(reg.json, img)
-  const box = unionContentBox(img, rects)
+  const entries = frameEntries(reg.json, img)
+  // Fit on the RESTING silhouette, not on every frame. A structure's idle pose
+  // is what sits on the ground and what a player sees almost all the time;
+  // telegraph/active/recovery deliberately bloom past it (the Volcano's idle
+  // content is 112x95 while its eruption reaches 124x124). Fitting the
+  // all-frames union grounds the ERUPTION and leaves the idle volcano floating
+  // ~9px above its own tile — measured, and the reason this is split out.
+  const idle = entries.filter(e => /^idle/.test(e.name))
+  const fitOn = idle.length ? idle : entries
+  const box = unionContentBox(img, fitOn.map(e => e.rect))
   if (!box) { report.push(`${key.padEnd(15)} SKIPPED — fully transparent`); continue }
   boxes[key] = box
+  const all = unionContentBox(img, entries.map(e => e.rect))
   const pw = (box.w / box.frameW * 100).toFixed(0), ph = (box.h / box.frameH * 100).toFixed(0)
-  report.push(`${key.padEnd(15)} frame ${box.frameW}x${box.frameH}  content ${box.w}x${box.h} @${box.x},${box.y}  (${pw}%W ${ph}%H, ${rects.length} frame${rects.length > 1 ? 's' : ''})`)
+  const bloom = all && (all.w > box.w || all.y + all.h > box.y + box.h)
+    ? `  [anim blooms to ${all.w}x${all.h}, bottom +${(all.y + all.h) - (box.y + box.h)}]` : ''
+  report.push(
+    `${key.padEnd(15)} frame ${box.frameW}x${box.frameH}  fit ${box.w}x${box.h} @${box.x},${box.y}  ` +
+    `(${pw}%W ${ph}%H, ${fitOn.length}/${entries.length} frame${entries.length > 1 ? 's' : ''}` +
+    `${idle.length ? ' idle' : ' — no idle frames, using all'})${bloom}`,
+  )
 }
 
 const body = Object.entries(boxes)

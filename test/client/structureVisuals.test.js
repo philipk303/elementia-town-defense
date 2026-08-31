@@ -84,6 +84,23 @@ test('the hall fills its 2x2, and its art really does carry margin', () => {
   assert.ok(Math.abs(contentWidth(r, box, box.frameW) - 64) < 1e-9)
 })
 
+test('boxes are fitted on the RESTING pose, not on whatever the animation reaches', () => {
+  // The Volcano's idle content is 112x95; its eruption blooms to 124x124.
+  // Fitting the all-frames union grounds the ERUPTION and leaves the idle
+  // volcano — the state a player sees almost all the time — floating ~9px
+  // above its own tile. Guard the two structures where this actually bites.
+  const volcano = STRUCTURE_CONTENT_BOX.magma_trap
+  assert.ok(volcano.w <= 112 && volcano.y + volcano.h <= 108,
+    'magma_trap must be fitted on its idle pose, not its eruption')
+
+  // Same trap on the Geyser: its frames reserve headroom for the plume, so the
+  // all-frames box is the pool PLUS the plume and the pool would not reach the
+  // ground. The fit box must be the idle pool alone.
+  const geyser = STRUCTURE_CONTENT_BOX.water_special
+  assert.ok(geyser.h < geyser.frameH * 0.6,
+    'water_special must be fitted on its idle pool, not pool + plume')
+})
+
 test('the geyser is one size, not one size per animation state', () => {
   // The old code returned height 64 for `active` only, which is why idle
   // stayed crushed. State is not an input any more, and the content box is the

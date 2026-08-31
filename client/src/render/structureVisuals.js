@@ -21,10 +21,23 @@
 // extra height grows upward (a tower rises out of its tile) rather than down
 // into the tile in front — which is what a top-down view needs to read right.
 //
-// Content boxes are MEASURED from the shipped art by
+// Content boxes are MEASURED from the shipped art's IDLE (resting) frames by
 // tools/art/measure_content_boxes.mjs, not hand-maintained: an earlier version
 // of this file carried a hand-written BASELINE_Y table, which is exactly the
 // kind of table that silently drifts from the art it describes.
+//
+// WHY IDLE FRAMES, NOT ALL FRAMES. Animated structures bloom past their
+// resting silhouette — the Volcano idles at 112x95 and erupts to 124x124, the
+// Geyser's frames reserve the whole upper half for a plume that only exists
+// while active. Fitting the ALL-FRAMES union sizes and grounds the structure
+// by its loudest moment, which left the idle volcano floating ~9px above its
+// own tile and the Geyser's pool nowhere near the ground. Fitting the resting
+// pose means a structure sits correctly in the state it is in almost all the
+// time, and its animation is then free to overflow the footprint — which for
+// an eruption or a plume is the desired reading, not a defect.
+//
+// One size per structure either way: the box never varies frame to frame, so
+// the sprite cannot pulse or hop as the animation advances.
 
 import { STRUCTURE_CONTENT_BOX } from './structureContentBoxes.js'
 
