@@ -41,6 +41,7 @@ import { actorDisplayScale } from '../render/actorVisuals.js'
 import { EffectPool } from '../render/EffectPool.js'
 import { ELEMENT_ATLAS_KEY, structureArtKey, enemyArtKey } from '../assets/manifest.js'
 import { createBuildPalette, typeAvailability } from '../ui/buildPalette.js'
+import { computeThumbnails } from '../render/buildThumbnails.js'
 import { createMenuPanel } from '../ui/menuPanel.js'
 import { createWavePreview } from '../ui/wavePreview.js'
 
@@ -514,7 +515,7 @@ export default class GameScene extends Phaser.Scene {
         this.menuPanel?.toggle(this._inputScheme, from)
         audio.playFx('ui_click')
       },
-    })
+    }, computeThumbnails(this))
     this.menuPanel = createMenuPanel({
       // A phase turning over while the menu is open swaps which MENU button
       // exists, so the one that opened it may be gone by the time it closes.

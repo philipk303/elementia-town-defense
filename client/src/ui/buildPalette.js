@@ -66,6 +66,17 @@ const CSS = `
   cursor: not-allowed; color: #8c99a8; background: #10171f; border-color: #3a4a5c;
 }
 .ep-btn[aria-disabled="true"] .ep-cost { color: #8c99a8; }
+/* Decorative, sliced from the shipped sheets in CSS (spec §2) -- width/height/
+   background-size/background-position are per-type numbers set inline by
+   GameScene (client/src/render/buildThumbnails.js), never in this stylesheet.
+   Dimmed with a filter, NOT opacity: opacity on this element would stack with
+   the button's own dimming exactly the way it already did for .ep-why once
+   (see the aria-disabled comment above). */
+.ep-thumb {
+  display: block; background-repeat: no-repeat; image-rendering: pixelated;
+  margin-bottom: 2px; flex: none;
+}
+.ep-btn[aria-disabled="true"] .ep-thumb { filter: grayscale(0.7) brightness(0.6); }
 /* Selection is carried by BORDER WEIGHT and a background shift, not by hue
    alone -- the design review found several colour-only states failing WCAG
    1.4.1 elsewhere in the HUD. */
@@ -136,7 +147,7 @@ export function reasonText(reason) {
   return REASON_TEXT[reason] || ''
 }
 
-export function createBuildPalette(handlers = {}) {
+export function createBuildPalette(handlers = {}, thumbnails = new Map()) {
   if (typeof document === 'undefined') return null
   const style = document.createElement('style')
   style.textContent = CSS
@@ -191,6 +202,21 @@ export function createBuildPalette(handlers = {}) {
     const why = document.createElement('span')
     why.className = 'ep-why'
     name.textContent = shortLabel(type)
+    // Decorative only -- aria-label below already carries name, cost and any
+    // refusal reason, and a screen reader double-reading the image would be
+    // worse than no image (spec §2).
+    const rect = thumbnails.get(type)
+    if (rect) {
+      const thumb = document.createElement('span')
+      thumb.className = 'ep-thumb'
+      thumb.setAttribute('aria-hidden', 'true')
+      thumb.style.width = `${rect.w}px`
+      thumb.style.height = `${rect.h}px`
+      thumb.style.backgroundImage = `url(${rect.src})`
+      thumb.style.backgroundSize = `${rect.bgW}px ${rect.bgH}px`
+      thumb.style.backgroundPosition = `-${rect.bgX}px -${rect.bgY}px`
+      b.append(thumb)
+    }
     b.append(name, cost, why)
     typeRow.append(b)
     typeBtns.set(type, { b, cost, why })
