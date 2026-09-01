@@ -41,6 +41,7 @@ import { actorDisplayScale } from '../render/actorVisuals.js'
 import { EffectPool } from '../render/EffectPool.js'
 import { ELEMENT_ATLAS_KEY, structureArtKey, enemyArtKey } from '../assets/manifest.js'
 import { createBuildPalette, typeAvailability } from '../ui/buildPalette.js'
+import { createMenuPanel } from '../ui/menuPanel.js'
 import { createWavePreview } from '../ui/wavePreview.js'
 
 // Attack kind (server/net/encode.js ATTACK_KINDS) -> element comes from the
@@ -504,8 +505,34 @@ export default class GameScene extends Phaser.Scene {
         net.emit(EVENTS.SET_READY, { ready: this._readied })
         audio.playFx('ui_click')
       },
+      // Both palette doors -- the build-phase MENU button and the action-phase
+      // one -- land here. The menu opens over a RUNNING match: the server
+      // ticks this room at 60Hz whether we look at it or not, so a
+      // client-side freeze would only snap forward on resume. See
+      // client/src/ui/menuPanel.js.
+      onMenu: (from) => {
+        this.menuPanel?.toggle(this._inputScheme, from)
+        audio.playFx('ui_click')
+      },
     })
-    this.events.once('shutdown', () => this.palette?.destroy())
+    this.menuPanel = createMenuPanel({
+      // A phase turning over while the menu is open swaps which MENU button
+      // exists, so the one that opened it may be gone by the time it closes.
+      // Hand focus to whichever door is on screen now.
+      focusAfterClose: () => this.palette?.visibleMenuDoor(),
+      // Fired only after the player confirms in the menu. The server wipes the
+      // room's run and answers with a fresh GAME_START, which _onGameStart
+      // already knows how to absorb -- it is the same path a mid-match join
+      // and a reconnect take. Anyone in the room may do this (2026-08-31).
+      onRestart: () => {
+        net.emit(EVENTS.RESTART_MATCH)
+        audio.playFx('ui_click')
+      },
+    })
+    this.events.once('shutdown', () => {
+      this.palette?.destroy()
+      this.menuPanel?.destroy()
+    })
 
     // --- input ---
     const KC = Phaser.Input.Keyboard.KeyCodes
@@ -1024,6 +1051,10 @@ export default class GameScene extends Phaser.Scene {
       hudScale: this.hudScale,
       readied: !!this._readied,
     })
+    // The menu reads the SAME scheme the rest of the scene does; a hybrid
+    // device that flips mid-match rewrites the open panel in place. Cheap:
+    // setScheme re-renders only when the value actually changes.
+    this.menuPanel?.setScheme(this._inputScheme)
   }
 
   _selectStructure(id) {
@@ -1637,6 +1668,17 @@ export default class GameScene extends Phaser.Scene {
   }
 
   _onGameStart(p) {
+    // A GAME_START always means the world on screen is gone and a different
+    // one has arrived -- first start, mid-match join, reconnect, and now a
+    // RESTART_MATCH. Everything below is scoped to the run that just ended, so
+    // carrying it over would show a fusion offer, a rejection message or a
+    // ready flag belonging to a match that no longer exists.
+    this.fusionPrompts = []
+    this.fusionMessage = ''
+    this.rejectMessage = ''
+    this._readied = false
+    this._dismissStructureCard()
+    this.placementIntent.reset()
     this.snapBuf.reset()
     this.latest = decodeSnapshot(p.snapshot)
     this.snapBuf.push(this.latest, performance.now())

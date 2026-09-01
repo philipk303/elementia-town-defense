@@ -20,6 +20,7 @@ export const EVENTS = {
   BUILD_STRUCTURE: 'build_structure',
   SELL_STRUCTURE:  'sell_structure',
   RESPOND_FUSION:  'respond_fusion',  // accept/reject a pending fusion proposal
+  RESTART_MATCH:   'restart_match',   // menu: wipe the run and re-enter build wave 1, same room
 
   // Server → Client
   ROOM_CREATED:        'room_created',

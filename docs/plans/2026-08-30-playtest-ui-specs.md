@@ -2,10 +2,58 @@
 
 Six items from the first human playtest (tablet, touch, hosted build). Each is
 specified independently so they can be picked up, deferred, or dropped without
-touching the others. **Nothing here is implemented yet.**
+touching the others.
 
 Ordering recommendation is in §7. Facts below were read out of the code on
 2026-08-30, not assumed; file:line references are to that state.
+
+## Status — updated 2026-08-31
+
+| item | state |
+|---|---|
+| §1 structure art sizing | **DONE** 2026-08-30 (`0ac69f2` and the four commits before it) |
+| §3 controls list | **DONE** 2026-08-31 (`6303f31`, folded into the MENU in `3898c85`) |
+| §4a pause overlay | **SUPERSEDED** — became the MENU (`3898c85`) |
+| §4b real pause | **WILL NOT DO** — dropped 2026-08-31 |
+| restart | **DONE** 2026-08-31 (`3898c85`) — restart the MATCH, same room, anyone may press |
+| §2 build palette thumbnails | open — next per §7 |
+| §5 character select | open |
+| §6 theming | open, deliberately last |
+
+### What shipped instead of a pause
+
+Pause was dropped. In its place, `client/src/ui/menuPanel.js` is a **MENU**
+holding the controls list and a RESTART MATCH button, opened from two doors: a
+MENU button in the build palette's control row, and a docked MENU button that
+replaces it during the action phase. The action-phase button sits in the same
+`--ep-dock` strip as the palette rather than floating over the board, because
+every canvas corner is already occupied; docking makes overlap impossible by
+construction. `visibleMenuDoor()` on the palette is the seam between them.
+
+The two §8 decisions were taken on 2026-08-31:
+
+- **Restart the MATCH, in the same room** — not the wave. Adds one wire event,
+  `RESTART_MATCH`. This is the protocol change the touch work froze; it has
+  sign-off.
+- **Anyone in the room may press it.** The griefing tradeoff was put and
+  accepted explicitly. The client requires a confirm step, so a misclick is not
+  enough; the server does not gate on identity, only on a 3s per-room cooldown
+  so a held button cannot make it rebuild the world repeatedly.
+
+Two things the spec did not anticipate, both found by building it:
+
+1. A phase can turn over while the panel is open, which swaps which door
+   exists, so the button that opened it may be gone by the time it closes.
+   `close()` falls back to whichever door is on screen.
+2. **A finished run used to destroy its room instantly** (`loop.js` onEnd →
+   `destroyRoom`), which would have made a restart button useless at the exact
+   moment a player most wants one. A finished room now waits out a five-minute
+   grace window with its loop stopped, and its cleanup timer is cleared on
+   every teardown path — room codes are reusable, so a stray timer could
+   otherwise destroy a different room later.
+
+Verified live and in tests: 941 tests, 939 pass, 2 pre-existing skips,
+including four end-to-end netcode assertions in `test/net/restart.test.js`.
 
 ---
 
@@ -94,45 +142,120 @@ still pass.
 
 ## 2. Build palette has no structure thumbnails
 
+*Rewritten 2026-08-31 with measurements taken from the shipped art and the
+generated content-box table. The frame-picking question §7 flagged is resolved
+below — it needs no build step and no new art.*
+
 ### What's there now
 
 `client/src/ui/buildPalette.js` builds one DOM button per buildable type. Each
-button contains three text spans: `shortLabel(type)` (e.g. `ROCK TRAP`,
-`GEYSER`), the gold cost, and a disabled-reason line. No image element.
+button holds three text spans: `shortLabel(type)` (e.g. `ROCK TRAP`, `GEYSER`),
+the gold cost, and a disabled-reason line. No image element anywhere.
 
-The DOM-not-Phaser decision is deliberate and well-documented
-(`buildPalette.js:4-22`): Phaser-drawn UI shipped 7.6px touch targets under
-`Scale.FIT`, so this panel is authored in real CSS pixels with a 44px minimum
-target. **Any thumbnail work must stay inside DOM and must not shrink the 44px
-target.**
+The DOM-not-Phaser decision is deliberate and documented (`buildPalette.js`
+header): Phaser-drawn UI shipped 7.6px touch targets under `Scale.FIT`, so this
+panel is authored in real CSS pixels with a 44px minimum target. **Thumbnail
+work stays inside DOM and must not shrink that target.**
 
-### Proposed work
+### The nine buildables and their art, measured 2026-08-31
 
-Add an `<img>` (or a CSS sprite-slice `<span>`) above the name in each type
-button, sourced from the same PNGs the game already ships in
-`client/public/art/`. Buttons grow taller; the row already wraps rather than
-scrolls (`buildPalette.js:41-45`), so a taller button is safe at 375px width.
+`BUILDABLE_TYPES` is nine entries. Fusions are NOT among them — they are
+created by combining placed structures, never picked from the palette — so they
+are out of scope here.
 
-Details that need deciding:
-- Atlas-based types (Watchtower, the four specials, fusions) need a *specific
-  frame*, not the whole sheet. Either point at the frame rect from the `.json`
-  via `object-fit`/`background-position`, or export a small static thumbnail
-  set at build time.
-- The disabled state is currently an explicit dimmed palette, not opacity
-  (`buildPalette.js:57-67`, deliberately — opacity compounded and dropped the
-  reason text to 2.67:1 contrast). Thumbnails must follow that same rule:
-  dim via a filter that doesn't stack with `.ep-why`'s own opacity.
-- `aria-label` already carries name + cost (`buildPalette.js:269-272`). The
-  thumbnail must be `alt=""`/`aria-hidden` so screen readers don't double-read.
+| type | art key | kind | file | frame |
+|---|---|---|---|---|
+| BARRICADE | `barricade` | image | `art/barricade.png` | 32x32 |
+| SNARE_POST | `snare_post` | atlas | `art/snare_post.png` | 64x64, 2 frames |
+| WATCHTOWER | `watchtower` | atlas | `art/watchtower.png` | 48x64, 2 frames |
+| FARM | `farm` | image | `art/farm.png` | 32x32 |
+| MARKETPLACE | `marketplace` | image | `art/marketplace.png` | 64x64 |
+| EARTH_SPECIAL | `earth_special` | atlas | `art/earth_special.png` | 64x32, 3 frames |
+| FIRE_SPECIAL | `fire_special` | atlas | `art/fire_special.png` | 96x64, 8 frames |
+| WATER_SPECIAL | `water_special` | atlas | `art/water_special.png` | 64x64, 20 frames |
+| WIND_SPECIAL | `wind_special` | atlas | **`art/wind_vortex.png`** | 64x64, 20 frames |
+
+Note the last row. The `wind_special` key loads `wind_vortex.png`/`.json`.
+**Resolve every file through the manifest (`client/src/assets/manifest.js`,
+`structureArtKey()`), never by guessing from the key** — that exact mistake
+measured a stale unregistered file earlier in this project.
+
+### Resolved: slice the sheet in CSS, do not export thumbnails
+
+Everything needed already exists at runtime, so there is no build step:
+
+- **Which rectangle to show.** `client/src/render/contentBoxes.js` (GENERATED —
+  regenerate with `tools/art/measure_content_boxes.mjs`, never hand-edit)
+  already holds `CONTENT_BOX[key] = {x, y, w, h, frameW, frameH}`: the box the
+  visible pixels occupy inside the frame. Showing the content box rather than
+  the frame is what stops a thumbnail rendering as mostly blank — `farm` fills
+  22x22 of its 32x32 frame, `barricade` 32x29 of 32x32.
+- **Where that frame sits on the sheet.** For an atlas, add the frame's
+  position on the sheet to the frame-local content box. Read it from Phaser's
+  texture manager, which has it loaded by the time the palette is built:
+  `scene.textures.get(key).get(frameName)` gives `cutX/cutY/cutWidth/cutHeight`.
+  For a plain image the frame IS the file, so the offset is zero.
+- **Keep the palette Phaser-free.** `buildPalette.js` owns DOM and holds no
+  game state by design. GameScene should compute the rects and pass plain
+  numbers in at creation — the palette must not import Phaser to do this.
+
+Then each thumbnail is a `<span>` with `background-image`, `background-size`
+scaled by `targetPx / box.w`, and `background-position` at the negative offset
+of the box's absolute position. Add `image-rendering: pixelated` or the
+upscaled pixel art blurs.
+
+### Which frame: prefer the south-facing idle
+
+Use the first frame whose name starts with `idle`, **except** take `idle_S*`
+when a south variant exists, so directional structures face the viewer rather
+than away. Measured picks:
+
+```
+snare_post     idle_0.png
+watchtower     idle_0.png
+earth_special  idle_down_0.png
+fire_special   idle_00.png        (4 idle frames, first)
+water_special  idle_S_0.png       sheet rect x=132 y=0 64x64
+wind_special   idle_S_0.png       sheet rect x=132 y=0 64x64
+```
+
+This is the same "fit on the RESTING pose" rule `measure_content_boxes.mjs`
+already applies (`/^idle/`), for the same reason: an active or telegraph frame
+sizes a structure by its loudest moment. The `idle_S` preference is the one new
+judgement call and is cosmetic — change it in one place if it looks wrong.
+
+### Constraints that must not be regressed
+
+- **44px minimum on every target.** A thumbnail makes buttons TALLER, which is
+  safe; it must never make them narrower.
+- **The dock grows with the buttons.** The palette publishes its height as
+  `--ep-dock` and the canvas is fitted above it, capped at 40% of viewport
+  height. Taller buttons over nine wrapped entries eat board space on a phone —
+  measure the dock at 375px wide before and after, and if it approaches the cap
+  the thumbnail is too big.
+- **Disabled state is an explicit dimmed palette, not opacity.** Opacity
+  compounded with `.ep-why`'s own and dropped the reason text to 2.67:1. Dim
+  the thumbnail with a filter or a second background layer that does not stack
+  with it.
+- **`aria-label` already carries name, cost and refusal reason.** The thumbnail
+  must be `aria-hidden="true"` (or `alt=""`) so a screen reader does not
+  double-read the button.
+- **Selection is carried by border weight plus background, not hue alone.**
+  Do not let a thumbnail become the only selected-state signal.
 
 ### Done when
 
-Every buildable button shows its own art, targets stay ≥44px, the palette still
-fits at 375px wide, and the a11y labels are unchanged.
+Every buildable button shows its own art, sliced from the shipped sheets with
+no new asset files; targets stay >=44px; the palette still fits at 375px wide
+and the dock has not grown into the cap; the accessible names are unchanged;
+and the disabled dimming still leaves the reason text legible.
 
 ---
 
 ## 3. No controls list anywhere
+
+> **SHIPPED 2026-08-31** as part of the MENU (`client/src/ui/menuPanel.js`).
+> The section below is the original problem statement, kept for context.
 
 ### What's there now
 
@@ -173,6 +296,11 @@ build palette's own controls.
 ---
 
 ## 4. No pause button in the action phase
+
+> **RESOLVED 2026-08-31 — pause was DROPPED.** 4a became the MENU; 4b is
+> will-not-do. Restart shipped instead: restart the MATCH, same room, anyone
+> may press. See the status table at the top. The "needs a decision" text
+> below is stale.
 
 ### The constraint that shapes this
 

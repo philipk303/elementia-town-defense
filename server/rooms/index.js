@@ -213,6 +213,7 @@ export default class RoomManager {
       const humansLeft = room.players.some(p => !p.isBot)
       if (!humansLeft) {
         stopLoop(room)
+        if (room.endedTimer) { clearTimeout(room.endedTimer); room.endedTimer = null }
         this.rooms.delete(code)
         return { room, player, mode: 'left' }
       }
@@ -263,6 +264,7 @@ export default class RoomManager {
 
     if (room.suspended && liveHumanCount(room) === 0 && openHoldCount(room) === 0) {
       stopLoop(room)
+      if (room.endedTimer) { clearTimeout(room.endedTimer); room.endedTimer = null }
       for (const p of room.players) {
         if (p.socketId)       this.socketToRoom.delete(p.socketId)
         if (p.reconnectToken) this.tokenToPlayer.delete(p.reconnectToken)
@@ -288,6 +290,11 @@ export default class RoomManager {
     const room = this.rooms.get(roomCode)
     if (!room) return
     stopLoop(room)
+    // A finished room holds a grace timer that would destroy it later (see
+    // scheduleEndedRoomCleanup in server/index.js). Room codes are reusable,
+    // so a timer left running past this point could destroy a DIFFERENT room
+    // that happened to be issued the same code.
+    if (room.endedTimer) { clearTimeout(room.endedTimer); room.endedTimer = null }
     for (const player of room.players) {
       if (player.socketId)       this.socketToRoom.delete(player.socketId)
       if (player.reconnectToken) this.tokenToPlayer.delete(player.reconnectToken)

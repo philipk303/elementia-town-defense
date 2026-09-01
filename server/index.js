@@ -46,23 +46,38 @@ function roomJoinedPayload(room, player, includeToken) {
   return payload
 }
 
-// Host-initiated match start: fill bots, build the authoritative state, enter
-// build phase for wave 1, and start the loop.
-function startGame(room) {
-  if (room.phase !== 'lobby') return
+// How long a finished room is kept alive so its players can press RESTART on
+// the end screen. Before restart existed, loop.js onEnd destroyed the room the
+// instant a run ended, which made a restart button at the exact moment a
+// player most wants one impossible. The room costs nothing while it waits --
+// its loop is stopped -- and the ordinary disconnect paths still reap it early
+// when everyone leaves. This timer is only the backstop for a room nobody
+// comes back to.
+const ENDED_ROOM_GRACE_MS = 5 * 60 * 1000
+
+// Minimum gap between restarts of one room. Restart is open to anyone in the
+// room (product decision, 2026-08-31), and each one rebuilds the whole state
+// and pushes a full snapshot to four clients, so a held-down button is a free
+// amplification. This bounds the rate without gating who may press it.
+const RESTART_COOLDOWN_MS = 3000
+
+// Fill bots, build the authoritative state, enter build wave 1, start the loop,
+// and tell the room. Shared by the host's first start and by RESTART_MATCH,
+// so a restarted match is byte-for-byte the same kind of match as a fresh one
+// -- a new seed included.
+function beginMatch(room) {
   rooms.fillBotsIfNeeded(room)
 
   room.phase       = 'active'
   room.inputBuffer = new Map()
   room.state       = createGameState(room)
   startBuildPhase(room.state, 1)
-  console.log(`[${room.code}] match start, seed=${room.state.seed}`)
 
-  const destroy = () => rooms.destroyRoom(room.code)
+  const onEnd = () => scheduleEndedRoomCleanup(room)
   room.suspendLoop = () => stopLoop(room)
-  room.resumeLoop  = () => startLoop(room, io, destroy)
+  room.resumeLoop  = () => startLoop(room, io, onEnd)
 
-  startLoop(room, io, destroy)
+  startLoop(room, io, onEnd)
 
   io.to(room.code).emit(EVENTS.GAME_START, {
     snapshot: buildFullSnapshot(room.state),
@@ -71,6 +86,40 @@ function startGame(room) {
     players:  room.players.map(serializePlayer),
     settings: room.settings,
   })
+}
+
+// A run ended. Keep the room so RESTART works from the end screen, and destroy
+// it later if nobody uses it. unref so a waiting room never holds the process
+// open on its own -- same reasoning as the reconnect hold timers.
+function scheduleEndedRoomCleanup(room) {
+  clearTimeout(room.endedTimer)
+  room.endedTimer = setTimeout(() => {
+    room.endedTimer = null
+    rooms.destroyRoom(room.code)
+  }, ENDED_ROOM_GRACE_MS)
+  room.endedTimer.unref?.()
+}
+
+// Host-initiated match start.
+function startGame(room) {
+  if (room.phase !== 'lobby') return
+  beginMatch(room)
+  console.log(`[${room.code}] match start, seed=${room.state.seed}`)
+}
+
+// Anyone in the room may restart it, including from the end screen. This
+// deliberately lets one player wipe another's run: the alternative rules were
+// weighed and open access was chosen (2026-08-31). The client asks for
+// confirmation before sending this, so an accident takes two presses.
+function restartMatch(room) {
+  clearTimeout(room.endedTimer)
+  room.endedTimer = null
+  // The old loop must die before a new state replaces the one it is reading,
+  // or two loops tick the same room.
+  stopLoop(room)
+  room.suspended = false
+  beginMatch(room)
+  console.log(`[${room.code}] match restart, seed=${room.state.seed}`)
 }
 
 io.on('connection', socket => {
@@ -144,6 +193,20 @@ io.on('connection', socket => {
     const caller = room.players.find(p => p.socketId === socket.id)
     if (!caller || caller.id !== room.hostId) return
     startGame(room)
+  })
+
+  socket.on(EVENTS.RESTART_MATCH, () => {
+    const room = rooms.getRoomBySocket(socket.id)
+    // A started room, in play or finished. A lobby has nothing to restart --
+    // that is what REQUEST_START is for.
+    if (!room || room.phase !== 'active' || !room.state) return
+    // Must actually be in the room. Anyone in it qualifies; a socket that is
+    // not a seated player does not.
+    if (!room.players.some(p => p.socketId === socket.id)) return
+    const t = Date.now()
+    if (room.lastRestartAt && t - room.lastRestartAt < RESTART_COOLDOWN_MS) return
+    room.lastRestartAt = t
+    restartMatch(room)
   })
 
   socket.on(EVENTS.SET_READY, ({ ready } = {}) => {

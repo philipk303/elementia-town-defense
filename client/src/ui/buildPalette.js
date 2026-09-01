@@ -92,6 +92,22 @@ const CSS = `
   display: none; touch-action: manipulation;
 }
 .ep-tab.ep-show { display: block; }
+/* The action-phase door to the menu. It lives in the SAME bottom
+   dock as the palette rather than floating over the board, because every
+   corner of the canvas is already spoken for: HUD text and status bars top
+   left, the wave preview pinned at width-198 top right, and on touch the two
+   sticks bottom left and right with the ability bar between them and REPAIR
+   above the aim stick. Docking reserves its height through --ep-dock, so
+   overlap is impossible by construction rather than by measurement. */
+.ep-help {
+  position: fixed; left: 8px; bottom: 0; z-index: 151;
+  min-height: ${MIN_TARGET_PX}px; padding: 4px 12px;
+  font-family: monospace; font-size: 13px;
+  background: rgba(8, 13, 20, 0.94); color: #e8f2ff;
+  border: 1px solid #b4c9e0; border-radius: 6px 6px 0 0; cursor: pointer;
+  display: none; touch-action: manipulation;
+}
+.ep-help.ep-show { display: block; }
 `
 
 // Short labels: the full constant names do not fit a 44px-tall button on a
@@ -131,7 +147,15 @@ export function createBuildPalette(handlers = {}) {
   const tab = document.createElement('button')
   tab.className = 'ep-tab'
   tab.textContent = 'BUILD ▲'
-  document.body.append(root, tab)
+  // Second door to the menu, for the action phase where the palette itself is
+  // hidden. The first door is the MENU button in ctrlRow below. Both call the
+  // same handler so there is one definition of what it opens.
+  const help = document.createElement('button')
+  help.className = 'ep-help'
+  help.textContent = 'MENU'
+  help.setAttribute('aria-label', 'Open the menu: controls and restart')
+  help.addEventListener('click', (e) => { e.preventDefault(); handlers.onMenu?.(help) })
+  document.body.append(root, tab, help)
 
   const typeRow = document.createElement('div')
   typeRow.className = 'ep-row ep-types'
@@ -187,8 +211,10 @@ export function createBuildPalette(handlers = {}) {
   const hudUp = mkBtn('', 'HUD +', () => handlers.onHudScale?.(1))
   const spacer = document.createElement('span')
   spacer.className = 'ep-spacer'
+  const menu = mkBtn('', 'MENU', () => handlers.onMenu?.(menu))
+  menu.setAttribute('aria-label', 'Open the menu: controls and restart')
   const ready = mkBtn('ep-ready', 'READY ✓', () => handlers.onReady?.())
-  ctrlRow.append(gold, rotate, ...dirBtns.map(x => x.b), mute, hudDown, hudLabel, hudUp, spacer, ready)
+  ctrlRow.append(gold, rotate, ...dirBtns.map(x => x.b), mute, hudDown, hudLabel, hudUp, menu, spacer, ready)
 
   let open = true
   tab.addEventListener('click', (e) => {
@@ -222,7 +248,12 @@ export function createBuildPalette(handlers = {}) {
     ].join('|')
     if (key !== heightInputsKey) {
       heightInputsKey = key
-      cachedHeight = open ? root.offsetHeight : tab.offsetHeight
+      // When the palette is hidden the dock still reserves the help
+      // button's height -- it is the only control on screen in the action
+      // phase, and floating it over the canvas is what the docking exists to
+      // avoid.
+      if (!state?.visible) cachedHeight = help.offsetHeight
+      else cachedHeight = open ? root.offsetHeight : tab.offsetHeight
     }
     return cachedHeight
   }
@@ -242,7 +273,7 @@ export function createBuildPalette(handlers = {}) {
   function syncDock() {
     // Capped so a tall palette on a short screen cannot squeeze the canvas to
     // nothing; the strip scrolls internally rather than eating the game.
-    const want = !state?.visible ? 0 : Math.min(measuredHeight(), window.innerHeight * 0.4)
+    const want = Math.min(measuredHeight(), window.innerHeight * 0.4)
     if (Math.abs(want - dock) < 0.5) return
     dock = want
     document.documentElement.style.setProperty('--ep-dock', `${dock}px`)
@@ -253,6 +284,9 @@ export function createBuildPalette(handlers = {}) {
     if (!state) return
     root.classList.toggle('ep-open', state.visible && open)
     tab.classList.toggle('ep-show', state.visible)
+    // Exactly one menu door is on screen at a time: the ctrlRow button while
+    // the palette is up, this one while it is not.
+    help.classList.toggle('ep-show', !state.visible)
     if (!state.visible) { tab.style.bottom = '0px'; syncDock(); return }
 
     gold.textContent = state.gold == null ? '' : `${state.gold} gold`
@@ -310,9 +344,15 @@ export function createBuildPalette(handlers = {}) {
     // CSS px of screen this dock occupies. The canvas is sized to exclude it,
     // so callers do NOT need to inset their own layouts by it.
     dockPx() { return dock },
+    // Whichever MENU door is currently on screen. The two swap on every phase
+    // change, so the menu asks for this when returning focus rather than
+    // assuming the button that opened it still exists.
+    visibleMenuDoor() {
+      return state?.visible ? (open ? menu : null) : help
+    },
     destroy() {
       document.documentElement.style.removeProperty('--ep-dock')
-      root.remove(); tab.remove(); style.remove()
+      root.remove(); tab.remove(); help.remove(); style.remove()
     },
   }
 }
