@@ -23,8 +23,8 @@ frames — the numbers are in §2 and they were measured, not assumed.**
 
 ## What is DONE and committed
 
-Local `master` is `614d6f8` plus the doc commit this file belongs to.
-**Nothing since `f7a3c98` has been published** — see Publishing below.
+Local `master` is `1cdfc52`. **All of it is PUBLISHED** — public master is
+`d4eab65`, pushed 2026-08-31, and Render redeployed from it.
 
 | commit | what |
 |---|---|
@@ -32,6 +32,7 @@ Local `master` is `614d6f8` plus the doc commit this file belongs to.
 | `2da00a9` | Stamped the spec and the previous handoff. |
 | `3898c85` | Turned it into a **MENU** with a working **RESTART MATCH**; dropped pause entirely. |
 | `614d6f8` | Spec + handoff updated: pause will-not-do, restart shipped. |
+| `1cdfc52` | §2 rewritten from measured art; this handoff. |
 
 Both decisions the previous handoff was waiting on were taken:
 
@@ -144,14 +145,17 @@ to whatever directory the session opened in, and will not see this repo's
 (nodemon) are both wanted.
 
 **Publishing.** Never `git push` master directly and never `git checkout` —
-`test/harness/store/` is 1.6GB with two files over GitHub's 100MB hard limit,
-and switching branches makes git refuse to move 29 huge files. Use the plumbing
-recipe in the memory file `elementia-publish-to-render-recipe.md`: read-tree,
-`rm --cached` the store, `write-tree`, `commit-tree`, push the resulting SHA.
+`test/harness/store/` is 1.6GB with **three** files over GitHub's 100MB hard
+limit (largest 212MB), and switching branches makes git refuse to move 29 huge
+files. The full recipe is now written down in the memory file
+`elementia_publish_to_render_recipe.md` (it did not exist when two earlier
+handoffs pointed at it): throwaway index, `read-tree`, `rm --cached` the store,
+`write-tree`, inspect the tree for oversized blobs and diff it against
+`origin/master`, then `commit-tree -p origin/master` and push the SHA.
 Render auto-deploys; poll the live bundle to confirm rather than assuming.
 
-**Nothing since `f7a3c98` is live.** Four commits of finished, verified work
-are sitting local. Publishing is Philip's call — offer it, do not assume it.
+**The tree is published and live** as of 2026-08-31 (`d4eab65`). If you add to
+it, publishing is still Philip's call — offer it, do not assume it.
 
 ---
 
