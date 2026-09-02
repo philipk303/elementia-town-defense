@@ -35,6 +35,16 @@ const CSS = `
   border-top: 1px solid #b4c9e0;
   display: none; flex-direction: column; gap: 6px; padding: 6px 8px;
   touch-action: manipulation;
+  /* syncDock() below reserves at most 40% of viewport height for this strip
+     (window.innerHeight * 0.4) and used to rely on that JS cap ALONE to keep
+     the palette off the board -- there was no matching CSS bound, so nine
+     buttons that each grew a thumbnail (spec §2) could in principle render
+     taller than the reservation and visually overlap the canvas on a short
+     phone, with no way to reach the overflow content. 40vh here is the same
+     40% expressed in CSS, and overflow-y makes exceeding it a scroll instead
+     of a silent overlap -- belt-and-suspenders with the JS cap, not a
+     replacement for it. */
+  max-height: 40vh; overflow-y: auto;
 }
 .ep-root.ep-open { display: flex; }
 .ep-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }

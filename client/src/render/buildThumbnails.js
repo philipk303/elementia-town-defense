@@ -17,9 +17,16 @@ const PNG_BY_KEY = new Map([...ATLASES, ...IMAGES].map(e => [e.key, e.png]))
 // when one exists so directional structures face the viewer instead of away.
 // Same resting-pose rule measure_content_boxes.mjs applies for the same
 // reason: an active/telegraph frame sizes a structure by its loudest moment.
-function pickIdleFrame(names) {
+//
+// Two south-facing spellings exist in this codebase's frame-naming
+// convention (Preload.js's FRAME_RE): the cardinal set N/E/S/W (Water
+// Geyser, Wind Vortex) and the down/up/left/right set (heroes, and
+// EARTH_SPECIAL's idle_down_0.png). Only one buildable ships more than one
+// idle frame today, so this never bites yet -- but idle_S-only silently
+// picked the wrong frame the moment a second one appeared.
+export function pickIdleFrame(names) {
   const idle = names.filter(n => /^idle/.test(n))
-  return idle.find(n => /^idle_S/.test(n)) || idle[0] || null
+  return idle.find(n => /^idle_(S|down)(_|\.)/.test(n)) || idle[0] || null
 }
 
 // Largest on-screen dimension a thumbnail is allowed to reach. Comfortably
