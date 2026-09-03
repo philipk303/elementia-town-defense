@@ -81,6 +81,41 @@ test('CP1 C1: a socket already in a room cannot create or join another', () => {
   assert.equal(room.players.length, 1)
 })
 
+test('selectElement swaps a lobby player onto a free element', () => {
+  const rm = new RoomManager()
+  const { room, player } = rm.createRoom(fakeSocket(), 'Alice') // starts EARTH
+  const res = rm.selectElement(room, player.id, 'WIND')
+  assert.equal(res.error, undefined)
+  assert.equal(res.player.element, 'WIND')
+  assert.equal(player.element, 'WIND')
+})
+
+test('selectElement rejects an element already held by another player', () => {
+  const rm = new RoomManager()
+  const { room, player: alice } = rm.createRoom(fakeSocket(), 'Alice') // EARTH
+  const bob = rm.joinRoom(fakeSocket(), room.code, 'Bob').player // FIRE
+  const res = rm.selectElement(room, bob.id, 'EARTH')
+  assert.equal(res.error, 'Element taken')
+  assert.equal(bob.element, 'FIRE', 'a rejected pick leaves the caller where they were')
+  assert.equal(alice.element, 'EARTH')
+})
+
+test('selectElement re-picking your own current element is a no-op success', () => {
+  const rm = new RoomManager()
+  const { room, player } = rm.createRoom(fakeSocket(), 'Alice')
+  const res = rm.selectElement(room, player.id, 'EARTH')
+  assert.equal(res.error, undefined)
+  assert.equal(res.player.element, 'EARTH')
+})
+
+test('selectElement rejects an unknown element and a started match', () => {
+  const rm = new RoomManager()
+  const { room, player } = rm.createRoom(fakeSocket(), 'Alice')
+  assert.equal(rm.selectElement(room, player.id, 'PLASMA').error, 'Unknown element')
+  room.phase = 'active'
+  assert.equal(rm.selectElement(room, player.id, 'WIND').error, 'Match already started')
+})
+
 test('CP1 H1: host leaving the lobby migrates host to the next human', () => {
   const rm = new RoomManager()
   const hostSock = fakeSocket()

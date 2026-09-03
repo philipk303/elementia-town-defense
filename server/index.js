@@ -209,6 +209,22 @@ io.on('connection', socket => {
     restartMatch(room)
   })
 
+  socket.on(EVENTS.SELECT_ELEMENT, ({ element } = {}) => {
+    const room = rooms.getRoomBySocket(socket.id)
+    if (!room) return
+    const caller = room.players.find(p => p.socketId === socket.id)
+    if (!caller) return
+    const result = rooms.selectElement(room, caller.id, element)
+    if (result.error) {
+      socket.emit(EVENTS.ROOM_ERROR, { message: result.error })
+      return
+    }
+    io.to(room.code).emit(EVENTS.ELEMENT_CHANGED, {
+      playerId: result.player.id,
+      element:  result.player.element,
+    })
+  })
+
   socket.on(EVENTS.SET_READY, ({ ready } = {}) => {
     const room = rooms.getRoomBySocket(socket.id)
     if (!room || room.phase !== 'active' || !room.state) return

@@ -8,6 +8,8 @@ import net from './network.js'
 import Preload from './scenes/Preload.js'
 import GameScene from './scenes/GameScene.js'
 import { EVENTS, CONFIG } from '../../shared/constants.js'
+import { createCharacterSelect } from './ui/characterSelect.js'
+import { computeElementThumbnails } from './render/characterThumbnails.js'
 
 // --- Phaser game (renders under the lobby overlay until the match starts) ---
 const __game = new Phaser.Game({
@@ -31,6 +33,22 @@ net.connect()
 
 function showError(msg) { errorEl.textContent = msg || '' }
 
+// --- Character select (spec §5): shown after ROOM_JOINED, before match start.
+// Functional pass only -- theming is a later task (see the module header).
+const charSelect = createCharacterSelect({
+  onSelect: (element) => net.emit(EVENTS.SELECT_ELEMENT, { element }),
+  onStart:  () => net.emit(EVENTS.REQUEST_START),
+})
+computeElementThumbnails().then(thumbs => charSelect.setThumbnails(thumbs))
+
+function refreshCharSelect() {
+  charSelect.render(net.roster, net.playerId)
+  charSelect.showStartButton(net.playerId === net.hostId)
+  const humanCount = net.roster.filter(p => !p.isBot).length
+  charSelect.setInfo(`Room ${net.roomCode} — ${humanCount} player(s) here so far.`)
+  charSelect.setError('')
+}
+
 $('createBtn').addEventListener('click', () => {
   showError('')
   net.emit(EVENTS.CREATE_ROOM, {
@@ -53,27 +71,25 @@ net.on(EVENTS.ROOM_CREATED, ({ roomCode }) => {
 })
 
 net.on(EVENTS.ROOM_JOINED, (payload) => {
-  roomInfo.textContent =
-    `Room ${payload.roomCode} — you are ${payload.element}. ` +
-    `${payload.players.length} player(s). Style: ${payload.settings?.timingStyle}.`
-  // Only the host sees the Start button.
-  $('startBtn').style.display = payload.playerId === payload.hostId ? '' : 'none'
+  roomInfo.textContent = `Room ${payload.roomCode} — share this code.`
+  // The Phase-1 lobby's own Start button is superseded by character select's.
+  $('startBtn').style.display = 'none'
+  lobby.classList.add('hidden')
+  charSelect.show()
+  refreshCharSelect()
 })
 
-net.on(EVENTS.ROOM_ERROR, ({ message }) => showError(message))
+net.on(EVENTS.ROOM_ERROR, ({ message }) => { showError(message); charSelect.setError(message) })
 
-net.on(EVENTS.PLAYER_JOINED, () => {
-  roomInfo.textContent += ' (+1)'
-})
+net.on(EVENTS.PLAYER_JOINED, refreshCharSelect)
+net.on(EVENTS.PLAYER_LEFT, refreshCharSelect)
+net.on(EVENTS.ELEMENT_CHANGED, refreshCharSelect)
 
 // Host migration (CP1 H1): if we became the host, reveal the Start button.
-net.on(EVENTS.HOST_CHANGED, ({ hostId }) => {
-  $('startBtn').style.display = net.playerId === hostId ? '' : 'none'
-  roomInfo.textContent += hostId === net.playerId ? ' — you are now host' : ''
-})
+net.on(EVENTS.HOST_CHANGED, refreshCharSelect)
 
-// Match start / mid-match join: hide the lobby, reveal the game.
-net.on(EVENTS.GAME_START, () => { lobby.classList.add('hidden') })
+// Match start / mid-match join: hide the lobby and character select, reveal the game.
+net.on(EVENTS.GAME_START, () => { lobby.classList.add('hidden'); charSelect.hide() })
 
 // The build-phase Ready button moved INTO the build palette (2026-08-22) —
 // see client/src/ui/buildPalette.js. It used to be a lone floating DOM button

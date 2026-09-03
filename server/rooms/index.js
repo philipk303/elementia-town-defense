@@ -170,6 +170,24 @@ export default class RoomManager {
     return player
   }
 
+  // Lobby-only: a human requests a specific element slot (character select).
+  // Never fails the caller out of the room -- an unavailable element is just a
+  // no-op (the caller keeps whatever they had), same "never fail the join"
+  // spirit as firstFreeElement. Only a human's own slot can be changed, and
+  // only while the room is still in 'lobby' (bots/active-match slots are
+  // reassigned by fillBotsIfNeeded / promotion, not this path).
+  selectElement(room, playerId, element) {
+    if (room.phase !== 'lobby') return { error: 'Match already started' }
+    if (!ELEMENTS.includes(element)) return { error: 'Unknown element' }
+    const player = room.players.find(p => p.id === playerId)
+    if (!player) return { error: 'Not in this room' }
+    if (player.element === element) return { room, player }
+    const holder = room.players.find(p => p.element === element)
+    if (holder) return { error: 'Element taken' }
+    player.element = element
+    return { room, player }
+  }
+
   // Fill remaining element slots with bots so the team is always all 4 elements.
   fillBotsIfNeeded(room) {
     while (room.players.length < CONFIG.MAX_PLAYERS) {

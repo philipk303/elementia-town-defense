@@ -99,6 +99,24 @@ class Network {
       this.hostId = payload?.hostId ?? this.hostId
     })
 
+    // Lobby roster deltas, so net.roster stays accurate for the
+    // character-select screen without every reader re-deriving it. Only
+    // meaningful pre-match -- GAME_START's fuller payload supersedes this.
+    this.socket.on(EVENTS.PLAYER_JOINED, (payload) => {
+      if (!payload?.playerId || this.roster.some(p => p.id === payload.playerId)) return
+      this.roster = [...this.roster,
+        { id: payload.playerId, displayName: payload.displayName, element: payload.element, isBot: false }]
+    })
+    this.socket.on(EVENTS.PLAYER_LEFT, (payload) => {
+      this.roster = this.roster.filter(p => p.id !== payload?.playerId)
+    })
+    this.socket.on(EVENTS.ELEMENT_CHANGED, (payload) => {
+      if (!payload?.playerId) return
+      this.roster = this.roster.map(p =>
+        p.id === payload.playerId ? { ...p, element: payload.element } : p)
+      if (payload.playerId === this.playerId) this.element = payload.element
+    })
+
     return this.socket
   }
 

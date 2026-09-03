@@ -21,11 +21,13 @@ export const EVENTS = {
   SELL_STRUCTURE:  'sell_structure',
   RESPOND_FUSION:  'respond_fusion',  // accept/reject a pending fusion proposal
   RESTART_MATCH:   'restart_match',   // menu: wipe the run and re-enter build wave 1, same room
+  SELECT_ELEMENT:  'select_element',  // lobby-only: request a specific element slot
 
   // Server → Client
   ROOM_CREATED:        'room_created',
   ROOM_JOINED:         'room_joined',
   ROOM_ERROR:          'room_error',
+  ELEMENT_CHANGED:     'element_changed', // lobby: a player's element slot changed
   PLAYER_JOINED:       'player_joined',
   PLAYER_LEFT:         'player_left',
   PLAYER_DISCONNECTED: 'player_disconnected',
