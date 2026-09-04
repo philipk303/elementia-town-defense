@@ -1,0 +1,52 @@
+TITLE SCREEN — Elementia Town Defense
+Target use: client/index.html lobby background. Landscape, 1920x1080 (16:9).
+Style: realistic 3D-rendered anime (think a AAA game key-art render, not chibi/flat-shaded) —
+volumetric lighting, real material shaders (metal, cloth, stone, embers), painterly anime facial
+proportions but full adult body proportions, NOT the game's small chibi in-game sprites.
+
+SCENE:
+A wide, dusk-lit feudal-Japanese hilltop village under siege, seen from a slightly low
+heroic angle. In the background: a wooden palisade wall, a stone watchtower (yagura) with a
+curved tile roof, and a torii gate silhouetted against a deep orange-to-indigo sunset sky with
+drifting embers and mist. Rice-paddy terraces and lantern-lit market stalls sit in the middle
+distance.
+
+FOUR HERO CHARACTERS in the foreground, each visibly using their elemental power, arranged in a
+dynamic action line-up (not a static lineup — overlapping poses, weight on different legs, as if
+about to clash with an unseen threat):
+
+1. FIRE HERO — young adult male, saturated orange hair styled in a topknot, wearing lacquered
+   orange samurai-style armor with glowing ember/crack detailing. Wielding a long curved saber
+   that is wreathed in real flame, mid-swing. Skin lightly lit by firelight from below.
+
+2. WATER HERO — young adult, blue hair, flowing dark-blue and teal robes with droplet/wave
+   accent patterns. Conjuring a curling wave or orb of water around one hand, water droplets
+   suspended mid-air, cool blue rim-light.
+
+3. EARTH HERO — young adult, brown hair, sturdy grounded stance, brown/stone-toned armor with
+   visible stone-fleck/mineral texture. Summoning jagged rock spikes or a floating boulder from
+   the ground, hands planted low, warm earthy lighting.
+
+4. WIND HERO — young adult female, pale-cyan flowing hair, pale cyan/off-white robe with a dark
+   outline/trim (important: keep her silhouette readable against a bright sky — do not render her
+   in pure white). Holding a pair of compact fans, a visible swirl of wind/gust lines and flower
+   petals or leaves caught in the current around her.
+
+All four should read as a cohesive matched set: same semi-realistic 3D-anime rendering style,
+same lighting environment (dusk, embers, mist), same scale, standing together as a team on a
+stone courtyard in front of the palisade/watchtower/torii.
+
+TITLE TEXT: "ELEMENTIA TOWN DEFENSE" — large, bold, brush-stroke/calligraphy-influenced display
+lettering (Japanese-brush aesthetic, still legible Latin characters), placed in the upper third
+or lower third of the frame with enough negative space/dark vignette behind it to stay readable
+over the busy scene. Suggested accent colors for the title: aged gold (#c9a227) or shu-red
+(#b23a2f) with a dark outline/shadow.
+
+Do NOT include any watermark, extra logos, or UI chrome — this is a pure background/key-art
+render, all game UI will be composited on top of it separately.
+
+---
+Once generated, save the source PNG(s) into this folder (art/source/title_screen/) and let
+Claude Code know — it will run it through the same Pillow normalization pipeline used for the
+other backgrounds (see tools/art/ground_pipeline.py for the pattern) and wire it into
+client/index.html / client/public/art/, then log it in art/assets-manifest.json.

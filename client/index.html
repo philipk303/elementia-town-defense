@@ -25,10 +25,27 @@
       #lobby {
         position: fixed; inset: 0; z-index: 100; display: flex;
         flex-direction: column; align-items: center; justify-content: center; gap: 16px;
-        background: #0a0e14;
+        /* contain, not cover: the title text is baked into this image, so
+           cropping it (which cover does on any non-16:9 viewport) would cut
+           the lettering off at the edges. Letterboxing keeps the whole image,
+           title included, always in frame. */
+        background: #1a1712 url('/art/title_screen.jpg') center / contain no-repeat;
+      }
+      /* Dark scrim between the title art and the form controls, so inputs and
+         buttons stay readable over a busy background image. */
+      #lobby::before {
+        content: ''; position: absolute; inset: 0; z-index: -1;
+        background: rgba(10, 14, 20, 0.55);
       }
       #lobby.hidden { display: none; }
-      #lobby h1 { font-size: 28px; letter-spacing: 2px; }
+      /* The title is now baked into the background image itself (see #lobby
+         background above), so the h1 is visually redundant on top of it --
+         it's kept in the DOM, visually hidden, purely so screen-reader users
+         still get a page title (the image conveys none to them). */
+      #lobby h1 {
+        position: absolute; width: 1px; height: 1px; overflow: hidden;
+        clip: rect(0, 0, 0, 0); white-space: nowrap;
+      }
       #lobby .row { display: flex; gap: 8px; align-items: center; }
       #lobby button, #lobby input, #lobby select {
         font-family: monospace; font-size: 15px; padding: 8px 12px;

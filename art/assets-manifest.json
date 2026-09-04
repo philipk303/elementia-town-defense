@@ -31,6 +31,54 @@
   },
   "assets": [
     {
+      "id": "title_screen",
+      "category": "ui_background",
+      "runtime_id": "title_screen",
+      "display_alias": "Lobby/title screen background — four heroes, feudal-Japan courtyard, baked title lettering",
+      "footprint_tiles": null,
+      "origin": {
+        "value": null,
+        "status": "not_applicable"
+      },
+      "orientation": "none",
+      "directions": [],
+      "states": [
+        "static"
+      ],
+      "source": {
+        "status": "generated_approved",
+        "reference_path": "art/source/title_screen/nano_banana_prompt.txt",
+        "source_directory": "art/source/title_screen/",
+        "prompt_edit_lineage": [
+          "art/source/title_screen/nano_banana_prompt.txt -> approved.jpg (Nano Banana 2, single generation, approved as-is)"
+        ],
+        "frame_count": 1,
+        "note": "Generated externally via Nano Banana 2 (gemini-3.1-flash-image) by Philip, per the design decision that Claude Code has no image-generation tool in this session and Gemini image generation has no free API tier. Prompt built from the real per-hero visual spec in docs/superpowers/specs/2026-07-25-art-direction-and-runtime-asset-integration.md (fire: male, orange topknot, orange ember-cracked armor, flaming saber; water: blue hair, teal/dark-blue robe; earth: brown hair, stone-fleck armor, summoning rock spikes; wind: female, pale-cyan hair, pale robe with dark outline, fans) even though the style itself (realistic 3D anime) deliberately departs from the game's in-game chibi sprite style -- Philip's explicit choice after being flagged the tonal mismatch."
+      },
+      "pillow": {
+        "status": "production_converted",
+        "output": "client/public/art/title_screen.jpg",
+        "frame_count": 1,
+        "contract": "tools/art/title_screen_pipeline.py center-crops the 2752x1536 source to exactly 16:9 and downscales to 1920x1080 JPEG (quality 88)."
+      },
+      "design": {
+        "transition_strategy": "single_static_background_image",
+        "strategy_rationale": "Title/lobby art has no gameplay-legibility constraint (unlike ground.png), so a single generated key-art image is sufficient -- no procedural generation or contrast gate applies here.",
+        "css_fit_note": "client/index.html uses background-size: contain (NOT cover) with a solid #1a1712 letterbox colour, because the title lettering is baked into the image itself -- cover would crop it off-screen on any viewport not exactly 16:9. The DOM <h1> title text is kept but visually hidden (clip-rect technique) so screen-reader users still get a text title, since the image conveys none to them."
+      },
+      "runtime": {
+        "status": "gameplay_integrated",
+        "image_key": null,
+        "gameplay_integrated": true,
+        "note": "Referenced directly as a CSS background-image on #lobby in client/index.html (not registered in client/src/assets/manifest.js -- it's a plain HTML/CSS background, not a Phaser texture)."
+      },
+      "qa": {
+        "status": "manually_reviewed",
+        "evidence": "Verified live in the browser preview at both a narrow (~800x721) and wide (1440x900) viewport: full title text stays in frame at both via letterboxing, form controls stay readable over the dark scrim.",
+        "gate": "manual only -- no automated test covers this asset."
+      }
+    },
+    {
       "id": "ground",
       "category": "terrain",
       "runtime_id": "GROUND",
